@@ -7,6 +7,7 @@ import utility;
 import <windows.h>;
 
 int main() {
+    std::vector<int>::push_back(0);
     auto sstr = new char[] {"Hello"};
     auto stime = GetTickCount64();
     size_t max = 0;
