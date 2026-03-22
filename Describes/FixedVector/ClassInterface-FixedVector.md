@@ -11,6 +11,7 @@
 | size | [size] |
 | capacity | [capacity] |
 | max size | [max_size] |
+| at | [at] |
 | operator | [operator] |
 
 - FixedVector
@@ -146,6 +147,26 @@
                     #### 以上代码输出： 5
                     函数返回描述：无
 
+            ## at
+            - 返回值类型：reference_t 非静态成员函数名：at 参数列表：(size_t)
+            - reference_t at(size_t size)
+                - 用于获取指定位置的元素
+                - 当position大于最大容量时，则抛出const char*类型的异常
+                    ``` C++
+                    import fixed_vector;
+                    import std;
+
+                    int main() {
+                        dast::fixed_vector<int, 5> vec;
+                        vec[0] = 1;
+                        std::cout << vec.at(0) << '\n' // out: 1
+                        vec.at(6); // error: out of range
+                        return 0;
+                    }
+                    ```
+                    #### 由于抛出异常，以上代码执行至vec.at(6)时终止
+                    函数返回描述：无
+
             ## operator
             - operator[]
                 - 返回值类型：reference_t 非静态运算符重载符：[] 参数列表：(size_t)
@@ -171,4 +192,5 @@
 [size]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/FixedVector/ClassInterface-FixedVector.md#size
 [capacity]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/FixedVector/ClassInterface-FixedVector.md#capacity
 [max_size]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/FixedVector/ClassInterface-FixedVector.md#max_size
+[at]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/FixedVector/ClassInterface-FixedVector.md#at
 [operator]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/FixedVector/ClassInterface-FixedVector.md#operator

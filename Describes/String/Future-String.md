@@ -9,4 +9,4 @@
         实现非静态成员函数to_encode
         实现非静态成员函数split
         实现非静态成员函数join
-    
+    定义noexcept条件

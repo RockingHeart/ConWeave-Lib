@@ -257,7 +257,7 @@ public:
 
 	template <class SelfType, class... ArgsType>
 	constexpr decltype(auto) at(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
+		requires (
 		    requires {
 		        self.at_string(std::forward<ArgsType>(args)...);
 	        }
