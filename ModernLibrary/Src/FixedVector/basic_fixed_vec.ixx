@@ -24,28 +24,35 @@ public:
 	constexpr basic_fixed_vec() noexcept = default;
 
 	constexpr basic_fixed_vec(size_t size)
-		noexcept : core_t(size)
+		noexcept(noexcept(core_t::construct_vector()))
+			: core_t(size)
 	{
 		core_t::construct_vector();
 	}
 
 	constexpr basic_fixed_vec(const initlist_t& list)
-		noexcept : core_t(list.size())
+		noexcept(noexcept(core_t::construct_vector(list)))
+			: core_t(list.size())
 	{
 		core_t::construct_vector(list);
 	}
 
 public:
 
-	constexpr bool push_back(const value_t& value) noexcept {
+	constexpr bool push_back(const value_t& value)
+		noexcept(noexcept(core_t::push_element(value)))
+	{
 		return core_t::push_element(value);
 	}
 
-	constexpr bool push_back(value_t&& value) noexcept {
+	constexpr bool push_back(value_t&& value)
+		noexcept(noexcept(core_t::push_element(std::forward<value_t&&>(value))))
+	{
 		return core_t::push_element(std::forward<value_t&&>(value));
 	}
 
-	constexpr bool pop_back() noexcept {
+	constexpr bool pop_back() noexcept(core_t::pop_element())
+	{
 		return core_t::pop_element();
 	}
 
@@ -92,17 +99,23 @@ public:
 
 public:
 
-	constexpr reference_t operator[](size_t position) noexcept {
+	constexpr reference_t operator[](size_t position)
+		noexcept(noexcept(core_t::pointer()))
+	{
 		return core_t::pointer()[position];
 	}
 
-	constexpr value_t operator[](size_t position) const noexcept {
+	constexpr value_t operator[](size_t position)
+		const noexcept(noexcept(core_t::pointer()))
+	{
 		return core_t::pointer()[position];
 	}
 
 public:
 
-	constexpr ~basic_fixed_vec() noexcept {
+	constexpr ~basic_fixed_vec()
+		noexcept(core_t::destroy_vector())
+	{
 		core_t::destroy_vector();
 	}
 

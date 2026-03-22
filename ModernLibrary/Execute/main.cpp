@@ -7,8 +7,7 @@ import utility;
 import <windows.h>;
 
 int main() {
-    std::vector<int>::push_back(0);
-    auto sstr = new char[] {"Hello"};
+    /*auto sstr = new char[] {"Hello"};
     auto stime = GetTickCount64();
     size_t max = 0;
     {
@@ -45,6 +44,6 @@ int main() {
     etime = GetTickCount64();
 
     std::cout << "Mine: " << (etime - stime) << '\n';
-    std::cout << max << '\n';
+    std::cout << max << '\n';*/
     return 0;
 }

@@ -2,6 +2,8 @@
 
 import fixed_vec_box;
 
+import <type_traits>;
+
 import <cstddef>;
 import <memory>;
 
@@ -23,27 +25,33 @@ protected:
 private:
 
 	constexpr void definit(size_t index) noexcept {
-		if constexpr (box_t::is_ordinary_type) {
-			for (; index < box_t::max_size; ++index) {
-				box_t::value.data[index] = value_t();
-			}
-		}
-		else {
-			pointer_t pointer = box_t::pointer();
-			for (; index < box_t::max_size; ++index) {
-				pointer[index] = value_t();
-			}
+		for (; index < box_t::max_size; ++index) {
+			box_t::value.data[index] = value_t();
 		}
 	}
 
-	constexpr void construct_init() noexcept {
+	constexpr void construct_init()
+		noexcept (
+			noexcept (
+				new (std::addressof(box_t::pointer()[0])) value_t()
+			)
+		)
+	{
 		pointer_t pointer = box_t::pointer();
 		for (size_t i = 0; i < box_t::size; ++i) {
 			new (std::addressof(pointer[i])) value_t();
 		}
 	}
 
-	constexpr void construct_init(const_pointer_t data) noexcept {
+	constexpr void construct_init(const_pointer_t data)
+		noexcept (
+			noexcept (
+				new (std::addressof(box_t::pointer()[0])) value_t (
+					std::move(data[0])
+				)
+			)
+		)
+	{
 		pointer_t pointer = box_t::pointer();
 		for (size_t i = 0; i < box_t::size; ++i) {
 			new (std::addressof(pointer[i])) value_t (
@@ -54,7 +62,12 @@ private:
 
 protected:
 
-	constexpr void construct_vector() noexcept {
+	constexpr void construct_vector()
+		noexcept (
+			!box_t::is_ordinary_type &&
+			noexcept(construct_init())
+		)
+	{
 		if constexpr (box_t::is_ordinary_type) {
 			definit(0);
 		}
@@ -63,7 +76,12 @@ protected:
 		}
 	}
 
-	constexpr void construct_vector(const initlist_t& list) noexcept {
+	constexpr void construct_vector(const initlist_t& list)
+		noexcept (
+			!box_t::is_ordinary_type &&
+			noexcept(construct_init(list.begin()))
+		)
+	{
 		const_pointer_t data = list.begin();
 		if constexpr (box_t::is_ordinary_type) {
 			size_t i = 0;
@@ -80,7 +98,15 @@ protected:
 protected:
 
 	template <class ArgType>
-	constexpr bool push_element(ArgType&& arg) noexcept {
+	constexpr bool push_element(ArgType&& arg)
+		noexcept (
+			!box_t::is_ordinary_type && 
+			noexcept (
+				new (std::addressof(box_t::pointer()[box_t::size++]))
+					ArgType(std::forward<ArgType>(arg))
+			)
+		)
+	{
 		if (box_t::size >= Size) {
 			return false;
 		}
@@ -89,12 +115,18 @@ protected:
 		}
 		else {
 			pointer_t pointer = box_t::pointer();
-			new (std::addressof(pointer[box_t::size++])) ArgType(std::forward<ArgType>(arg));
+			new (std::addressof(pointer[box_t::size++]))
+				ArgType(std::forward<ArgType>(arg));
 		}
 		return true;
 	}
 
-	constexpr bool pop_element() noexcept {
+	constexpr bool pop_element()
+		noexcept (
+			!box_t::is_ordinary_type &&
+			std::is_nothrow_destructible_v<value_t>
+		)
+	{
 		if (!box_t::size) {
 			return false;
 		}
@@ -108,7 +140,12 @@ protected:
 
 protected:
 
-	constexpr void destroy_vector() noexcept {
+	constexpr void destroy_vector()
+		noexcept (
+			!box_t::is_ordinary_type&&
+			std::is_nothrow_destructible_v<value_t>
+		)
+	{
 		if (!box_t::is_ordinary_type) {
 			size_t    count = box_t::size;
 			pointer_t pointer = box_t::pointer();
