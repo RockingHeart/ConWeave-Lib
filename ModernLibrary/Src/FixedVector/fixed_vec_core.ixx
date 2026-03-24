@@ -64,7 +64,7 @@ protected:
 
 	constexpr void construct_vector()
 		noexcept (
-			!box_t::is_ordinary_type &&
+			box_t::is_ordinary_type ||
 			noexcept(construct_init())
 		)
 	{
@@ -78,8 +78,11 @@ protected:
 
 	constexpr void construct_vector(const initlist_t& list)
 		noexcept (
-			!box_t::is_ordinary_type &&
-			noexcept(construct_init(list.begin()))
+			box_t::is_ordinary_type
+			?
+				std::is_trivially_constructible_v<value_t>
+			:
+				noexcept(construct_init(list.begin()))
 		)
 	{
 		const_pointer_t data = list.begin();
@@ -100,7 +103,7 @@ protected:
 	template <class ArgType>
 	constexpr bool push_element(ArgType&& arg)
 		noexcept (
-			!box_t::is_ordinary_type && 
+			box_t::is_ordinary_type || 
 			noexcept (
 				new (std::addressof(box_t::pointer()[box_t::size++]))
 					ArgType(std::forward<ArgType>(arg))
@@ -123,7 +126,7 @@ protected:
 
 	constexpr bool pop_element()
 		noexcept (
-			!box_t::is_ordinary_type &&
+			box_t::is_ordinary_type ||
 			std::is_nothrow_destructible_v<value_t>
 		)
 	{
@@ -142,7 +145,7 @@ protected:
 
 	constexpr void destroy_vector()
 		noexcept (
-			!box_t::is_ordinary_type&&
+			box_t::is_ordinary_type ||
 			std::is_nothrow_destructible_v<value_t>
 		)
 	{

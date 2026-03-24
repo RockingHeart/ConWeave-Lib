@@ -91,7 +91,7 @@ public:
 public:
 
 	constexpr reference_t at(size_t position) {
-		if (position > Size) {
+		if (position >= Size) {
 			throw "Out of Range";
 		}
 		return core_t::pointer()[position];
