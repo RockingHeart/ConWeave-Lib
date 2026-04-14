@@ -165,7 +165,10 @@ public:
 
 	template <class SelfType, class... ArgsType>
 	[[nodiscard]] constexpr auto resize(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
+		noexcept (
+			noexcept(self.resize_string(std::forward<ArgsType>(args)...))
+		)
+		requires (
 		    requires {
 		        self.resize_string(std::forward<ArgsType>(args)...);
 	        }
@@ -176,8 +179,11 @@ public:
 
 	template <class SelfType, class... ArgsType>
 	[[nodiscard]] constexpr auto reserve(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
-		    requires {
+		noexcept (
+			noexcept(self.reserve_string(std::forward<ArgsType>(args)...))
+		)
+		requires (
+			requires {
 		        self.reserve_string(std::forward<ArgsType>(args)...);
 	        }
 		)
@@ -187,7 +193,10 @@ public:
 
 	template <class SelfType, class... ArgsType>
 	[[nodiscard]] constexpr auto restore_cache_mode(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
+		noexcept (
+			noexcept(self.restore_string_cache_mode(std::forward<ArgsType>(args)...))
+		)
+		requires (
 		    requires {
 		        self.restore_string_cache_mode(std::forward<ArgsType>(args)...);
 	        }
@@ -198,7 +207,10 @@ public:
 
 	template <class SelfType, class... ArgsType>
 	[[nodiscard]] constexpr auto toggle_large_mode(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
+		noexcept (
+			noexcept(self.toggle_string_large_mode(std::forward<ArgsType>(args)...))
+		)
+		requires (
 		    requires {
 		        self.toggle_string_large_mode(std::forward<ArgsType>(args)...);
 	        }
@@ -220,7 +232,10 @@ public:
 
 	template <class SelfType, class... ArgsType>
 	[[nodiscard]] constexpr auto insert(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
+		noexcept (
+			noexcept(self.insert_string(std::forward<ArgsType>(args)...))
+		)
+		requires (
 		    requires {
 		        self.insert_string(std::forward<ArgsType>(args)...);
 	        }
@@ -281,7 +296,10 @@ public:
 
 	template <class SelfType, class... ArgsType>
 	constexpr auto swap(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
+		noexcept (
+			noexcept(self.exchange_string(std::forward<ArgsType>(args)...))
+		)
+		requires (
 		    requires {
 		        self.exchange_string(std::forward<ArgsType>(args)...);
 	        }
@@ -292,7 +310,10 @@ public:
 
 	template <class SelfType, class... ArgsType>
 	constexpr auto move(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
+		noexcept (
+			noexcept(self.move_string(std::forward<ArgsType>(args)...))
+		)
+		requires (
 		    requires {
 		        self.move_string(std::forward<ArgsType>(args)...);
 	        }
@@ -305,7 +326,10 @@ public:
 
 	template <class SelfType, typename CastType, class... ArgsType>
 	constexpr decltype(auto) to(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
+		noexcept (
+			noexcept(self.template cast_to<CastType>(std::forward<ArgsType>(args)...))
+		)
+		requires (
 		    requires {
 		        self.template cast_to<CastType>(std::forward<ArgsType>(args)...);
 	        }
@@ -381,7 +405,10 @@ public:
 
 	template <class SelfType, class... ArgsType>
 	constexpr void append(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
+		noexcept (
+			noexcept((self.append_impl(std::forward<ArgsType>(args)), ...))
+		)
+		requires (
 			requires {
 				(self.append_impl(std::forward<ArgsType>(args)), ...);
 			}
@@ -392,7 +419,10 @@ public:
 
 	template <class SelfType, class... ArgsType>
 	constexpr void center(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
+		noexcept (
+			noexcept(self.center_string(std::forward<ArgsType>(args)...))
+		)
+		requires (
 		    requires {
 		        self.center_string(std::forward<ArgsType>(args)...);
 	        }
@@ -403,7 +433,10 @@ public:
 
 	template <class SelfType, class... ArgsType>
 	constexpr auto left(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
+		noexcept (
+			noexcept(self.left_string(std::forward<ArgsType>(args)...))
+		)
+		requires (
 		    requires {
 		        self.left_string(std::forward<ArgsType>(args)...);
 	        }
@@ -414,7 +447,10 @@ public:
 
 	template <class SelfType, class... ArgsType>
 	constexpr auto right(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
+		noexcept (
+			noexcept(self.right_string(std::forward<ArgsType>(args)...))
+		)
+		requires (
 		    requires {
 		        self.right_string(std::forward<ArgsType>(args)...);
 	        }
@@ -427,7 +463,10 @@ public:
 
 	template <class SelfType, class... ArgsType>
 	constexpr auto expand_prefix(this SelfType&& self, ArgsType&&... args)
-		noexcept requires (
+		noexcept (
+			noexcept(self.expand_prefix_string(std::forward<ArgsType>(args)...))
+		)
+		requires (
 		    requires {
 		        self.expand_prefix_string(std::forward<ArgsType>(args)...);
 	        }
@@ -539,7 +578,10 @@ public:
 
 	template <class SelfType>
 	[[nodiscard]] constexpr auto clear_residue(this SelfType&& self)
-		noexcept requires (
+		noexcept (
+			noexcept(self.allocator().deallocate(nullptr, 0ull))
+		)
+		requires (
 		    requires {
 		        self.value.before;
 	        }
