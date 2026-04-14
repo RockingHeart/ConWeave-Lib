@@ -192,7 +192,10 @@ private:
 	constexpr void heapify_cache (alloc_t&   alloc,
 		                          ValueType& value,
 		                          size_t     size)
-		noexcept
+		noexcept (
+			noexcept(allocator().allocate(0ull)) &&
+			noexcept(allocator().deallocate(nullptr, 0ull))
+		)
 	{
 		box_cache_t& cache = core_t::cache;
 		size_t buf_size    = cache.specs;
@@ -210,7 +213,10 @@ private:
 	constexpr void reserve_space (alloc_t&   alloc,
 	                              ValueType& value,
 		                          size_t	 size)
-		noexcept
+		noexcept (
+			noexcept(allocator().allocate(0ull)) &&
+			noexcept(allocator().deallocate(nullptr, 0ull))
+		)
 	{
 		alloc.deallocate(value.before, value.before_alloc_size);
 		value.before            = value.pointer;
@@ -224,7 +230,10 @@ private:
 	constexpr void new_space (alloc_t&   alloc,
 		                      ValueType& value,
 		                      size_t     size)
-		noexcept
+		noexcept (
+			noexcept(allocator().allocate(0ull)) &&
+			noexcept(allocator().deallocate(nullptr, 0ull))
+		)
 	{
 		pointer_t old_ptr = value.pointer;
 		value.pointer     = alloc.allocate(size);
@@ -235,7 +244,8 @@ private:
 	template <bool init_heap = false>
 	constexpr void respace(size_t size)
 		noexcept (
-			noexcept(allocator().allocate(size))
+			noexcept(allocator().allocate(0ull)) &&
+			noexcept(allocator().deallocate(nullptr, 0ull))
 		)
 	{
 		box_value_t& value = core_t::value;
@@ -308,7 +318,7 @@ private:
 		                       box_cache_t& self_cache,
 		                       box_cache_t& object_cache)
 		noexcept (
-			noexcept(allocator().allocate(0ull)) ||
+			noexcept(allocator().allocate(0ull)) &&
 			noexcept(allocator().deallocate(nullptr, 0ull))
 		)
 	{
@@ -1315,7 +1325,7 @@ private:
 
 	constexpr bool restore_string_cache_mode(size_t size)
 		noexcept (
-			noexcept(allocator().allocate(0ull)) ||
+			noexcept(allocator().allocate(0ull)) &&
 			noexcept(allocator().deallocate(nullptr, 0ull))
 		)
 	{
@@ -1363,7 +1373,7 @@ private:
 
 	constexpr bool toggle_string_large_mode()
 		noexcept (
-			noexcept(allocator().allocate(0ull)) ||
+			noexcept(allocator().allocate(0ull)) &&
 			noexcept(allocator().deallocate(nullptr, 0ull))
 		)
 	{
