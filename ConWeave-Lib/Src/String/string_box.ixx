@@ -128,10 +128,10 @@ public:
 			string_mode::cache
 		}
 	{
-		size >= buffer_size ? void([&] {
+		size >= buffer_size ? void([this, size] {
 			value.count = size;
 			state.modes = string_mode::storage;
-		}()) : void(cache = cache_t{
+		}()) : void(cache = cache_t {
 			.specs = static_cast<cache_size_t>(size)
 		});
 	};

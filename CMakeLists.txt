@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.31)
 
-project(ModernLibrary)
+project(ConWeaveLib)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -13,17 +13,17 @@ else()
     add_compile_options(-fmodules)
 endif()
 
-file(GLOB StringPath "ModernLibrary/Src/String/*.ixx")
-file(GLOB FixedVectorPath "ModernLibrary/Src/FixedVector/*.ixx")
-file(GLOB VectorPath "ModernLibrary/Src/Vector/*.ixx")
-file(GLOB WrapPath "ModernLibrary/Src/Wrap/*.ixx")
-file(GLOB UtilityPath "ModernLibrary/Src/Utility/*.ixx")
+file(GLOB StringPath "ConWeaveLib/Src/String/*.ixx")
+file(GLOB FixedVectorPath "ConWeaveLib/Src/FixedVector/*.ixx")
+file(GLOB VectorPath "ConWeaveLib/Src/Vector/*.ixx")
+file(GLOB WrapPath "ConWeaveLib/Src/Wrap/*.ixx")
+file(GLOB UtilityPath "ConWeaveLib/Src/Utility/*.ixx")
 
-add_executable(ModernLibrary
-    ModernLibrary/Execute/main.cpp
+add_executable(ConWeaveLib
+    ConWeaveLib/Execute/main.cpp
 )
 
-target_sources(ModernLibrary
+target_sources(ConWeaveLib
     PRIVATE
     FILE_SET mods TYPE CXX_MODULES
     FILES ${UtilityPath}
@@ -39,4 +39,4 @@ source_group("FixedVector" FILES ${FixedVectorPath})
 source_group("Wrap" FILES ${WrapPath})
 source_group("Utility" FILES ${UtilityPath})
 
-source_group("Execute" ModernLibrary/Execute/main.cpp)
+source_group("Execute" ConWeaveLib/Execute/main.cpp)

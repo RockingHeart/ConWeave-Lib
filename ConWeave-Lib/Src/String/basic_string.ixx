@@ -57,6 +57,8 @@ public:
 
 public:
 
+public:
+
 	constexpr basic_string()
 		noexcept
 	{};
@@ -89,11 +91,15 @@ public:
 		assign_init(char_value);
 	}
 
-	constexpr basic_string(basic_string& object) noexcept {
+	constexpr basic_string(basic_string& object)
+		noexcept
+	{
 		assign_init(object);
 	}
 
-	constexpr basic_string(basic_string&& object) noexcept {
+	constexpr basic_string(basic_string&& object)
+		noexcept
+	{
 		object.move_string(*this);
 	}
 
@@ -112,20 +118,28 @@ private:
 
 private:
 
-	constexpr basic_string(basic_string& object, char_t value) noexcept {
+	constexpr basic_string(basic_string& object, char_t value)
+		noexcept
+	{
 		assign_init(object, &value, 1);
 	}
 
-	constexpr basic_string(basic_string& object, const_pointer_t pointer) noexcept {
+	constexpr basic_string(basic_string& object, const_pointer_t pointer)
+		noexcept
+	{
 		assign_init(object, pointer, strutil::strlenof(pointer));
 	}
 
-	constexpr basic_string(basic_string& object, basic_string& right_object) noexcept {
+	constexpr basic_string(basic_string& object, basic_string& right_object)
+		noexcept
+	{
 		assign_init(object, right_object.pointer(), right_object.string_length());
 	}
 
 
-	constexpr basic_string(basic_string& object, char_action act) noexcept {
+	constexpr basic_string(basic_string& object, char_action act)
+		noexcept
+	{
 		assign_init(object);
 		shift(object, act);
 	}
@@ -726,8 +740,8 @@ private:
 	template <class OptionType>
 	constexpr basic_string& delivered(OptionType&& option)
 		noexcept requires (
-		    requires(OptionType option) {
-				option(this->pointer()[0]);
+		    requires {
+				option(char_t());
 	        }
 		)
 	{
@@ -887,12 +901,10 @@ private:
 	}
 
 	template <fill_action fill_act>
-	constexpr void single_fill (pointer_t data,
-		                        pointer_t old,
-		                        char_t    fill,
-		                        size_t    fill_size,
-		                        size_t    str_len)
-		noexcept;
+	[[noreturn]] constexpr void single_fill (pointer_t,
+											 pointer_t, char_t,
+											 size_t, size_t)
+		noexcept = delete;
 
 	template <>
 	constexpr void single_fill<fill_action::left> (pointer_t data,
@@ -932,12 +944,10 @@ private:
 	}
 
 	template <fill_action fill_act>
-	constexpr void multiple_fill (pointer_t data,
-		                          pointer_t old,
-		                          const_pointer_t fill,
-		                          size_t fill_size,
-		                          size_t str_len)
-		noexcept;
+	[[noreturn]] constexpr void multiple_fill (pointer_t, pointer_t,
+											   const_pointer_t,
+											   size_t, size_t)
+		noexcept = delete;
 
 	template <>
 	constexpr void multiple_fill<fill_action::left> (pointer_t		 data,
