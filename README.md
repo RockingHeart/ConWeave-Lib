@@ -77,7 +77,7 @@ This project is currently using Chinese to support MD files.
 
 [Download]: https://github.com/RockingHeart/ConWeave-Lib/archive/refs/heads/main.zip
 
-[Source]: https://github.com/RockingHeart/ConWeave-Lib/tree/main/ModernLibrary/Src
+[Source]: https://github.com/RockingHeart/ConWeave-Lib/tree/main/ConWeave-Library/Src
 [DevStandard]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/DevStandard.md
 [Namespace]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/Namespace.md
 [License]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/License.md
