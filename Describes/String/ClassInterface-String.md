@@ -1042,24 +1042,6 @@
                     ```
                     #### 以上代码输出： "HELLO"
                     函数返回值描述：返回修改后的自身对象
-                
-                - 参数列表：(size_t)
-                - CastType to(size_t offset)
-                    - 用于将动态字符串对象偏移offset数目的字符串转换为CastType类型对象
-                    - 需要填入模板参数
-                    ``` C++
-                    import string;
-                    import std;
-
-                    int main() {
-                        dast::cstring str = { "Hello", 5 };
-                        std::string std_str = str.to<std::string>(1);
-                        std::cout << std_str << '\n'
-                        return 0;
-                    }
-                    ```
-                    #### 以上代码输出： "ello"
-                    函数返回值描述：它由CastType所构造
 
             ## operator
             - operator+
@@ -1079,7 +1061,7 @@
                         }
                         ```
                         #### 以上代码输出："HelloA"
-                        函数返回值描述：返回调用operator+=的对象
+                        函数返回值描述：返回调用operator+的对象
 
                 - 参数列表：(const_pointer)
                 - basic_string operator+(const_pointer pointer)
@@ -1096,7 +1078,7 @@
                         }
                         ```
                         #### 以上代码输出："Hello World"
-                        函数返回值描述：返回调用operator+=的对象
+                        函数返回值描述：返回调用operator+的对象
 
                 - 参数列表：(basic_string&)
                 - basic_string operator+(basic_string& object)
@@ -1114,7 +1096,7 @@
                         }
                         ```
                         #### 以上代码输出："Hello World"
-                        函数返回值描述：返回调用operator+=的对象
+                        函数返回值描述：返回调用operator+的对象
 
             - operator+=
             - 返回值类型：basic_string& 非静态成员运算符重载函数符号：+=
