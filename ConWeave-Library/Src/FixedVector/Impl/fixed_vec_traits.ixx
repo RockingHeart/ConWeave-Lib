@@ -3,7 +3,8 @@ export module fixed_vector.impl.traits;
 import <cstddef>;
 import <initializer_list>;
 
-export namespace traits {
+export namespace traits
+{
 	template <
 		class ValueType,
 		class SizeType

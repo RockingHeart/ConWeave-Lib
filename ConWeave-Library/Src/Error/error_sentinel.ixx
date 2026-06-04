@@ -11,7 +11,8 @@ export enum class error_type {
 	open_file
 };
 
-export namespace sys {
+export namespace sys
+{
 	template <error_type>
 	struct error_sentinel;
 }

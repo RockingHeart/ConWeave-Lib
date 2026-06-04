@@ -2,7 +2,8 @@ export module utility : match;
 
 import <utility>;
 
-export namespace match {
+export namespace match
+{
 	enum behav {
 		failed,
 		success

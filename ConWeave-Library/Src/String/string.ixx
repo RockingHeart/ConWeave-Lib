@@ -16,7 +16,8 @@ using primary_traits = traits::string_traits <
 	strutil, std::allocator
 >;
 
-export namespace dast {
+export namespace dast
+{
 	template <rest::character CharType, template<class, class> class StringCore = string_core>
 	using string = basic_string<::primary_traits<CharType>, StringCore>;
 

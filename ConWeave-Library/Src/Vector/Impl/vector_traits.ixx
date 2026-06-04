@@ -4,8 +4,8 @@ import utility;
 
 import <cstddef>;
 
-export namespace traits {
-	
+export namespace traits
+{
 	template <
 		class ValueType,
 		template <class> class AllocatorType,

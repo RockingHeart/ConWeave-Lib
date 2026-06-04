@@ -8,7 +8,8 @@ import utility;
 import <windows.h>;
 import <cstddef>;
 
-export namespace sys {
+export namespace sys
+{
 	template <rest::character CharType>
 	class writer;
 }

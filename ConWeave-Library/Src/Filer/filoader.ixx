@@ -37,7 +37,8 @@ constexpr std::size_t create(std::size_t mark) noexcept {
 	return 3;
 }
 
-export namespace sys {
+export namespace sys
+{
 	template <rest::character CharType>
 	class filoader;
 }

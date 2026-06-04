@@ -9,7 +9,8 @@ import <type_traits>;
 import <cstddef>;
 import <windows.h>;
 
-export namespace sys {
+export namespace sys
+{
 	template <rest::character CharType>
 	class reader;
 }

@@ -10,7 +10,8 @@ import <cstddef>;
 import <memory>;
 import <string>;
 
-export namespace sys {
+export namespace sys
+{
 	template <rest::character CharType>
 	class mapping_writer;
 }

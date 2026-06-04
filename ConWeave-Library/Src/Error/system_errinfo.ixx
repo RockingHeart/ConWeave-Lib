@@ -10,7 +10,8 @@ import <stdio.h>;
 import <print>;
 import <type_traits>;
 
-export namespace sys {
+export namespace sys
+{
     template <rest::character CharType>
     dast::string<CharType> detailed_error(unsigned long error) noexcept;
 }

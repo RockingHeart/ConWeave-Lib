@@ -4,7 +4,8 @@ import <bit>;
 import <cstddef>;
 import <cstdint>;
 
-export namespace bitinfo {
+export namespace bitinfo
+{
 	template <std::size_t bits>
 	constexpr size_t size =
 		bits >= 64 ? ~std::size_t{ 0 } :

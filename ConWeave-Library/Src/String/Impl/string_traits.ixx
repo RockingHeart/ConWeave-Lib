@@ -15,8 +15,8 @@ export enum class string_mode : bool {
 	cache, storage
 };
 
-export namespace traits {
-
+export namespace traits
+{
 	enum class string_value_traits;
 
 	template <
@@ -29,7 +29,6 @@ export namespace traits {
 		&&
 		string_utility_type<StringUtility<CharType, SizeType>>
 	) struct string_traits;
-
 };
 
 enum class traits::string_value_traits {

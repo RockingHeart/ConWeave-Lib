@@ -4,7 +4,8 @@ import utility;
 
 import <functional>;
 
-export namespace wrap {
+export namespace wrap
+{
 	template <rest::character CharType, size_t Size>
 	struct char_wrap;
 }

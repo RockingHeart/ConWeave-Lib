@@ -1,4 +1,4 @@
-﻿export module utility : type_restion;
+export module utility : type_restion;
 
 import <type_traits>;
 
@@ -18,8 +18,8 @@ struct is_character {
 export template <class Type>
 constexpr bool is_character_v = is_character<Type>::value;
 
-export namespace rest {
-
+export namespace rest
+{
 	template <class Type>
 	concept character = is_character_v<Type>;
 

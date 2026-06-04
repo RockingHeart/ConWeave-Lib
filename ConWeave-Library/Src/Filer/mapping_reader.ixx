@@ -11,7 +11,8 @@ import <cstddef>;
 import <memory>;
 import <windows.h>;
 
-export namespace sys {
+export namespace sys
+{
 	template <rest::character CharType>
 	class mapping_reader;
 }

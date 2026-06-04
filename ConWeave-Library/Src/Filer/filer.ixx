@@ -11,7 +11,8 @@ import sys.mapping_writer;
 
 export import sys.access;
 
-export namespace sys {
+export namespace sys
+{
 	template <rest::character CharType>
 	using filer = basic_filer<CharType, reader, writer>;
 
