@@ -121,11 +121,11 @@ public:
 	constexpr auto cut(this SelfType&& self, ArgsType&&... args)
 		noexcept requires (
 		    requires {
-		        self.strcut(std::forward<ArgsType>(args)...);
+		        self.str_cut(std::forward<ArgsType>(args)...);
 	        }
 		)
 	{
-		return self.strcut(std::forward<ArgsType>(args)...);
+		return self.str_cut(std::forward<ArgsType>(args)...);
 	}
 
 	template <class SelfType, class... ArgsType>

@@ -317,7 +317,7 @@ private:
 			core_t::value.count = size;
 			return;
 		}
-		core_t::cache.specs = size;
+		core_t::cache.specs.size = size;
 	}
 
 	constexpr size_t sublen(size_t size) noexcept {
@@ -1106,9 +1106,7 @@ private:
 				data, address, fill, fill_size, strlen
 			);
 		}
-		if (address != nullptr) {
-			alloc.deallocate(address, strlen);
-		}
+		alloc.deallocate(address, strlen);
 		set_length(sumlen);
 	}
 
@@ -1833,7 +1831,7 @@ private:
 
 private:
 
-	constexpr size_t strcut(char_t char_value) noexcept {
+	constexpr size_t str_cut(char_t char_value) noexcept {
 		pointer_t data = pointer();
 		size_t strlen  = string_length();
 		if (!strlen) {
@@ -1855,7 +1853,7 @@ private:
 		return count;
 	}
 
-	constexpr auto strcut_info (pointer_t data,
+	constexpr auto corner_info (pointer_t data,
 		                        size_t    strlen,
 		                        char_t    char_value)
 	    const noexcept
@@ -1889,16 +1887,20 @@ private:
 			return 0;
 		}
 		pointer_t data = pointer();
-		auto [count, string_begin, end] = strcut_info (
+		auto [
+			trimmed_count,
+			string_begin,
+			trimmed_end
+		] = corner_info (
 			data, strlen, char_value
 		);
-		data[sublen(count)] = char_t();
-		if (size_t next = strlen - count; next) {
+		if (size_t next = strlen - trimmed_count; next) {
 			strutil::strmove (
 				data, data + string_begin, next
 			);
 		}
-		return count;
+		data[sublen(trimmed_count)] = char_t();
+		return trimmed_count;
 	}
 
 private:

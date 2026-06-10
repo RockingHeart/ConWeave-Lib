@@ -12,9 +12,7 @@ constexpr int foo() {
 
 int main() {
 	constexpr auto cr = foo();
-	dast::cstring str = "Hello";
-	for (auto s : str.subscript('l')) {
-		std::cout << s << ' ';
-	}
-	std::cout << sizeof(dast::cstring) << '\n';
+	dast::cstring str = "  Hello  ";
+	str.trimmed(' ');
+	std::cout << str.const_string() << '\n';
 }
