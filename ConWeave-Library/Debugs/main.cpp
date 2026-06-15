@@ -6,13 +6,11 @@ import std;
 import <windows.h>;
 
 constexpr int foo() {
-	dast::cstring str = "...";
     return 0;
 }
 
 int main() {
-	constexpr auto cr = foo();
-	dast::cstring str = "  Hello  ";
-	str.trimmed(' ');
-	std::cout << str.const_string() << '\n';
+    sys::adapt_loader<char> loader("A:\\Tests\\Test.txt");
+    sys::adapt_reader<char> reader(loader);
+    std::cout << reader.data() << '\n';
 }

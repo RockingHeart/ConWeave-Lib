@@ -32,7 +32,7 @@ private:
 private:
 
 	constexpr void read_text(fileid_t id) noexcept {
-		char_t		  buffer[256];
+		static char_t buffer[256] {};
 		unsigned long bytes = 0;
 		while (ReadFile(id, buffer, 256, &bytes, 0) && bytes) {
 			text.append(buffer, bytes);

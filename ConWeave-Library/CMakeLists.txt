@@ -63,7 +63,7 @@ source_group("Error" FILES ${ErrorPath})
 source_group("Wrap" FILES ${WrapPath})
 source_group("Utility" FILES ${UtilityPath})
 
-option(TEST "Build tests" OFF)
+option(TEST "Build tests" ON)
 
 if(TEST)
     file(GLOB DebugSources "Debugs/*.cpp")

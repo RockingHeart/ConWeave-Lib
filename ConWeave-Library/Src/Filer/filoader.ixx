@@ -4,7 +4,6 @@ module;
 export module sys.filoader;
 
 import sys.access;
-import sys.error_sentinel;
 
 import <cstddef>;
 import <type_traits>;
@@ -46,9 +45,9 @@ export namespace sys
 template <rest::character CharType>
 class sys::filoader {
 public:
-	using char_t   = CharType;
+	using char_t   =	   CharType;
 	using path_t   = const CharType*;
-	using fileid_t = HANDLE;
+	using fileid_t =	   HANDLE;
 
 private:
 
@@ -88,9 +87,7 @@ public:
 	constexpr filoader (path_t	   path,
 						permission per = permission::read_only)
 		noexcept : fileid(open_file(path, per)), permis(per)
-	{
-		error_sentinel<error_type::open_file> sentinel{};
-	}
+	{}
 
 	constexpr filoader(const filoader& loader)
 		noexcept : fileid(loader.fileid), permis(loader.permis)
@@ -116,26 +113,22 @@ public:
 	}
 
 	constexpr fileid_t mapping(const char_t* name = nullptr) noexcept {
-		fileid_t old = fileid;
+		fileid_t result = nullptr;
 		if constexpr (std::is_same_v<char_t, char>) {
-			fileid = CreateFileMappingA (
-				old, nullptr,
+			result = CreateFileMappingA (
+				fileid, nullptr,
 				mapping_access(),
 				0, 0, name
 			);
 		}
 		else {
-			fileid = CreateFileMappingW (
-				old, nullptr,
+			result = CreateFileMappingW (
+				fileid, nullptr,
 				mapping_access(),
 				0, 0, name
 			);
 		}
-		if (!fileid) {
-			fileid = old;
-			return nullptr;
-		}
-		return old;
+		return result;
 	}
 
 	constexpr match_result<size_t> size() const noexcept {
@@ -173,6 +166,5 @@ public:
 			return;
 		}
 		CloseHandle(fileid);
-		fileid = nullptr;
 	}
 };
