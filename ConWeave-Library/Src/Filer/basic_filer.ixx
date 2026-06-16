@@ -185,6 +185,10 @@ public:
 		return text;
 	}
 
+	constexpr auto size() const noexcept {
+		return loader.size();
+	}
+
 	constexpr void release() noexcept {
 		if (loader.mapped()) {
 			UnmapViewOfFile(text);
