@@ -94,7 +94,7 @@ public:
 	using text_t = CharType*;
 	using path_t = const CharType*;
 
-private:
+public:
 	using adapt_loader =		  adapt_loader<char_t>;
 	using fileid_t     = typename adapt_loader::fileid_t;
 

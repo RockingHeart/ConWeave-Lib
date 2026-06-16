@@ -85,6 +85,11 @@ public:
 		mapping_file = nullptr;
 	}
 
+	[[nodiscard]]
+	static constexpr bool can_open(path_t path) noexcept {
+		return fileloader::can_open(path);
+	}
+
 public:
 
 	constexpr ~adapt_loader() noexcept {

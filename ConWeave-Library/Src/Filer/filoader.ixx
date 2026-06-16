@@ -1,14 +1,11 @@
-module;
-#include <windows.h>;
-
 export module sys.filoader;
 
 import sys.access;
+import utility;
 
 import <cstddef>;
 import <type_traits>;
-
-import utility;
+import <windows.h>;
 
 constexpr std::size_t generic(std::size_t mark) noexcept {
 	size_t access = 0;
@@ -151,12 +148,28 @@ public:
 	}
 
 	template <comaccess ComAccess>
-	[[nodiscard]] constexpr bool has() const noexcept {
+	[[nodiscard]]
+	constexpr bool has() const noexcept {
 		return permis & ComAccess;
 	}
 
-	[[nodiscard]] constexpr bool is_loaded() const noexcept {
+	[[nodiscard]]
+	constexpr bool is_loaded() const noexcept {
 		return fileid != INVALID_HANDLE_VALUE;
+	}
+
+	[[nodiscard]]
+	static constexpr bool can_open(path_t path) noexcept {
+		unsigned long attrs = 0;
+		if constexpr (std::is_same_v<char_t, char>) {
+			attrs = GetFileAttributesA(path);
+		}
+		else {
+			attrs = GetFileAttributesW(path);
+		}
+
+		return (attrs != INVALID_FILE_ATTRIBUTES) &&
+			  !(attrs & FILE_ATTRIBUTE_DIRECTORY);
 	}
 
 public:
