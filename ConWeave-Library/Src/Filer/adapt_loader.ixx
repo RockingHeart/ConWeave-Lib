@@ -35,7 +35,7 @@ public:
 	constexpr adapt_loader()
 		noexcept = default;
 
-	constexpr adapt_loader(path_t	   path,
+	constexpr adapt_loader(path_t	  path,
 						   permission per = permission::read_only)
 		noexcept : loader(path, per), mapping_file(nullptr)
 	{}
@@ -74,10 +74,15 @@ public:
 		fileid_t file = loader.id();
 
 		bool success = SetFilePointerEx (
-			file, file_info, NULL, 0
+			file, file_info, nullptr, 0
 		);
 
 		return success && SetEndOfFile(file);
+	}
+
+	constexpr void unmapping() noexcept {
+		CloseHandle(mapping_file);
+		mapping_file = nullptr;
 	}
 
 public:
@@ -86,6 +91,6 @@ public:
 		if (!mapping_file) {
 			return;
 		}
-		CloseHandle(mapping_file);
+		unmapping();
 	}
 };

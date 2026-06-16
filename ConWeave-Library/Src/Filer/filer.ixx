@@ -15,4 +15,7 @@ export namespace sys
 	using filer = basic_filer <
 		CharType, filoader, reader, writer
 	>;
+
+	template <rest::character CharType>
+	using adapt_filer = basic_adapt_filer<CharType>;
 }

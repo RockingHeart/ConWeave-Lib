@@ -10,7 +10,7 @@ constexpr int foo() {
 }
 
 int main() {
-    sys::adapt_loader<char> loader("A:\\Tests\\Test.txt");
-    sys::adapt_reader<char> reader(loader);
-    std::cout << reader.data() << '\n';
+    sys::adapt_filer<char> loader("A:\\Tests\\Test.txt");
+    loader.read();
+    std::cout << loader.data() << '\n';
 }
