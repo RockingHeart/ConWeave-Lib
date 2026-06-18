@@ -157,7 +157,7 @@ private:
 	}
 
 	constexpr text_t read_text() noexcept {
-		if (loader.size() >= to_megabyte<0>()) {
+		if (loader.size() >= to_megabyte<100>()) {
 			loader.mapping();
 			return mapping_read();
 		}
