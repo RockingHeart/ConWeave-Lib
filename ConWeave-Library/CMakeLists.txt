@@ -74,7 +74,7 @@ source_group("Allocator" FILES ${AllocatorPath})
 source_group("Allocator\\BlockAllocator" FILES ${BlockAllocatorPath})
 source_group("Allocator\\Component\\Mapping" FILES ${ComponentMappingPath})
 
-option(TEST "Build tests" ON)
+option(TEST "Build tests" OFF)
 
 if(TEST)
     file(GLOB DebugSources "Debugs/*.cpp")
