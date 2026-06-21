@@ -27,6 +27,8 @@ English：[English] <br>
         - Updates: [UpdateLog-Vector]
         - Implementation files: [ImplationFile-Vector]
         - Defect report: [DefectReport-Vector]
+    - Allocator
+        - Document: [Describes-Allocator]
     - Utility
         - Implementation files: [ImplationFile-Utility]
 
@@ -122,6 +124,9 @@ English：[English] <br>
 [UpdateLog-Vector]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/Vector/UpdateLog-Vector.md
 [ImplationFile-Vector]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/Vector/ImplationFile-Vector.md
 [DefectReport-Vector]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/Vector/DefectReport-Vector.md
+
+<!-- Allocator -->
+[Describes-Allocator]: https://github.com/RockingHeart/ConWeave-Lib/tree/main/Describes/Allocator
 
 <!-- Utility -->
 [ImplationFile-Utility]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/Utility/ImplationFile.md

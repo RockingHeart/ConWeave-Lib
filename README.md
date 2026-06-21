@@ -122,7 +122,7 @@
 [DefectReport-Vector]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/Vector/DefectReport-Vector.md
 
 <!-- Allocator -->
-[Describes-Allocator]: A:\Important\ConWeave-Lib\Describes\Allocator
+[Describes-Allocator]: https://github.com/RockingHeart/ConWeave-Lib/tree/main/Describes/Allocator
 
 <!-- Utility -->
 [ImplationFile-Utility]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/Utility/ImplationFile.md
