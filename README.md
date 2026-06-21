@@ -1,99 +1,98 @@
-# This project is Converge & Weave: a library of convergence and weaving, implemented using modern C++ (from C++17 onwards) syntax features.
+# 此项目为Converge & Weave：汇智与编制的库，利用现代C++（C++17起包含之前）语法特性实现。
 
-## String Implementation in Progress
+## 正在实现String
 
-* Quick overview of the project
-    - Project source code: [Source]
-    - Project standards: [DevStandard]
-    - Project namespace: [Namespace]
-    - Project highlights: [Rejoice]
-    - Performance report: [PerformanceReport]
+* 快速了解这个项目
+    - 项目源码：[Source]
+    - 项目规范：[DevStandard]
+    - 项目名间：[Namespace]
+    - 项目欢庆：[Rejoice]
+    - 项目能报：[PerformanceReport]
     - String
-        - Interface: [ClassInterface-String]
-        - Future plans: [Future-String]
-        - Updates: [UpdateLog-String]
-        - Implementation files: [ImplationFile-String]
-        - Basics: [Base-String]
+        - 接文：[ClassInterface-String]
+        - 未来：[Future-String]
+        - 更新：[UpdateLog-String]
+        - 文介：[ImplationFile-String]
+        - 基础：[Base-String]
     - FixedVector
-        - Interface: [ClassInterface-FixedVector]
-        - Future plans: [Future-FixedVector]
-        - Updates: [UpdateLog-FixedVector]
-        - Implementation files: [ImplationFile-FixedVector]
+        - 接文：[ClassInterface-FixedVector]
+        - 未来：[Future-FixedVector]
+        - 更新：[UpdateLog-FixedVector]
+        - 文介：[ImplationFile-FixedVector]
     - Vector
-        - Interface: [ClassInterface-Vector]
-        - Future plans: [Future-Vector]
-        - Updates: [UpdateLog-Vector]
-        - Implementation files: [ImplationFile-Vector]
-        - Defect report: [DefectReport-Vector]
+        - 接文：[ClassInterface-Vector]
+        - 未来：[Future-Vector]
+        - 更新：[UpdateLog-Vector]
+        - 文介：[ImplationFile-Vector]
+        - 缺报：[DefectReport-Vector]
+    - Allocator
+        - 文档：[Describes-Allocator]
     - Utility
-        - Implementation files: [ImplationFile-Utility]
+        - 文介：[ImplationFile-Utility]
 
-## Status Table
-> *Status updates at any time*
+## 状态表
+> *状态随时更新*
 
-| Implementation | Status | Completion Time | Version |
+| 项目实现 | 实现状态 | 实现时间 | 版本号 |
 | :---: | :---: | :---: | :---: |
-| string | Implemented | Basic implementation effective before November 2025 | 1.15.1 |
-| fixed_vector | Implemented | Basics finalized 2026.5.22 | 1.5.0 |
-| vector | Implemented | Basics finalized 2026.5.22 | 3.0.0 |
-| filer | Implemented | 2026.5.27 | 1.0.2 |
+| string | 已实现 | 实现基础有效时间为2025年11月份之前 | 1.15.1 |
+| fixed_vector | 已实现 | 2026.5.22完善基础 | 1.5.0 |
+| vector | 已实现 | 2026.5.22完善基础 | 3.0.0 |
+| filer | 已实现 | 2026.5.27 | 1.0.2 |
+| BlockAllocator | 已实现 | 2026.6.21 | 1.0.0 |
 
-## Performance Evaluation
+## 性能评估
 - string
-    Please refer to: [PerformanceReport-String]
+    请查阅：[PerformanceReport-String]
 
 <br>
 
 > [!TIP]
-> The String interface uses C++23's explicit `this` and template variadic parameters
+> String接口调用采用C++23的显式This与模板可变参数
 >
-> If you're unsure how to use the interface, please read the designated documentation
+> 若不知晓接口如何使用，请阅读指定文档
 
 <dl>
-    <dt>About string's characteristics under the no_residue value feature</dt>
+    <dt>关于string在no_residue值特性下的特性</dt>
 </dl>
 
-- [x] 64-bit occupies 24 bytes (MSVC, char type, with stateless allocator)
-- [x] 64-bit buffer size is 23 bytes (MSVC, char type, with stateless allocator)
+- [x] 64位占用大小为24字节（MSVC，char类型，且allocator无状态）
+- [x] 64位缓存大小为23字节（MSVC，char类型，且allocator无状态）
 
 
 <dl>
-    <dt>About string's characteristics under the remain value feature</dt>
+    <dt>关于string在remain值特性下的特性</dt>
 </dl>
 
-- [x] Dual data
-- [x] 64-bit occupies 48 bytes (MSVC, char type, with stateless allocator)
-- [x] 64-bit buffer size is 47 bytes (MSVC, char type, with stateless allocator)
+- [x] 双重数据
+- [x] 64位占用大小为48字节（MSVC，char类型，且allocator无状态）
+- [x] 64位缓存大小为47字节（MSVC，char类型，且allocator无状态）
 
 <dl>
-    <dt>About fixed_vector's characteristics</dt>
+    <dt>关于fixed_vector的特性</dt>
 </dl>
 
-- [x] If the underlying type is fundamental, compile-time support is available
+- [x] 若为基础类型，则支持编译期
 
 <dl>
-    <dt>About vector's characteristics</dt>
+    <dt>关于vector的特性</dt>
 </dl>
 
-- [x] No buffer when buffer size is 0
-- [x] Internal buffer set when buffer is too small
-- [x] When buffer isn't too small, user settings apply
+- [x] 缓冲区为0时无缓冲区
+- [x] 缓冲区太小时内部设定缓冲区
+- [x] 缓冲区若非过小则依用户设定
 
-## CMake Usage Guide
-[*Download*][Download] this project locally <br>
-! Cross-platform support is not currently available
-**If CMake is not installed, please install [CMake](https://cmake.org/). You can check by typing `CMake -V` in the console to see the version and confirm whether CMake is installed** <br>
-**In the project's current directory, enter the command in the console: `CMake -B "/CML"`. This command specifies the output directory — the value after the -B parameter is the designated directory, and the value type is a string** <br>
+## CMake使用教程
+[*下载*][Download]此项目至本地 <br>
+! 目前暂不支持跨平台
+**若未安装CMake，请安装[CMake](https://cmake.org/)，可在控制台输入CMake -V查看版本，侧面知晓CMake是否安装** <br>
+**在项目当前目录下使用控制台输入指令：CMake -B "/ML"，此指令用于指定生成目录，而-B命令参数之后的值是指定的目录，值类型为字符串** <br>
 
 ## Q&A
-### Q: Regarding String, why is the interface named `core`, with `basic` as the core implementation, and why does `basic` implement constructors, destructors, and operators?
-### A: This String uses CRTP with explicit `this` to achieve separation and independent implementation of interface and implementation. In the CRTP interface class, the internal interface implementation actually uses explicit `this` to call the parent class's implementation. If the parent class's implementation needs to pass in its own type, then `this` needs to be cast within the CRTP interface, which introduces runtime conversion overhead, defeating the purpose. Combined with the philosophy that the foundation is implemented by me while the core may not necessarily be, this is a choice I made after careful consideration.
-
-中文版MD：[ChineseReadMe] <br>
+### Q: 关于String，为什么接口是core，basic是核心实现，而basic又实现构造函数、析构函数、运算符？
+### A: 此String利用CRTP与显示this以实现接口与实现的分离及独立实现，而在CRTP接口类中，接口内部实现实际使用显示this调用父类的实现，若父类的实现需传入自身类型，那么需在CRTP接口中对this进行转换，会引入转换运行时开销，导致本末倒置，结合其基础由我实现，核心可不由我实现的思想，这是一个经由我深思熟虑过后的选择。
 
 [Download]: https://github.com/RockingHeart/ConWeave-Lib/archive/refs/heads/main.zip
-
-[ChineseReadMe]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/MainReadMe/README_CHINESE.md
 
 [Source]: https://github.com/RockingHeart/ConWeave-Lib/tree/main/ConWeave-Library/Src
 [DevStandard]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/DevStandard.md
@@ -121,6 +120,9 @@
 [UpdateLog-Vector]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/Vector/UpdateLog-Vector.md
 [ImplationFile-Vector]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/Vector/ImplationFile-Vector.md
 [DefectReport-Vector]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/Vector/DefectReport-Vector.md
+
+<!-- Allocator -->
+[Describes-Allocator]: A:\Important\ConWeave-Lib\Describes\Allocator
 
 <!-- Utility -->
 [ImplationFile-Utility]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/Utility/ImplationFile.md

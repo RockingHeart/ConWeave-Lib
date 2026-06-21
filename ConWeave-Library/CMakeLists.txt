@@ -23,9 +23,13 @@ file(GLOB FixedVectorImplPath "Src/FixedVector/Impl/*.ixx")
 file(GLOB VectorPath "Src/Vector/*.ixx")
 file(GLOB VectorImplPath "Src/Vector/Impl/*.ixx")
 file(GLOB FilerPath "Src/Filer/*.ixx")
+file(GLOB FilerImplPath "Src/Filer/Impl/*.ixx")
 file(GLOB ErrorPath "Src/Error/*.ixx")
 file(GLOB WrapPath "Src/Wrap/*.ixx")
 file(GLOB UtilityPath "Src/Utility/*.ixx")
+file(GLOB AllocatorPath "Src/Allocator/*.ixx")
+file(GLOB BlockAllocatorPath "Src/Allocator/BlockAllocator/*.ixx")
+file(GLOB ComponentMappingPath "Src/Allocator/Component/Mapping/*.ixx")
 
 add_library(ConWeaveLib)
 
@@ -42,7 +46,10 @@ target_sources(ConWeaveLib
         ${StringPath} ${StringImplPath}
         ${FixedVectorPath} ${FixedVectorImplPath}
         ${VectorPath} ${VectorImplPath}
-        ${FilerPath}
+        ${FilerPath} ${FilerImplPath}
+        ${AllocatorPath}
+        ${BlockAllocatorPath}
+        ${ComponentMappingPath}
 )
 
 target_include_directories(ConWeaveLib
@@ -59,9 +66,13 @@ source_group("FixedVector\\Impl" FILES ${FixedVectorImplPath})
 source_group("Vector" FILES ${VectorPath})
 source_group("Vector\\Impl" FILES ${VectorImplPath})
 source_group("Filer" FILES ${FilerPath})
+source_group("Filer\\Impl" FILES ${FilerImplPath})
 source_group("Error" FILES ${ErrorPath})
 source_group("Wrap" FILES ${WrapPath})
 source_group("Utility" FILES ${UtilityPath})
+source_group("Allocator" FILES ${AllocatorPath})
+source_group("Allocator\\BlockAllocator" FILES ${BlockAllocatorPath})
+source_group("Allocator\\Component\\Mapping" FILES ${ComponentMappingPath})
 
 option(TEST "Build tests" ON)
 
