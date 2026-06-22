@@ -125,10 +125,11 @@ protected:
 
         if constexpr (!box_t::buffer_size) {
             if (old_ptr == nullptr) {
+                std::size_t sum = size + 5;
                 data.origin = reinterpret_cast<pointer_t> (
-                    alloc.allocate(sesize(5))
+                    alloc.allocate(sesize(sum))
                 );
-                data.curent = data.origin;
+                data.curent = data.origin + size;
                 data.remain = 5;
                 return;
             }
@@ -148,7 +149,10 @@ protected:
         data.curent = new_ptr + (!size ? old_size : size);
         data.remain = new_cap;
 
-        alloc.deallocate(reinterpret_cast<std::byte*>(old_ptr), sesize(old_cap));
+        alloc.deallocate (
+            reinterpret_cast<std::byte*>(old_ptr),
+            sesize(old_cap)
+        );
     }
 
     template <bool IsInit, std::size_t Expand = 1>
@@ -393,12 +397,7 @@ protected:
 
 protected:
 
-    constexpr void resize_buffer(size_t size)
-		noexcept (
-			noexcept(box_t::value.buffer.resize(0ull)) &&
-			noexcept(heapify_cache<0ull>(0ull))
-        )
-	{
+    constexpr void resize_buffer(size_t size) noexcept {
         if (size < box_t::buffer_size) {
             box_t::value.buffer.resize(size);
         }
@@ -416,7 +415,9 @@ protected:
         )
 	{
         box_data_t& data = box_t::value.data;
-        size_t old_size  = static_cast<size_t>(data.curent - data.origin);
+        size_t old_size  = static_cast<size_t> (
+            data.curent - data.origin
+        );
 
         if (size < old_size) {
             deconstruct(data.origin + size, data.curent);
