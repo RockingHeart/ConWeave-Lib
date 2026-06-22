@@ -43,14 +43,18 @@ export constexpr bool operator&(permission per, comaccess comaces) noexcept {
 	return static_cast<std::size_t>(per) & static_cast<std::size_t>(comaces);
 }
 
-export constexpr bool operator|(permission per, comaccess comaces) noexcept {
-	return static_cast<std::size_t>(per) | static_cast<std::size_t>(comaces);
+export constexpr permission operator|(permission per, comaccess comaces) noexcept {
+	return static_cast<permission> (
+		static_cast<std::size_t>(per) | static_cast<std::size_t>(comaces)
+	);
 }
 
 export constexpr bool operator&(permission per, std::size_t comaces) noexcept {
-	return static_cast<std::size_t>(per) & comaces;
+	return per & comaces;
 }
 
-export constexpr bool operator|(permission per, std::size_t comaces) noexcept {
-	return static_cast<std::size_t>(per) |comaces;
+export constexpr permission operator|(permission per, std::size_t comaces) noexcept {
+	return static_cast<permission> (
+		static_cast<std::size_t>(per) | comaces
+	);
 }
