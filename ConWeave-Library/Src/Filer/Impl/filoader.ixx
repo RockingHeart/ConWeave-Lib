@@ -22,7 +22,7 @@ constexpr std::size_t share(std::size_t mark) noexcept {
 	if (mark & comaccess::read_share)   access |= 0x00000001;
 	if (mark & comaccess::write_share)  access |= 0x00000002;
 	if (mark & comaccess::delete_share) access |= 0x00000004;
-	return access; // Return comaccess::exclusive if access is 0
+	return access; // Return comaccess::exclusive If access is 0
 }
 
 constexpr std::size_t create(std::size_t mark) noexcept {
@@ -78,10 +78,15 @@ private:
 		return 0x01;
 	}
 
+	static consteval permission all_read(permission per) noexcept {
+		return permission::read_only | comaccess::read_share;
+	}
+
 public:
 
+	template <permission DefPermission = all_read()>
 	constexpr filoader (path_t	   path,
-						permission per = permission::read_only)
+						permission per = DefPermission)
 		noexcept : fileid(open_file(path, per)), permis(per)
 	{}
 
