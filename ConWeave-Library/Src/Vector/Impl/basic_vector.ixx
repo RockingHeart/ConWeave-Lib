@@ -106,7 +106,9 @@ public:
         }
 
         box_data_t& data = core_t::value.data;
-        size_t data_size = static_cast<size_t>(data.curent - data.origin);
+        size_t data_size = static_cast<size_t> (
+            data.curent - data.origin
+        );
         if (data_size == data.remain) {
             core_t::template new_space<2>();
         }

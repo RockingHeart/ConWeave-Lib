@@ -93,7 +93,7 @@ protected:
         box_data_t& data = box_t::value.data;
         data.origin      = new_ptr;
         data.curent      = data.origin + size;
-        data.remain      = new_cap;
+        data.remain      = new_cap - size;
         if constexpr (box_t::buffer_size) {
             box_t::value.mode = vector_mode::storage;
         }
@@ -259,7 +259,8 @@ protected:
 	{
     	construct_impl(std::move(vec));
         box_data_t& data = vec.value.data;
-        data.curent = data.origin;
+        data.origin      = nullptr;
+        data.curent      = nullptr;
     }
 
 protected:
