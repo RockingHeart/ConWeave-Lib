@@ -2,8 +2,7 @@ export module string.impl.context;
 
 import utility;
 
-import <generator>;
-import <future>;
+import std;
 
 export template <class StringModeType>
 struct string_info {

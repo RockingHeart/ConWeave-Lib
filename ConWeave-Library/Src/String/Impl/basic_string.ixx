@@ -7,8 +7,7 @@ import char_wrap;
 import dast.vector;
 
 import utility;
-import <iterator>;
-import <initializer_list>;
+import std;
 
 template <class Traits>
 concept string_traits_type = requires {

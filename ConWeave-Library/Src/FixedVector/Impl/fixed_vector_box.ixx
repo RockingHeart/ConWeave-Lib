@@ -1,7 +1,6 @@
 export module fixed_vector.impl.box;
 
-import <cstddef>;
-import <type_traits>;
+import std;
 
 export template <class Traits, std::size_t Size>
 struct fixed_vec_box {

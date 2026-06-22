@@ -1,7 +1,6 @@
 export module fixed_vector.impl.traits;
 
-import <cstddef>;
-import <initializer_list>;
+import std;
 
 export namespace traits
 {

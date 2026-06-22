@@ -2,7 +2,7 @@ export module vector.impl.traits;
 
 import utility;
 
-import <cstddef>;
+import std;
 
 export namespace traits
 {

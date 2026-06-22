@@ -1,6 +1,6 @@
 export module sys.access;
 
-import <cstddef>;
+import std;
 
 export enum class comaccess : std::size_t {
 	read		 = 1 << 0,

@@ -1,6 +1,6 @@
 export module utility : match;
 
-import <utility>;
+import std;
 
 export namespace match
 {

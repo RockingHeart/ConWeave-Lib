@@ -1,11 +1,10 @@
 module;
 #include <windows.h>
 
-export module memory_mapping;
+export module dast.memory_mapping;
 
 import dast.string;
-import <cstddef>;
-import <charconv>;
+import std;
 
 std::size_t mapping_count = 0;
 

@@ -5,9 +5,8 @@ import sys.adapt_loader;
 import sys.access;
 import utility;
 
-import <type_traits>;
+import std;
 import <windows.h>;
-import <memory>;
 
 using namespace sys;
 

@@ -6,9 +6,7 @@ export module sys.error_info;
 import utility;
 import dast.string;
 
-import <stdio.h>;
-import <print>;
-import <type_traits>;
+import std;
 
 export namespace sys
 {

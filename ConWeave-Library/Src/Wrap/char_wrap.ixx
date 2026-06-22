@@ -2,7 +2,7 @@ export module char_wrap;
 
 import utility;
 
-import <functional>;
+import std;
 
 export namespace wrap
 {

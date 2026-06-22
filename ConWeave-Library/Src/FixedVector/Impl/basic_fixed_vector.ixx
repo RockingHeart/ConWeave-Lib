@@ -2,8 +2,7 @@ export module fixed_vector.impl.basic;
 
 import fixed_vector.impl.core;
 
-import <cstddef>;
-import <memory>;
+import std;
 
 export template <class Traits, std::size_t Size>
 class basic_fixed_vec :

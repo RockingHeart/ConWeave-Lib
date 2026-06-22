@@ -3,8 +3,7 @@ export module sys.filoader;
 import sys.access;
 import utility;
 
-import <cstddef>;
-import <type_traits>;
+import std;
 import <windows.h>;
 
 constexpr std::size_t generic(std::size_t mark) noexcept {

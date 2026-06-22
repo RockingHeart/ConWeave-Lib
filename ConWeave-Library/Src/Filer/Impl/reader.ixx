@@ -5,8 +5,7 @@ import sys.filoader;
 import utility;
 import dast.string;
 
-import <type_traits>;
-import <cstddef>;
+import std;
 import <windows.h>;
 
 export namespace sys

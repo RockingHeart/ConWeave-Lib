@@ -4,7 +4,7 @@ module;
 export module dast.allocator : block;
 
 import std;
-import memory_mapping;
+import dast.memory_mapping;
 
 struct mapping_block {
 	memory_mapping area;

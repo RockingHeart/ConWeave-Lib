@@ -1,6 +1,6 @@
 export module utility : type_restion;
 
-import <type_traits>;
+import std;
 
 export template<typename Type, typename... Pars>
 struct is_any_of : std::disjunction<std::is_same<Type, Pars>...> {};

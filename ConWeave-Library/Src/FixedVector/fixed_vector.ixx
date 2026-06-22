@@ -1,6 +1,6 @@
 export module dast.fixed_vector;
 
-import <cstddef>;
+import std;
 
 import fixed_vector.impl;
 

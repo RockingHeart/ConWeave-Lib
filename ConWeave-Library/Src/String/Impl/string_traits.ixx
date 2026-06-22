@@ -1,7 +1,7 @@
 export module string.impl.traits;
 
 import utility;
-import <cstddef>;
+import std;
 
 template <class Utility>
 concept string_utility_type = requires(Utility util) {

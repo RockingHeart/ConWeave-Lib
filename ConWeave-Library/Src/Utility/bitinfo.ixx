@@ -1,8 +1,6 @@
 export module utility : bitinfo;
 
-import <bit>;
-import <cstddef>;
-import <cstdint>;
+import std;
 
 export namespace bitinfo
 {
@@ -40,14 +38,14 @@ constexpr void bitinfo::set(ObjectType& object, bool level) noexcept {
 
 constexpr auto bitinfo::layout_endian() noexcept {
 	struct layout {
-		uint8_t low : 4;
-		uint8_t hig : 4;
+		std::uint8_t low : 4;
+		std::uint8_t hig : 4;
 	};
 
 	static constexpr layout bits{
 		0b1111, 0b0000
 	};
 
-	auto byte = std::bit_cast<uint8_t>(bits);
+	auto byte = std::bit_cast<std::uint8_t>(bits);
 	return static_cast<endpoint>(byte != 0x0F);
 }

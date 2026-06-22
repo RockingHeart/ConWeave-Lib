@@ -2,8 +2,7 @@ export module vector.impl.box;
 
 import vector.impl.traits;
 
-import <cstddef>;
-import <type_traits>;
+import std;
 
 import dast.fixed_vector;
 

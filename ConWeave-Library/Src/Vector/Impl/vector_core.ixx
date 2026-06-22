@@ -2,10 +2,7 @@ export module vector.impl.core;
 
 import vector.impl.box;
 
-import <cstddef>;
-import <cstring>;
-import <utility>;
-import <type_traits>;
+import std;
 
 export using ::vector_mode;
 

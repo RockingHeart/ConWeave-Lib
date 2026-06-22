@@ -2,9 +2,7 @@ export module vector.impl.basic;
 
 import vector.impl.core;
 
-import <cstddef>;
-import <type_traits>;
-import <initializer_list>;
+import std;
 
 export using ::vector_mode;
 

@@ -5,7 +5,7 @@ import sys.filoader;
 import sys.access;
 
 import <windows.h>;
-import <cstddef>;
+import std;
 
 export namespace sys
 {

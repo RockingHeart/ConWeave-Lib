@@ -6,7 +6,7 @@ import sys.access;
 import utility;
 
 import <windows.h>;
-import <cstddef>;
+import std;
 
 export namespace sys
 {

@@ -2,9 +2,7 @@ export module fixed_vector.impl.core;
 
 import fixed_vector.impl.box;
 
-import <cstddef>;
-import <memory>;
-import <type_traits>;
+import std;
 
 export template <class Traits, std::size_t Size>
 class fixed_vec_core :

@@ -1,11 +1,12 @@
+module;
+#include <limits.h>
+
 export module string.impl.box;
 
 import string.impl.traits;
 
 import utility;
-
-import <cstdint>;
-import <bit>;
+import std;
 
 using namespace traits;
 using namespace bitinfo;

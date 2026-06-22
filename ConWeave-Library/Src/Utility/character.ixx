@@ -3,12 +3,7 @@ export module utility : strutil;
 import :type_restion;
 import :match;
 
-import <cstring>;
-import <cwchar>;
-import <memory.h>;
-import <bit>;
-import <cstddef>;
-import <initializer_list>;
+import std;
 
 template <rest::character CharacterType>
 struct compile {
@@ -56,7 +51,7 @@ struct compile {
 			if (i + tarlen > strlen) {
 				return match::failed;
 			}
-			if (strcmp(str, target, tarlen)) {
+			if (std::strcmp(str, target, tarlen)) {
 				return i;
 			}
 		}
@@ -193,7 +188,7 @@ public:
 		noexcept
 	{
 		const char* result = std::bit_cast<const char*> (
-			memchr(str, target, len)
+			stdmemchr(str, target, len)
 		);
 		return static_cast<size_t>(result - str);
 	}
@@ -203,7 +198,7 @@ public:
 											size_t	 len)
 		noexcept
 	{
-		const wchar_t* result = wmemchr(str, target, len);
+		const wchar_t* result = stdwmemchr(str, target, len);
 		return static_cast<size_t>(result - str);
 	}
 
@@ -263,7 +258,7 @@ private:
 									   size_t size)
 		noexcept
 	{
-		void(::memcpy(dest, src, size));
+		void(std::memcpy(dest, src, size));
 		return dest;
 	}
 
@@ -273,7 +268,7 @@ private:
 											 size_t   size)
 		noexcept
 	{
-		return ::wmemcpy(dest, src, size);
+		return std::wmemcpy(dest, src, size);
 	}
 
 	template <>
@@ -282,7 +277,7 @@ private:
 									   size_t size)
 		noexcept
 	{
-		void(::memmove(dest, src, size));
+		void(std::memmove(dest, src, size));
 		return dest;
 	}
 
@@ -292,7 +287,7 @@ private:
 											 size_t   size)
 		noexcept
 	{
-		return ::wmemmove(dest, src, size);
+		return std::wmemmove(dest, src, size);
 	}
 
 	template <>
@@ -301,7 +296,7 @@ private:
 									  size_t size)
 		noexcept
 	{
-		void(::memset(dest, value, size));
+		void(std::memset(dest, value, size));
 		return dest;
 	}
 
@@ -311,7 +306,7 @@ private:
 											size_t   size)
 		noexcept
 	{
-		return ::wmemset(dest, value, size);
+		return std::wmemset(dest, value, size);
 	}
 
 	template <>
@@ -320,7 +315,7 @@ private:
 											   size_t size)
 		noexcept
 	{
-		return !::memcmp(left, src, size);
+		return !std::memcmp(left, src, size);
 	}
 
 	template <>
@@ -328,7 +323,7 @@ private:
 											const wchar_t* src,
 												  size_t   size
 	) noexcept {
-		return !::wmemcmp(left, src, size);
+		return !std::wmemcmp(left, src, size);
 	}
 
 private:

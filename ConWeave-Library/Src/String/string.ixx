@@ -6,7 +6,7 @@ export import string.impl.context;
 
 import utility;
 
-import <xmemory>;
+import std;
 
 export using ::string_mode;
 

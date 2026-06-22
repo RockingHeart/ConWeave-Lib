@@ -2,8 +2,7 @@ export module dast.vector;
 
 import vector.impl;
 
-import <cstddef>;
-import <memory>;
+import std;
 
 export using ::vector_mode;
 

@@ -3,7 +3,7 @@ export module string.impl.core;
 import string.impl.box;
 import string.impl.context;
 
-import <type_traits>;
+import std;
 
 export using ::string_mode;
 
