@@ -78,7 +78,7 @@ private:
 		return 0x01;
 	}
 
-	static consteval permission all_read(permission per) noexcept {
+	static consteval permission all_read() noexcept {
 		return permission::read_only | comaccess::read_share;
 	}
 
