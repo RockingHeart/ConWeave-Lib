@@ -31,10 +31,10 @@ export constexpr bool operator&(std::size_t left, comaccess right) noexcept {
 }
 
 export enum class permission : std::size_t {
-	read_only	  = static_cast<std::size_t>(comaccess::read),
-	write_only	  = static_cast<std::size_t>(comaccess::write),
-	read_write	  = comaccess::read | comaccess::write,
-	execute_only  = static_cast<std::size_t>(comaccess::execute),
+	read_only	  = comaccess::read  | comaccess::read_share,
+	write_only	  = comaccess::write,
+	read_write	  = read_only | comaccess::write,
+	execute_only  = comaccess::execute,
 	read_execute  = comaccess::execute | comaccess::read,
 	sound_execute = comaccess::execute | comaccess::read | comaccess::write,
 };
@@ -43,18 +43,6 @@ export constexpr bool operator&(permission per, comaccess comaces) noexcept {
 	return static_cast<std::size_t>(per) & static_cast<std::size_t>(comaces);
 }
 
-export constexpr permission operator|(permission per, comaccess comaces) noexcept {
-	return static_cast<permission> (
-		static_cast<std::size_t>(per) | static_cast<std::size_t>(comaces)
-	);
-}
-
 export constexpr bool operator&(permission per, std::size_t comaces) noexcept {
 	return per & comaces;
-}
-
-export constexpr permission operator|(permission per, std::size_t comaces) noexcept {
-	return static_cast<permission> (
-		static_cast<std::size_t>(per) | comaces
-	);
 }

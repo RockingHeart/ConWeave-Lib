@@ -78,13 +78,9 @@ private:
 		return 0x01;
 	}
 
-	static consteval permission all_read() noexcept {
-		return permission::read_only | comaccess::read_share;
-	}
-
 public:
 
-	template <permission DefPermission = all_read()>
+	template <permission DefPermission = permission::read_only>
 	constexpr filoader (path_t	   path,
 						permission per = DefPermission)
 		noexcept : fileid(open_file(path, per)), permis(per)
