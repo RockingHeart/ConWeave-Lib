@@ -1,13 +1,13 @@
-export module dast.plain_memory;
+export module dast.plmem_holder;
 
 export namespace dast
 {
-	class plain_memory;
+	class plmem_holder;
 }
 
 import std;
 
-class dast::plain_memory {
+class dast::plmem_holder {
 private:
 	using size_t = std::size_t;
 
@@ -18,37 +18,37 @@ private:
 
 private:
 
-	constexpr void reset(plain_memory& memory) noexcept {
+	constexpr void reset(plmem_holder& memory) noexcept {
 		memory.addr = nullptr;
 		memory.aend = 0;
 	}
 
-	constexpr void copy_assign(plain_memory& memory) noexcept {
+	constexpr void copy_assign(plmem_holder& memory) noexcept {
 		addr = memory.addr;
 		aend = memory.aend;
 	}
 
-	constexpr void move_assign(plain_memory&& memory) noexcept {
+	constexpr void move_assign(plmem_holder&& memory) noexcept {
 		copy_assign(memory);
 		reset(memory);
 	}
 
 public:
 
-	constexpr plain_memory()
+	constexpr plmem_holder()
 		noexcept = default;
 
-	constexpr plain_memory(size_t size)
+	constexpr plmem_holder(size_t size)
 		noexcept : addr (
 			static_cast<char*>(std::malloc(size))
 		), aend(size)
 	{}
 
-	constexpr plain_memory(plain_memory& memory)
+	constexpr plmem_holder(plmem_holder& memory)
 		noexcept : addr(memory.addr), aend(memory.aend)
 	{}
 
-	constexpr plain_memory(plain_memory&& memory)
+	constexpr plmem_holder(plmem_holder&& memory)
 		noexcept : addr(memory.addr), aend(memory.aend)
 	{
 		reset(memory);
@@ -76,17 +76,17 @@ public:
 
 public:
 
-	constexpr void operator=(plain_memory& memory) {
+	constexpr void operator=(plmem_holder& memory) {
 		copy_assign(memory);
 	}
 
-	constexpr void operator=(plain_memory&& memory) {
+	constexpr void operator=(plmem_holder&& memory) {
 		move_assign(std::move(memory));
 	}
 
 public:
 
-	constexpr ~plain_memory() {
+	constexpr ~plmem_holder() {
 		std::free(addr);
 	}
 
