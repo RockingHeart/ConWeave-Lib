@@ -31,7 +31,7 @@ private:
 
 	memory_block* block;
 	memory_block* current;
-	memory_block* end;
+	memory_block* last;
 
 private:
 
@@ -58,11 +58,11 @@ private:
 	}
 
 	constexpr size_t total_number_block() const noexcept {
-		return static_cast<size_t>(end - block);
+		return static_cast<size_t>(last - block);
 	}
 
 	constexpr size_t spacing() const noexcept {
-		return static_cast<size_t>(end - current);
+		return static_cast<size_t>(last - current);
 	}
 
 	constexpr void exten_block() noexcept {
@@ -73,29 +73,43 @@ private:
 			std::malloc(sizeof(memory_block) * newlen)
 		);
 		current = block + spalen;
-		end		= block + newlen;
+		last	= block + newlen;
 		for (size_t i = 0; i < spalen; i++) {
 			block[i] = std::move(old[i]);
 		}
 	}
 
 	constexpr void respace() noexcept {
-		if (current + 1 >= end) {
+		if (current + 1 >= last) {
 			exten_block();
 		}
 		init_cur_block(4000);
 	}
 
+	constexpr auto curr_info(std::size_t size) noexcept {
+		struct info {
+			block_holder& memory;
+			size_t		  cursize;
+			size_t		  sumsize;
+		};
+		info result  = {
+			.memory  = current->area,
+			.cursize = current->acur
+		};
+		result.sumsize = result.cursize + size;
+		if (result.sumsize > result.memory.size()) {
+			respace();
+			result.memory  = current->area;
+			result.cursize = current->acur;
+		}
+		return result;
+	}
+
 	template <class AllocType>
 	AllocType* allocate_impl(AllocType&& value) noexcept {
-		block_holder& memory = current->area;
-		size_t cursize		 = current->acur;
-		size_t sumsize		 = cursize + sizeof(AllocType);
-		if (sumsize > memory.size()) {
-			respace();
-			memory  = current->area;
-			cursize = current->acur;
-		}
+		auto [
+			memory, cursize, sumsize
+		] = curr_info(sizeof(AllocType));
 		auto result    = memory.template address<AllocType>(cursize);
 		current->acur += sizeof(AllocType);
 		new (result) AllocType(std::forward<AllocType>(value));
@@ -107,26 +121,22 @@ private:
 								   size_t	 size)
 		noexcept
 	{
-		block_holder& memory = current->area;
-		size_t cursize		 = current->acur;
-		size_t sumsize		 = cursize + sizeof(CharType*);
-		if (sumsize > memory.size()) {
-			respace();
-			memory  = current->area;
-			cursize = current->acur;
-		}
-		auto result    = memory.template address<CharType>(cursize);
-		if (size >= 1 && string[size - 1] != CharType()) {
+		auto [
+			memory, cursize, sumsize
+		] = curr_info(sizeof(CharType*));
+		auto result = memory.template address<CharType>(cursize);
+		if (size >= 1 && string[size - 1] == CharType()) {
 			current->acur += 1;
+			result[size]   = CharType();
 		}
-		current->acur += size;
 		if constexpr (std::is_same_v<CharType, char>) {
 			std::memcpy(result, string, size);
 		}
 		else {
 			std::wmemcpy(result, string, size);
+			size *= sizeof(wchar_t);
 		}
-		result[size] = CharType();
+		current->acur += size;
 		return result;
 	}
 
@@ -142,7 +152,7 @@ public:
 				std::malloc(sizeof(memory_block) * 2)
 			)
 		),
-		current(block), end(block + 2)
+		current(block), last(block + 2)
 	{
 		init_cur_block(block_size(size * 4000));
 	}
@@ -166,6 +176,14 @@ public:
 		noexcept
 	{
 		return allocate_impl(string, size);
+	}
+
+	constexpr char* begin() const noexcept {
+		return current->area.template address<>(0);
+	}
+
+	constexpr char* end() const noexcept {
+		return current->area.template address<>(current->acur);
 	}
 
 public:

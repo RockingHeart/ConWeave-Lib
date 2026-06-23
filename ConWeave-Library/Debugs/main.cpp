@@ -13,6 +13,7 @@ int main() {
     dast::block_allocator<dast::plmem_holder> allor;
     auto addr1 = allor.allocate("Hello World", 11);
     auto addr2 = allor.allocate(L"Hello World2", 12);
-    std::cout << addr1 << '\n';
-    std::wcout << addr2 << '\n';
+    for (auto c : allor) {
+        std::cout << c;
+    }
 }

@@ -6,6 +6,8 @@
 | :---: | :---: |
 | construct | [construct] |
 | allocate | [allocate] |
+| begin | [begin] |
+| end | [end] |
 
 - BlockAllocator
 
@@ -21,7 +23,8 @@
                 - block_allocator(size_t size)
                     - 用于构造size为页数的页内存块 <br>
             
-            ## allocate<AllocType>
+            ## allocate
+            - 模板类型<class AllocType>
             - 返回值类型：AllocType*
                 - 参数列表：(AllocType&&)
                 - allocate(AllocType&&)
@@ -31,6 +34,30 @@
                 - allocate(AllocType&)
                     - 用于申请一块大小为AllocType长度的内存
                     - 以拷贝构造函数构造
+            - <rest::character CharType>
+            - 返回值类型：CharType*
+                - 参数列表：(CharType*, std::size_t)
+                - allocate(CharType*, std::size_t size)
+                    - 用于申请以size为大小的字符串空间
+                    
+            ## begin
+            - 注意：此为序列化表示，并非为字符串表示
+            - 返回值类型：char*
+                - 参数列表：begin(void)
+                - begin(void)
+                    - 用于返回块起始指针
+
+            ## end
+            - 注意：此为序列化表示，并非为字符串表示
+            - 返回值类型：char*
+                - 参数列表：end(void)
+                - end(void)
+                    - 用于返回块末尾指针
+
+
+
 
 [construct]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#construct
 [allocate]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#allocate
+[begin]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#begin
+[end]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#end
