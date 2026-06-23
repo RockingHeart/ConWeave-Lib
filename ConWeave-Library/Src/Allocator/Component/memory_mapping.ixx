@@ -8,16 +8,21 @@ import std;
 
 std::size_t mapping_count = 0;
 
-export class memory_mapping {
+export namespace dast
+{
+	class memory_mapping;
+};
+
+class dast::memory_mapping {
 private:
 	using size_t = std::size_t;
 	using handle =		HANDLE;
 
 private:
 
-	handle		hand;
-	char*		addr;
-	std::size_t aend;
+	handle hand;
+	char*  addr;
+	size_t aend;
 
 private:
 

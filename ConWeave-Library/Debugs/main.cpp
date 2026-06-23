@@ -10,7 +10,7 @@ constexpr int foo() {
 }
 
 int main() {
-    block_allocator allor;
+    dast::block_allocator<dast::plain_memory> allor;
     auto& value1 = *allor.allocate<int>(10);
     auto& value2 = *allor.allocate<int>(100);
     auto& value3 = *allor.allocate<int>(1000);

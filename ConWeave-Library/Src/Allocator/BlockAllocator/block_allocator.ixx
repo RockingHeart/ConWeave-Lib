@@ -4,63 +4,76 @@ module;
 export module dast.allocator : block;
 
 import std;
-import dast.memory_mapping;
 
-struct mapping_block {
-	memory_mapping area;
-	std::size_t	   acur;
+export namespace dast
+{
+	template <class>
+	class block_allocator;
+}
+
+template <class BlockHolder>
+struct memory_block_t {
+	BlockHolder area;
+	std::size_t acur;
 };
 
-export class block_allocator {
+template <class BlockHolder>
+class dast::block_allocator {
+public:
+	using size_t = std::size_t;
+
+public:
+	using memory_block = memory_block_t<BlockHolder>;
+	using block_holder = BlockHolder;
+
 private:
 
-	mapping_block* block;
-	mapping_block* current;
-	mapping_block* end;
+	memory_block* block;
+	memory_block* current;
+	memory_block* end;
 
 private:
 
-	constexpr std::size_t align_to(std::size_t value,
-		std::size_t align)
+	constexpr size_t align_to(size_t value,
+		size_t align)
 		const noexcept
 	{
 		return (value + align - 1) & ~(align - 1);
 	}
 
-	constexpr void init_cur_block(std::size_t block_size) noexcept {
-		mapping_block& curr_block = *current;
-		curr_block.area.memory_mapping::memory_mapping(block_size);
+	constexpr void init_cur_block(size_t block_size) noexcept {
+		memory_block& curr_block = *current;
+		curr_block.area.reallocate(block_size);
 		curr_block.acur = 0;
 	}
 
-	// Reduce TLB miss rate
-	constexpr std::size_t block_size(std::size_t base) noexcept {
+	constexpr size_t block_size(size_t base) noexcept {
 		SYSTEM_INFO system_info{};
 		GetSystemInfo(&system_info);
-		std::size_t block_size = align_to (
+		size_t block_size = align_to (
 			base, system_info.dwPageSize
 		);
 		return block_size;
 	}
 
-	constexpr std::size_t total_number_block() const noexcept {
-		return static_cast<std::size_t>(end - block);
+	constexpr size_t total_number_block() const noexcept {
+		return static_cast<size_t>(end - block);
 	}
 
-	constexpr std::size_t spacing() const noexcept {
-		return static_cast<std::size_t>(end - current);
+	constexpr size_t spacing() const noexcept {
+		return static_cast<size_t>(end - current);
 	}
 
 	constexpr void exten_block() noexcept {
-		mapping_block* old = block;
-		std::size_t spalen = spacing();
-		std::size_t newlen = total_number_block() + 2;
-		block = static_cast<mapping_block*> (
-			std::malloc(sizeof(mapping_block) * newlen)
+		memory_block* old = block;
+		size_t spalen = spacing();
+		size_t newlen = total_number_block() + 2;
+		block = static_cast<memory_block*> (
+			std::malloc(sizeof(memory_block) * newlen)
 		);
 		current = block + spalen;
 		end		= block + newlen;
-		for (std::size_t i = 0; i < spalen; i++) {
+		for (size_t i = 0; i < spalen; i++) {
 			block[i] = std::move(old[i]);
 		}
 	}
@@ -74,15 +87,15 @@ private:
 
 	template <class AllocType>
 	AllocType* allocate_impl(AllocType&& value) {
-		memory_mapping& mapping = current->area;
-		std::size_t cursize		= current->acur;
-		std::size_t sumsize		= cursize + sizeof(AllocType);
-		if (sumsize > mapping.size()) {
+		block_holder& memory = current->area;
+		size_t cursize	 = current->acur;
+		size_t sumsize	 = cursize + sizeof(AllocType);
+		if (sumsize > memory.size()) {
 			respace();
-			mapping = current->area;
+			memory = current->area;
 			cursize = current->acur;
 		}
-		auto result    = mapping.address<AllocType>(cursize);
+		auto result    = memory.template address<AllocType>(cursize);
 		current->acur += sizeof(AllocType);
 		new (result) AllocType(std::forward<AllocType>(value));
 		return result;
@@ -94,10 +107,10 @@ public:
 		noexcept : block_allocator(1)
 	{}
 
-	constexpr block_allocator(std::size_t size) noexcept :
+	constexpr block_allocator(size_t size) noexcept :
 		block (
-			static_cast<mapping_block*> (
-				std::malloc(sizeof(mapping_block) * 2)
+			static_cast<memory_block*> (
+				std::malloc(sizeof(memory_block) * 2)
 			)
 		),
 		current(block), end(block + 2)
@@ -124,9 +137,9 @@ public:
 		if (block == nullptr) {
 			return;
 		}
-		mapping_block* mapping = block;
-		for (; mapping != current; ++mapping) {
-			mapping->~mapping_block();
+		memory_block* memory = block;
+		for (; memory != current; ++memory) {
+			memory->~memory_block();
 		}
 		std::free(block);
 	}
