@@ -4,6 +4,7 @@ module;
 export module dast.allocator : block;
 
 import std;
+import utility;
 
 export namespace dast
 {
@@ -86,18 +87,46 @@ private:
 	}
 
 	template <class AllocType>
-	AllocType* allocate_impl(AllocType&& value) {
+	AllocType* allocate_impl(AllocType&& value) noexcept {
 		block_holder& memory = current->area;
-		size_t cursize	 = current->acur;
-		size_t sumsize	 = cursize + sizeof(AllocType);
+		size_t cursize		 = current->acur;
+		size_t sumsize		 = cursize + sizeof(AllocType);
 		if (sumsize > memory.size()) {
 			respace();
-			memory = current->area;
+			memory  = current->area;
 			cursize = current->acur;
 		}
 		auto result    = memory.template address<AllocType>(cursize);
 		current->acur += sizeof(AllocType);
 		new (result) AllocType(std::forward<AllocType>(value));
+		return result;
+	}
+
+	template <rest::character CharType>
+	CharType* allocate_impl (const CharType* string,
+								   size_t	 size)
+		noexcept
+	{
+		block_holder& memory = current->area;
+		size_t cursize		 = current->acur;
+		size_t sumsize		 = cursize + sizeof(CharType*);
+		if (sumsize > memory.size()) {
+			respace();
+			memory  = current->area;
+			cursize = current->acur;
+		}
+		auto result    = memory.template address<CharType>(cursize);
+		if (size >= 1 && string[size - 1] != CharType()) {
+			current->acur += 1;
+		}
+		current->acur += size;
+		if constexpr (std::is_same_v<CharType, char>) {
+			std::memcpy(result, string, size);
+		}
+		else {
+			std::wmemcpy(result, string, size);
+		}
+		result[size] = CharType();
 		return result;
 	}
 
@@ -122,13 +151,21 @@ public:
 public:
 
 	template <class AllocType>
-	AllocType* allocate(AllocType&& value) {
+	AllocType* allocate(AllocType&& value) noexcept {
 		return allocate_impl(std::move(value));
 	}
 
 	template <class AllocType>
-	AllocType* allocate(AllocType& value) {
+	AllocType* allocate(AllocType& value) noexcept {
 		return allocate_impl(value);
+	}
+
+	template <rest::character CharType>
+	CharType* allocate (const CharType* string,
+							  size_t	size)
+		noexcept
+	{
+		return allocate_impl(string, size);
 	}
 
 public:

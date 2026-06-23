@@ -11,10 +11,8 @@ constexpr int foo() {
 
 int main() {
     dast::block_allocator<dast::plain_memory> allor;
-    auto& value1 = *allor.allocate<int>(10);
-    auto& value2 = *allor.allocate<int>(100);
-    auto& value3 = *allor.allocate<int>(1000);
-    std::cout << value1 << '\n';
-    std::cout << value2 << '\n';
-    std::cout << value3 << '\n';
+    auto addr1 = allor.allocate("Hello World", 11);
+    auto addr2 = allor.allocate(L"Hello World2", 12);
+    std::cout << addr1 << '\n';
+    std::wcout << addr2 << '\n';
 }
