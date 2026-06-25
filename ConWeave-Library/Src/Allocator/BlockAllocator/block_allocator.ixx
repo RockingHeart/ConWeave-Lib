@@ -143,7 +143,7 @@ private:
 public:
 
 	constexpr block_allocator()
-		noexcept : block_allocator(1)
+		noexcept : block_allocator(block_size(4000))
 	{}
 
 	constexpr block_allocator(size_t size) noexcept :
@@ -154,7 +154,7 @@ public:
 		),
 		current(block), last(block + 2)
 	{
-		init_cur_block(block_size(size * 4000));
+		init_cur_block(size);
 	}
 
 

@@ -1,6 +1,6 @@
 # This project is Converge & Weave: a library of convergence and weaving, implemented using modern C++ (from C++17 onwards) syntax features.
 
-English：[English] <br>
+English：[EnglishMD] <br>
 
 ## String Implementation in Progress
 
@@ -41,7 +41,7 @@ English：[English] <br>
 | fixed_vector | Implemented | Basics finalized 2026.5.22 | 1.5.0 |
 | vector | Implemented | Basics finalized 2026.5.22 | 3.0.1 |
 | filer | Implemented | 2026.5.27 | 1.0.2 |
-| block_allocator | Implemented | 2026.6.21 | 1.3.0 |
+| block_allocator | Implemented | 2026.6.21 | 1.3.1 |
 
 ## Performance Evaluation
 - string
@@ -96,7 +96,7 @@ English：[English] <br>
 
 [Download]: https://github.com/RockingHeart/ConWeave-Lib/archive/refs/heads/main.zip
 
-[English]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/MainReadMe/README_ENGLISH.md
+[EnglishMD]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/MainReadMe/README_ENGLISH.md
 
 [Source]: https://github.com/RockingHeart/ConWeave-Lib/tree/main/ConWeave-Library/Src
 [DevStandard]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/DevStandard.md
