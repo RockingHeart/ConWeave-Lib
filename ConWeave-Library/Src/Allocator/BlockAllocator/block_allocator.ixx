@@ -231,6 +231,11 @@ public:
 		return current->area.template address<>(current->acur);
 	}
 
+	constexpr void reset() noexcept {
+		current->acur = 0;
+		begin()[0]	  = char();
+	}
+
 	constexpr std::size_t size() const noexcept {
 		return current->acur;
 	}

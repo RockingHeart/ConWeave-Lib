@@ -6,6 +6,8 @@
 | :---: | :---: |
 | construct | [construct] |
 | allocate | [allocate] |
+| reset | [reset] |
+| size | [size] |
 | try allocate | [try_allocate] |
 | begin | [begin] |
 | end | [end] |
@@ -47,6 +49,14 @@
             ## try_allocate
             - 此函数拥有与[allocate]的相同参数版本与核心行为
             - 该函数强调的返回值：不会申请新空间，若空间不足则返回false
+
+            ## reset
+            - 此函数无参，void返回类型
+                - 用于重置内容（它不知存储的对象，所以不做析构调用）
+
+            ## size
+            - 此函数无参，size_t返回类型
+                - 用于获取字节大小
                     
             ## begin
             - 注意：此为序列化表示，并非为字符串表示
@@ -70,5 +80,7 @@
 [construct]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#construct
 [allocate]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#allocate
 [try_allocate]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#try_allocate
+[reset]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#reset
+[size]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#size
 [begin]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#begin
 [end]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#end
