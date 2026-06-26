@@ -41,7 +41,7 @@ English：[EnglishMD] <br>
 | fixed_vector | Implemented | Basics finalized 2026.5.22 | 1.5.0 |
 | vector | Implemented | Basics finalized 2026.5.22 | 3.0.1 |
 | filer | Implemented | 2026.5.27 | 1.0.2 |
-| block_allocator | Implemented | 2026.6.21 | 1.3.1 |
+| block_allocator | Implemented | 2026.6.21 | 1.4.0 |
 
 ## Performance Evaluation
 - string

@@ -10,6 +10,8 @@ export namespace match
 	};
 }
 
+// It's not only used for looking up results ¡ª as the name suggests,
+// it can be a match for a result.
 template <typename ResultType>
 class match_box_t {
 public:

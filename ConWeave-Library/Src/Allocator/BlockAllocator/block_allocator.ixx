@@ -91,6 +91,7 @@ private:
 			block_holder& memory;
 			size_t		  cursize;
 			size_t		  sumsize;
+			bool		  realloced;
 		};
 		info result  = {
 			.memory  = current->area,
@@ -99,35 +100,43 @@ private:
 		result.sumsize = result.cursize + size;
 		if (result.sumsize > result.memory.size()) {
 			respace();
-			result.memory  = current->area;
-			result.cursize = current->acur;
+			result.memory    = current->area;
+			result.cursize   = current->acur;
+			result.realloced = true;
 		}
 		return result;
 	}
 
-	template <class AllocType>
-	AllocType* allocate_impl(AllocType&& value) noexcept {
-		auto [
-			memory, cursize, sumsize
-		] = curr_info(sizeof(AllocType));
-		auto result    = memory.template address<AllocType>(cursize);
+	template <class AllocType, class InfoType, class... ArgsTyp>
+	constexpr auto hold_space (InfoType&	info,
+						  std::size_t		cursize,
+							   ArgsTyp&&... args)
+		noexcept
+	{
+		auto result    = info.memory.template address<AllocType>(info.cursize);
 		current->acur += sizeof(AllocType);
-		new (result) AllocType(std::forward<AllocType>(value));
+		new (result) AllocType(std::forward<AllocType>(args)...);
 		return result;
 	}
 
-	template <rest::character CharType>
-	CharType* allocate_impl (const CharType* string,
-								   size_t	 size)
+	template <class AllocType, class... ArgsType>
+	AllocType* allocate_impl(ArgsType&&... args) noexcept {
+		auto info = curr_info(sizeof(AllocType));
+		return hold_space<AllocType> (
+			info, std::forward<AllocType>(args)...
+		);
+	}
+
+	template <rest::character CharType, class InfoType>
+	constexpr auto hold_space (InfoType& info,
+						 const CharType* string,
+							   size_t	 size)
 		noexcept
 	{
-		auto [
-			memory, cursize, sumsize
-		] = curr_info(sizeof(CharType*));
-		auto result = memory.template address<CharType>(cursize);
+		auto result = info.memory.template address<CharType>(info.cursize);
 		if (size >= 1 && string[size - 1] == CharType()) {
 			current->acur += 1;
-			result[size]   = CharType();
+			result[size] = CharType();
 		}
 		if constexpr (std::is_same_v<CharType, char>) {
 			std::memcpy(result, string, size);
@@ -138,6 +147,17 @@ private:
 		}
 		current->acur += size;
 		return result;
+	}
+
+	template <rest::character CharType>
+	CharType* allocate_impl (const CharType* string,
+								   size_t	 size)
+		noexcept
+	{
+		auto info = curr_info(sizeof(CharType*));
+		return hold_space<CharType> (
+			info, string, size
+		);
 	}
 
 public:
@@ -160,14 +180,9 @@ public:
 
 public:
 
-	template <class AllocType>
-	AllocType* allocate(AllocType&& value) noexcept {
-		return allocate_impl(std::move(value));
-	}
-
-	template <class AllocType>
-	AllocType* allocate(AllocType& value) noexcept {
-		return allocate_impl(value);
+	template <class AllocType, class... ArgsType>
+	AllocType* allocate(ArgsType&&... args) noexcept {
+		return allocate_impl(std::forward<AllocType>(args));
 	}
 
 	template <rest::character CharType>
@@ -176,6 +191,36 @@ public:
 		noexcept
 	{
 		return allocate_impl(string, size);
+	}
+
+	template <class AllocType, class... ArgsType>
+	constexpr match_result<AllocType*> try_alloc (std::size_t		 size,
+													   ArgsType&&... args)
+		noexcept
+	{
+		auto info = curr_info(sizeof(AllocType));
+		if (info.realloced) {
+			return match::failed;
+		}
+		return hold_space<AllocType> (
+			info, std::forward<AllocType> (
+				std::forward<AllocType>(args)...
+			)
+		);
+	}
+
+	template <rest::character CharType>
+	constexpr match_result<CharType*> try_alloc(const CharType* string,
+													   size_t	 size)
+		noexcept
+	{
+		auto info = curr_info(sizeof(CharType*));
+		if (info.realloced) {
+			return false;
+		}
+		return hold_space<CharType> (
+			info, string, size
+		);
 	}
 
 	constexpr char* begin() const noexcept {
