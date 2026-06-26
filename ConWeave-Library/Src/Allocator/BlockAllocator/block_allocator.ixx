@@ -216,7 +216,7 @@ public:
 	{
 		auto info = curr_info(sizeof(CharType*));
 		if (info.realloced) {
-			return false;
+			return match::failed;
 		}
 		return hold_space<CharType> (
 			info, string, size
@@ -231,6 +231,10 @@ public:
 		return current->area.template address<>(current->acur);
 	}
 
+	constexpr std::size_t size() const noexcept {
+		return current->acur;
+	}
+
 public:
 
 	constexpr ~block_allocator() noexcept {
@@ -238,7 +242,8 @@ public:
 			return;
 		}
 		memory_block* memory = block;
-		for (; memory != current; ++memory) {
+		memory_block* end    = current + 1;
+		for (; memory != end; ++memory) {
 			memory->~memory_block();
 		}
 		std::free(block);
