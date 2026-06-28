@@ -109,7 +109,6 @@ private:
 
 	template <class AllocType, class InfoType, class... ArgsTyp>
 	constexpr auto hold_space (InfoType&	info,
-						  std::size_t		cursize,
 							   ArgsTyp&&... args)
 		noexcept
 	{
@@ -123,7 +122,7 @@ private:
 	AllocType* allocate_impl(ArgsType&&... args) noexcept {
 		auto info = curr_info(sizeof(AllocType));
 		return hold_space<AllocType> (
-			info, std::forward<AllocType>(args)...
+			info, std::forward<ArgsType>(args)...
 		);
 	}
 
@@ -182,7 +181,7 @@ public:
 
 	template <class AllocType, class... ArgsType>
 	AllocType* allocate(ArgsType&&... args) noexcept {
-		return allocate_impl(std::forward<AllocType>(args));
+		return allocate_impl<AllocType>(std::forward<AllocType>(args)...);
 	}
 
 	template <rest::character CharType>
@@ -190,7 +189,7 @@ public:
 							  size_t	size)
 		noexcept
 	{
-		return allocate_impl(string, size);
+		return allocate_impl<CharType>(string, size);
 	}
 
 	template <class AllocType, class... ArgsType>
@@ -203,9 +202,7 @@ public:
 			return match::failed;
 		}
 		return hold_space<AllocType> (
-			info, std::forward<AllocType> (
-				std::forward<AllocType>(args)...
-			)
+			info, std::forward<ArgsType>(args)...
 		);
 	}
 
