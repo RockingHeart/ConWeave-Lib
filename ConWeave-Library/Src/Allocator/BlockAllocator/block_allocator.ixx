@@ -114,7 +114,7 @@ private:
 	{
 		auto result    = info.memory.template address<AllocType>(info.cursize);
 		current->acur += sizeof(AllocType);
-		new (result) AllocType(std::forward<AllocType>(args)...);
+		new (result) AllocType(std::forward<ArgsTyp>(args)...);
 		return result;
 	}
 
@@ -181,7 +181,7 @@ public:
 
 	template <class AllocType, class... ArgsType>
 	AllocType* allocate(ArgsType&&... args) noexcept {
-		return allocate_impl<AllocType>(std::forward<AllocType>(args)...);
+		return allocate_impl<AllocType>(std::forward<ArgsType>(args)...);
 	}
 
 	template <rest::character CharType>
