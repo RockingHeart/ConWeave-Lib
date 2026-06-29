@@ -1686,7 +1686,7 @@ private:
 			box_value_t& value = core_t::value;
 			value.pointer[buf_size]    = char_value;
 			value.count                = buf_count;
-			value.pointer[value.count] = char_value;
+			value.pointer[value.count] = char_t();
 		}
 		else {
 			box_value_t& value = core_t::value;
