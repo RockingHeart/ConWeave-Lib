@@ -189,6 +189,10 @@ public:
         return begin()[position];
     }
 
+    constexpr value_t operator[](size_t position) const noexcept {
+        return begin()[position];
+    }
+
     constexpr basic_vector& operator=(const basic_vector& vec)
 		noexcept(noexcept(core_t::assign(vec)))
 	{
