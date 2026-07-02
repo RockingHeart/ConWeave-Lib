@@ -11,6 +11,7 @@
 | try allocate | [try_allocate] |
 | begin | [begin] |
 | end | [end] |
+| data | [data] |
 
 - BlockAllocator
 
@@ -74,6 +75,15 @@
                     - 用于返回块末尾指针
                 - 该函数强调的返回值：无
 
+            - <class DataType>
+            ## data
+            - 参数列表：(std::size_t)
+            - data(std::size_t size)
+                - 此函数将偏移size字节大小返回具有DataType大小的空间
+                    - 因此它可能是不安全的，安全性靠使用者保证
+
+            
+
 
 
 
@@ -84,3 +94,4 @@
 [size]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#size
 [begin]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#begin
 [end]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#end
+[data]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#data

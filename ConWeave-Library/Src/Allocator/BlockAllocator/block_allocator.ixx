@@ -221,7 +221,7 @@ public:
 	}
 
 	constexpr char* begin() const noexcept {
-		return current->area.template address<>(0);
+		return data(0);
 	}
 
 	constexpr char* end() const noexcept {
@@ -231,6 +231,11 @@ public:
 	constexpr void reset() noexcept {
 		current->acur = 0;
 		begin()[0]	  = char();
+	}
+
+	template <class DataType>
+	constexpr match_result<DataType*> data(std::size_t off) noexcept {
+		return current->area.template address<DataType*>(off);
 	}
 
 	constexpr std::size_t size() const noexcept {

@@ -38,7 +38,7 @@ English：[EnglishMD] <br>
 | Implementation | Status | Completion Time | Version |
 | :---: | :---: | :---: | :---: |
 | string | Implemented | Basic implementation effective before November 2025 | 1.15.2 |
-| fixed_vector | Implemented | Basics finalized 2026.5.22 | 1.5.0 |
+| fixed_vector | Implemented | Basics finalized 2026.5.22 | 1.6.0 |
 | vector | Implemented | Basics finalized 2026.5.22 | 3.0.1 |
 | filer | Implemented | 2026.5.27 | 1.0.2 |
 | block_allocator | Implemented | 2026.6.21 | 1.5.0 |
