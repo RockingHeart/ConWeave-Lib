@@ -221,7 +221,7 @@ public:
 	}
 
 	constexpr char* begin() const noexcept {
-		return data(0);
+		return data<char>(0);
 	}
 
 	constexpr char* end() const noexcept {
@@ -235,7 +235,7 @@ public:
 
 	template <class DataType>
 	constexpr match_result<DataType*> data(std::size_t off) noexcept {
-		return current->area.template address<DataType*>(off);
+		return current->area.template address<DataType>(off);
 	}
 
 	constexpr std::size_t size() const noexcept {
