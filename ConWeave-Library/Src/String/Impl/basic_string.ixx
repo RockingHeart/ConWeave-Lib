@@ -235,7 +235,7 @@ private:
 		if constexpr (trait_is_advanced_mode()) {
 			value.before = nullptr;
 		}
-		value.count = buf_size;
+		value.count			= buf_size;
 		value.concord.left  = alloc_size - size;
 	}
 
@@ -273,7 +273,7 @@ private:
 		pointer_t old_ptr     = value.pointer;
 		size_t alloc_size	  = size * Expand;
 		value.pointer		  = alloc.allocate(alloc_size);
-		value.concord.left			  = alloc_size - size;
+		value.concord.left	  = alloc_size - size;
 		strutil::strcopy(value.pointer, old_ptr, value.count);
 		alloc.deallocate(old_ptr, value.count);
 	}
@@ -490,7 +490,7 @@ private:
 			size_t size			 = value.count;
 			size_t alloc_size    = size * 2;
 			data = value.pointer = allocator().allocate(alloc_size);
-			value.concord.left           = alloc_size - size;
+			value.concord.left   = alloc_size - size;
 		}
 		const auto* begin = list.begin();
 		const auto* end   = list.end() - 1;
@@ -519,7 +519,7 @@ private:
 		size_t size        = value.count;
 		size_t alloc_size  = size * 25;
 		value.pointer      = allocator().allocate(alloc_size);
-		value.concord.left		   = alloc_size - size;
+		value.concord.left = alloc_size - size;
 		strutil::strset(value.pointer, char_value, size);
 		value.pointer[size] = char_t();
 	}
@@ -1713,7 +1713,7 @@ private:
 			value.pointer + offset,
 			pointer, size
 		);
-		heap_count                = next_size;
+		heap_count				  = next_size;
 		value.pointer[heap_count] = char_t();
 	}
 
@@ -1750,6 +1750,7 @@ private:
 		if (next_size >= alloc_size(value)) {
 			respace<false, 2>(next_size);
 		}
+		value.concord.left -= size;
 		return append_value (
 			value, pointer,
 			heap_count, heap_count,

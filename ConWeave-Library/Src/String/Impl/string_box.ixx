@@ -99,7 +99,7 @@ private:
 
 	template <value_traits ValueTrait>
 	struct box_value : base_value,
-		enhanced<ValueTrait>
+					   enhanced<ValueTrait>
 	{
 		using enhanced = enhanced<ValueTrait>;
 	};
