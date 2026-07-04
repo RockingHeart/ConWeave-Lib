@@ -376,8 +376,8 @@ private:
 			value.pointer + strlen,
 			char_value, size - strlen
 		);
-		value.count                    = size;
-		value.pointer[value.count - 1] = char_t();
+		value.count = size;
+		value.pointer[value.count] = char_t();
 	}
 
 	constexpr void swap_cache (alloc_t&     alloc,
