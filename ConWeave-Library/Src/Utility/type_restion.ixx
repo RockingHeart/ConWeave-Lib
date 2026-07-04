@@ -33,4 +33,10 @@ export namespace rest
 		alloc.deallocate;
 	};
 
+	template <class StringView>
+	concept string_view = requires(StringView view) {
+		view.data();
+		view.size();
+	};
+
 }

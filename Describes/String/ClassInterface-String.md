@@ -1193,6 +1193,25 @@
                         ```
                         #### 以上代码输出："Hello World"
                         函数返回值描述：返回调用operator+=的对象
+
+                - template <rest::string_view StringView>
+                - 参数列表：(StringView)
+                - basic_string& operator+=(const StringView& view)
+                - 备注：由于不确保StringView的来源，故用const&而非直接的StringView
+                    - 用于扩展动态字符串
+                        ``` C++
+                        import string;
+                        import std;
+
+                        int main() {
+                            dast::cstring str1 = "Hello";
+                            std::string_view str2 = " World";
+                            str1 += str2;
+                            std::cout << str.const_string() << '\n'
+                        }
+                        ```
+                        #### 以上代码输出："Hello World"
+                        函数返回值描述：返回调用operator+=的对象
             
             - operator[]
             - 返回值类型：reference 非静态成员运算符重载函数符号：[]

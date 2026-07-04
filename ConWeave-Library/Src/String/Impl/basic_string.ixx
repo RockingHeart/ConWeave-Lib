@@ -1772,27 +1772,24 @@ private:
 		return append_impl(object.pointer(), object.string_length());
 	}
 
-	constexpr std::conditional_t <
-		trait_is_enhance_mode(),
-		adder<basic_string&>, basic_string&
-	> string_append(char_t char_value) noexcept {
+	constexpr basic_string& string_append(char_t char_value) noexcept {
 		append_impl(char_value);
 		return *this;
 	}
 
-	constexpr std::conditional_t <
-		trait_is_enhance_mode(),
-		adder<basic_string&>, basic_string&
-	> string_append(const_pointer_t pointer) noexcept {
+	constexpr basic_string& string_append(const_pointer_t pointer) noexcept {
 		append_impl(pointer);
 		return *this;
 	}
 
-	constexpr std::conditional_t <
-		trait_is_enhance_mode(),
-		adder<basic_string&>, basic_string&
-	> string_append(basic_string& string) noexcept {
+	constexpr basic_string& string_append(basic_string& string) noexcept {
 		append_impl(string);
+		return *this;
+	}
+
+	template <rest::string_view StringView>
+	constexpr basic_string& string_append(const StringView& view) noexcept {
+		append_impl(view.data(), view.size());
 		return *this;
 	}
 
@@ -1995,7 +1992,16 @@ public:
 	        }
 		)
 	{
-		return string_append(std::forward<ArgsType>(args)...);
+		if constexpr (trait_is_enhance_mode()) {
+			return adder<basic_string&> (
+				string_append(std::forward<ArgsType>(args)...)
+			);
+		}
+		else {
+			return string_append (
+				std::forward<ArgsType>(args)...
+			);
+		}
 	}
 
 	template <class... ArgsType>
