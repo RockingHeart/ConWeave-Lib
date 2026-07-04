@@ -1494,7 +1494,7 @@ private:
 					data + count, fill, size - count
 				);
 			}
-			data[size]		   = fill;
+			data[size]		   = char_t();
 			value.concord.left = allsize - size;
 			value.count		   = size;
 			return;
