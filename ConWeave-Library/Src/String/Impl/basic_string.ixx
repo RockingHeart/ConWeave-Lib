@@ -270,12 +270,13 @@ private:
 			noexcept(allocator().deallocate(nullptr, 0ull))
 		)
 	{
-		pointer_t old_ptr     = value.pointer;
-		size_t alloc_size	  = size * Expand;
-		value.pointer		  = alloc.allocate(alloc_size);
-		value.concord.left	  = alloc_size - size;
+		pointer_t old_ptr  = value.pointer;
+		size_t alloc_size  = size * Expand;
+		size_t old_allsize = value.count + value.concord.left;
+		value.pointer	   = alloc.allocate(alloc_size);
+		value.concord.left = alloc_size - size;
 		strutil::strcopy(value.pointer, old_ptr, value.count);
-		alloc.deallocate(old_ptr, value.count);
+		alloc.deallocate(old_ptr, old_allsize);
 	}
 
 	template <bool InitHeap = false, size_t Expand = 2>
@@ -1756,6 +1757,7 @@ private:
 		box_value_t& value = core_t::value;
 		size_t& heap_count = value.count;
 		size_t next_size   = heap_count + size;
+		next_size >= 1 ? next_size -= 1 : next_size;
 		if (next_size >= alloc_size(value)) {
 			respace<false, 2>(next_size);
 		}
