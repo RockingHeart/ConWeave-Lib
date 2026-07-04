@@ -1477,11 +1477,20 @@ private:
 			reset_value(core_t::value, fill, size, strlen);
 			return;
 		}
-		box_value_t& value = core_t::value;
-		if (size < alloc_size(value)) {
-			value.pointer[size] = fill;
-			value.concord.left			= alloc_size() - size;
-			value.count			= size;
+		box_value_t& value  = core_t::value;
+		std::size_t allsize = alloc_size(value);
+		pointer_t data		= value.pointer;
+		std::size_t count   = value.count;
+		if (size < allsize) {
+			data[count] = ' ';
+			if (size > count) {
+				strutil::strset (
+					data + count, ' ', size - count
+				);
+			}
+			data[size]		   = fill;
+			value.concord.left = allsize - size;
+			value.count		   = size;
 			return;
 		}
 		size_t strlen = value.count;
