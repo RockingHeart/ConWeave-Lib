@@ -1489,10 +1489,9 @@ private:
 		pointer_t data		= value.pointer;
 		std::size_t count   = value.count;
 		if (size < allsize) {
-			data[count] = ' ';
 			if (size > count) {
 				strutil::strset (
-					data + count, ' ', size - count
+					data + count, fill, size - count
 				);
 			}
 			data[size]		   = fill;

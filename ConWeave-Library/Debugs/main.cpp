@@ -10,10 +10,8 @@ constexpr int foo() {
 }
 
 int main() {
-    dast::block_allocator<dast::plmem_holder> allor;
-    auto addr1 = allor.allocate("Hello World", 11);
-    auto addr2 = allor.allocate(L"Hello World2", 12);
-    for (auto c : allor) {
-        std::cout << c;
-    }
+    dast::cstring str = "Hello.............";
+    str += ".............World.............";
+    str.resize(60, ' ');
+    std::cout << str.const_string() << '\n';
 }
