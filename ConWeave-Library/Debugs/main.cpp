@@ -50,29 +50,31 @@ int main() {
     std::cout << "========== 性能测试报告 ==========\n" << std::endl;
 
     const int TEST_COUNT = 100000;
-    const int STRING_LENGTH = 100;
+    const int STRING_LENGTH = 12;
     const int APPEND_COUNT = 1000;
 
     // ========== 1. 构造性能测试 ==========
     std::cout << "【1. 构造性能测试】" << std::endl;
     {
-        std::string test_str = generate_random_string(STRING_LENGTH);
+        for (size_t _ = 0; _ < 3; ++_) {
+            std::string test_str = generate_random_string(STRING_LENGTH);
 
-        // std::string 构造
-        {
-            Timer t("std::string 拷贝构造 (x" + std::to_string(TEST_COUNT) + ")");
-            for (int i = 0; i < TEST_COUNT; ++i) {
-                std::string s(test_str);
-                volatile auto dummy = s.size(); // 防止优化
+            // std::string 构造
+            {
+                Timer t("std::string 拷贝构造 (x" + std::to_string(TEST_COUNT) + ")");
+                for (int i = 0; i < TEST_COUNT; ++i) {
+                    std::string s(test_str);
+                    volatile auto dummy = s.data();
+                }
             }
-        }
 
-        // dast::cstring 构造
-        {
-            Timer t("dast::cstring 拷贝构造 (x" + std::to_string(TEST_COUNT) + ")");
-            for (int i = 0; i < TEST_COUNT; ++i) {
-                dast::cstring s(test_str.c_str());
-                volatile auto dummy = s.size();
+            // dast::cstring 构造
+            {
+                Timer t("dast::cstring 拷贝构造 (x" + std::to_string(TEST_COUNT) + ")");
+                for (int i = 0; i < TEST_COUNT; ++i) {
+                    dast::cstring s(test_str.c_str());
+                    volatile auto dummy = s.data();
+                }
             }
         }
     }
@@ -235,7 +237,6 @@ int main() {
         {
             Timer t("std::string 混合操作 (构造+追加+访问)");
             std::string s;
-            s.reserve(1000);
             for (int i = 0; i < 1000; ++i) {
                 std::string temp = generate_random_string(10);
                 s.append(temp);
@@ -271,7 +272,6 @@ int main() {
         {
             Timer t("std::string 构建 " + std::to_string(BIG_TEST) + " 字符");
             std::string s;
-            s.reserve(BIG_TEST);
             for (int i = 0; i < BIG_TEST; ++i) {
                 s.push_back('A' + (i % 26));
             }
