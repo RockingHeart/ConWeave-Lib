@@ -101,7 +101,7 @@ private:
 	}
 
 	constexpr auto block_info(std::size_t size) noexcept {
-		auto result = curr_info();
+		auto result = curr_info(size);
 		if (result.sumsize > result.memory.size()) {
 			respace();
 			result.memory = current->area;
