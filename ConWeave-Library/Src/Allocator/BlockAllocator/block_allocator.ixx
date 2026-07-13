@@ -241,7 +241,7 @@ public:
 													   ArgsType&&... args)
 		noexcept
 	{
-		if (need_realloc()) {
+		if (need_realloc(size)) {
 			return match::failed;
 		}
 		auto info = curr_info(sizeof(AllocType));
@@ -255,7 +255,7 @@ public:
 													   size_t	 size)
 		noexcept
 	{
-		if (need_realloc()) {
+		if (need_realloc(size)) {
 			return match::failed;
 		}
 		auto info = curr_info(sizeof(CharType*));
