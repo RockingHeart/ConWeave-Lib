@@ -149,14 +149,22 @@ private:
 	}
 
 	template <rest::character CharType>
-	CharType* allocate_impl (const CharType* string,
-								   size_t	 size)
+	constexpr CharType* allocate_impl (const CharType* string,
+											 size_t	   size)
 		noexcept
 	{
 		auto info = curr_info(sizeof(CharType*));
 		return hold_space<CharType> (
 			info, string, size
 		);
+	}
+
+private:
+
+	constexpr void assign(block_allocator& allocator) noexcept {
+		block	= allocator.block;
+		current = allocator.current;
+		last	= allocator.last;
 	}
 
 public:
@@ -248,6 +256,13 @@ public:
 
 	constexpr std::size_t size() const noexcept {
 		return current->acur;
+	}
+
+public:
+
+	constexpr void operator=(block_allocator&& allocator) noexcept {
+		assign(allocator);
+		allocator.block = nullptr;
 	}
 
 public:
