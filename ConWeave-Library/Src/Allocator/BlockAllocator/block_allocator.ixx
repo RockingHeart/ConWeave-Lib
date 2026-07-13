@@ -165,6 +165,14 @@ public:
 		noexcept : block_allocator(block_size(4000))
 	{}
 
+	constexpr block_allocator(block_allocator&& allocator)
+		noexcept : block(allocator.block),
+				   current(allocator.current),
+				   last(allocator.last)
+	{
+		allocator.block = nullptr;
+	}
+
 	constexpr block_allocator(size_t size) noexcept :
 		block (
 			static_cast<memory_block*> (

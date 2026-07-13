@@ -23,6 +23,9 @@
                 - 参数列表：(void)
                 - block_allocator(void)
                     - 用于构造一页内存块（为降低TLB Miss的机率，则以页对齐） <br>
+                - 参数列表：(block_allocator&&)
+                - block_allocator(block_allocator&& allocator)
+                    - 将allocator的所有权转移至self
                 - 参数列表：(size_t)
                 - block_allocator(size_t size)
                     - 用于构造size为页大小的页内存块 <br>
