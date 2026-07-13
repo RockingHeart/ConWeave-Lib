@@ -94,9 +94,9 @@ private:
 		};
 		info result  = {
 			.memory  = current->area,
-			.cursize = current->acur,
-			.sumsize = cursize + size
+			.cursize = current->acur
 		};
+		result.sumsize = result.cursize + size;
 		return result;
 	}
 
@@ -258,7 +258,7 @@ public:
 		if (need_realloc()) {
 			return match::failed;
 		}
-		auto info = curr_info(sizeof(AllocType));
+		auto info = curr_info(sizeof(CharType*));
 		return hold_space<CharType> (
 			info, string, size
 		);
