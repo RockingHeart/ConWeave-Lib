@@ -27,7 +27,8 @@ public:
 
 public:
 
-    constexpr basic_vector() noexcept = default;
+    constexpr basic_vector()
+        noexcept = default;
 
     constexpr basic_vector(size_t size)
 		noexcept (
@@ -42,6 +43,9 @@ public:
             }
         }
         core_t::template respace<true, 1>(size);
+        box_data_t& data = core_t::value.data;
+        data.curent      = data.origin;
+        data.remain      = size;
         core_t::construct(size);
     };
 
