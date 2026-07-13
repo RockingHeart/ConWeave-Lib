@@ -74,6 +74,7 @@ protected:
         box_data_t& data = box_t::value.data;
         data.origin      = new_ptr;
         data.curent      = data.origin;
+        data.remain      = new_cap;
 
         if constexpr (box_t::buffer_size) {
             box_t::value.mode = vector_mode::storage;
@@ -91,8 +92,8 @@ protected:
         );
         box_data_t& data = box_t::value.data;
         data.origin      = new_ptr;
-        data.curent      = data.origin + size;
-        data.remain      = new_cap - size;
+        data.curent      = data.origin;
+        data.remain      = new_cap;
         if constexpr (box_t::buffer_size) {
             box_t::value.mode = vector_mode::storage;
         }
@@ -112,7 +113,7 @@ protected:
         }
         box_data_t& data = box_t::value.data;
         data.curent     += size;
-        data.remain      = size;
+        data.remain     -= size;
     }
 
     template <std::size_t Expand = 1>

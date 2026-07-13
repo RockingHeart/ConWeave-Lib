@@ -42,10 +42,7 @@ public:
                 return;
             }
         }
-        core_t::template respace<true, 1>(size);
-        box_data_t& data = core_t::value.data;
-        data.curent      = data.origin;
-        data.remain      = size;
+        core_t::init_data(size);
         core_t::construct(size);
     };
 
