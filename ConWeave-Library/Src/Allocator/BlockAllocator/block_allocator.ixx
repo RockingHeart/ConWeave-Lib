@@ -91,18 +91,21 @@ private:
 			block_holder& memory;
 			size_t		  cursize;
 			size_t		  sumsize;
-			bool		  realloced;
 		};
 		info result  = {
 			.memory  = current->area,
-			.cursize = current->acur
+			.cursize = current->acur,
+			.sumsize = cursize + size
 		};
-		result.sumsize = result.cursize + size;
+		return result;
+	}
+
+	constexpr auto block_info(std::size_t size) noexcept {
+		auto result = curr_info();
 		if (result.sumsize > result.memory.size()) {
 			respace();
-			result.memory    = current->area;
-			result.cursize   = current->acur;
-			result.realloced = true;
+			result.memory = current->area;
+			result.cursize = current->acur;
 		}
 		return result;
 	}
@@ -120,7 +123,7 @@ private:
 
 	template <class AllocType, class... ArgsType>
 	AllocType* allocate_impl(ArgsType&&... args) noexcept {
-		auto info = curr_info(sizeof(AllocType));
+		auto info = block_info(sizeof(AllocType));
 		return hold_space<AllocType> (
 			info, std::forward<ArgsType>(args)...
 		);
@@ -153,10 +156,26 @@ private:
 											 size_t	   size)
 		noexcept
 	{
-		auto info = curr_info(sizeof(CharType*));
+		auto info = block_info(sizeof(CharType*));
 		return hold_space<CharType> (
 			info, string, size
 		);
+	}
+
+	constexpr void reconstruct(std::size_t size) noexcept {
+		block = static_cast<memory_block*> (
+				std::malloc(sizeof(memory_block) * 2)
+		);
+		current = block;
+		last	= block + 2;
+		init_cur_block(size);
+	}
+
+	constexpr void checked() noexcept {
+		if (!is_empty()) {
+			return;
+		}
+		reconstruct(1);
 	}
 
 private:
@@ -167,11 +186,18 @@ private:
 		last	= allocator.last;
 	}
 
+	constexpr bool is_empty() const noexcept {
+		return !block;
+	}
+
+	constexpr bool need_realloc(std::size_t size) noexcept {
+		return is_empty() || current->acur + size > current->area.size();
+	}
+
 public:
 
 	constexpr block_allocator()
-		noexcept : block_allocator(block_size(4000))
-	{}
+		noexcept = default;
 
 	constexpr block_allocator(block_allocator&& allocator)
 		noexcept : block(allocator.block),
@@ -197,6 +223,7 @@ public:
 
 	template <class AllocType, class... ArgsType>
 	AllocType* allocate(ArgsType&&... args) noexcept {
+		checked();
 		return allocate_impl<AllocType>(std::forward<ArgsType>(args)...);
 	}
 
@@ -205,6 +232,7 @@ public:
 							  size_t	size)
 		noexcept
 	{
+		checked();
 		return allocate_impl<CharType>(string, size);
 	}
 
@@ -213,10 +241,10 @@ public:
 													   ArgsType&&... args)
 		noexcept
 	{
-		auto info = curr_info(sizeof(AllocType));
-		if (info.realloced) {
+		if (need_realloc()) {
 			return match::failed;
 		}
+		auto info = curr_info(sizeof(AllocType));
 		return hold_space<AllocType> (
 			info, std::forward<ArgsType>(args)...
 		);
@@ -227,10 +255,10 @@ public:
 													   size_t	 size)
 		noexcept
 	{
-		auto info = curr_info(sizeof(CharType*));
-		if (info.realloced) {
+		if (need_realloc()) {
 			return match::failed;
 		}
+		auto info = curr_info(sizeof(AllocType));
 		return hold_space<CharType> (
 			info, string, size
 		);

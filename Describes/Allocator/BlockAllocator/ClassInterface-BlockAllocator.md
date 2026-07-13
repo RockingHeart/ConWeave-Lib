@@ -22,7 +22,7 @@
             - 返回值类型：block_allocator 构造函数名：block_allocator
                 - 参数列表：(void)
                 - block_allocator(void)
-                    - 用于构造一页内存块（为降低TLB Miss的机率，则以页对齐） <br>
+                    - 不申请资源的空构造 <br>
                 - 参数列表：(block_allocator&&)
                 - block_allocator(block_allocator&& allocator)
                     - 将allocator的所有权转移至self
