@@ -1,4 +1,4 @@
-# This project is Converge & Weave: a library of convergence and weaving, implemented using modern C++ (from C++17 onwards) syntax features.
+# This project is Converge & Weave: It's a library, implemented using modern C++ (from C++17 onwards) syntax features.
 
 English：[EnglishMD] <br>
 
