@@ -7,6 +7,7 @@
 | construct | [construct] |
 | allocate | [allocate] |
 | reset | [reset] |
+| is empty | [is_empty] |
 | size | [size] |
 | try allocate | [try_allocate] |
 | begin | [begin] |
@@ -57,6 +58,10 @@
             ## reset
             - 此函数无参，void返回类型
                 - 用于重置内容（它不知存储的对象，所以不做析构调用）
+            
+            ## is_empty
+            - 此函数无参，bool返回类型
+                - 用于判断是否持有数据
 
             ## size
             - 此函数无参，size_t返回类型
@@ -94,6 +99,7 @@
 [allocate]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#allocate
 [try_allocate]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#try_allocate
 [reset]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#reset
+[is_empty]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#is_empty
 [size]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#size
 [begin]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#begin
 [end]: https://github.com/RockingHeart/Modern-Librarys/blob/main/Describes/Allocator/BlockAllocator/ClassInterface-BlockAllocator.md#end

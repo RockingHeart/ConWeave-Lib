@@ -186,10 +186,6 @@ private:
 		last	= allocator.last;
 	}
 
-	constexpr bool is_empty() const noexcept {
-		return !block;
-	}
-
 	constexpr bool need_realloc(std::size_t size) noexcept {
 		return is_empty() || current->acur + size > current->area.size();
 	}
@@ -280,6 +276,10 @@ public:
 	template <class DataType>
 	constexpr match_result<DataType*> data(std::size_t off) const noexcept {
 		return current->area.template address<DataType>(off);
+	}
+
+	constexpr bool is_empty() const noexcept {
+		return !block;
 	}
 
 	constexpr std::size_t size() const noexcept {
