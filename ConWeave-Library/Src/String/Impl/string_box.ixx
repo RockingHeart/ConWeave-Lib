@@ -162,8 +162,8 @@ protected:
 	};
 
 	struct cache_t {
-		char_t		 pointer[buffer_size];
-		specs_bits   specs [[indeterminate]];
+		char_t	   pointer[buffer_size];
+		specs_bits specs [[indeterminate]];
 	};
 
 protected:
@@ -196,10 +196,9 @@ public:
 		if (size > buffer_size) {
 			value.count		 = size;
 			cache.specs.mode = string_mode::storage;
+			return;
 		}
-		else {
-			cache.specs.size = size;
-		}
+		cache.specs.size = size;
 	}
 
 	constexpr ~string_box() noexcept = default;

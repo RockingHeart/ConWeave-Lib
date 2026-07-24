@@ -321,7 +321,7 @@ protected:
 
 protected:
 
-    pointer_t begin() noexcept {
+    auto begin() noexcept -> decltype(auto) {
         if constexpr (box_t::buffer_size) {
             if (box_t::value.mode == vector_mode::cache) {
                 return box_t::value.buffer.begin();
@@ -330,25 +330,7 @@ protected:
         return box_t::value.data.origin;
     }
 
-    const_pointer_t begin() const noexcept {
-        if constexpr (box_t::buffer_size) {
-            if (box_t::value.mode == vector_mode::cache) {
-                return box_t::value.buffer.begin();
-            }
-        }
-        return box_t::value.data.origin;
-    }
-
-    pointer_t end() noexcept {
-        if constexpr (box_t::buffer_size) {
-            if (box_t::value.mode == vector_mode::cache) {
-                return box_t::value.buffer.end();
-            }
-        }
-        return box_t::value.data.curent;
-    }
-
-    const_pointer_t end() const noexcept {
+    auto end() noexcept -> decltype(auto) {
         if constexpr (box_t::buffer_size) {
             if (box_t::value.mode == vector_mode::cache) {
                 return box_t::value.buffer.end();

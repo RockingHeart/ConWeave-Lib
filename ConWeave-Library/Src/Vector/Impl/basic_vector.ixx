@@ -159,20 +159,12 @@ public:
 
 public:
 
-    constexpr pointer_t begin() noexcept {
-        return core_t::begin();
+    constexpr auto begin(this basic_vector& vec) noexcept {
+        return vec.core_t::begin();
     }
 
-    constexpr const_pointer_t begin() const noexcept {
-        return core_t::begin();
-    }
-
-    constexpr const_pointer_t end() noexcept {
-        return core_t::end();
-    }
-
-    constexpr const_pointer_t end() const noexcept {
-        return core_t::end();
+    constexpr auto end(this basic_vector& vec) noexcept {
+        return vec.core_t::end();
     }
 
 public:

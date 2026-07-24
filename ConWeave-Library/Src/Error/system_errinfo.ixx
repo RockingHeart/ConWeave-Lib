@@ -45,12 +45,16 @@ dast::string<CharType> sys::detailed_error(unsigned long error) noexcept {
             0, nullptr
         );
         if (message) {
-            int len = WideCharToMultiByte(CP_UTF8, 0, message, -1,
-                nullptr, 0, nullptr, nullptr);
+            int len = WideCharToMultiByte (
+                CP_UTF8, 0, message, -1,
+                nullptr, 0, nullptr, nullptr
+            );
             if (len > 0) {
                 result.resize(len - 1);
-                WideCharToMultiByte(CP_UTF8, 0, message, -1,
-                    &result[0], len, nullptr, nullptr);
+                WideCharToMultiByte (
+                    CP_UTF8, 0, message, -1,
+                    &result[0], len, nullptr, nullptr
+                );
             }
             LocalFree(message);
         }
