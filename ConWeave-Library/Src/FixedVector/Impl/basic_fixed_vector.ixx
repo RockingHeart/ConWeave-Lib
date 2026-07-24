@@ -91,19 +91,11 @@ public:
 
 public:
 
-	constexpr pointer_t begin() noexcept {
+	constexpr auto begin() noexcept -> decltype(auto) {
 		return reinterpret_cast<pointer_t>(core_t::value.data);
 	}
 
-	constexpr const_pointer_t begin() const noexcept {
-		return reinterpret_cast<const_pointer_t>(core_t::value.data);
-	}
-
-	constexpr pointer_t end() noexcept {
-		return begin() + core_t::size;
-	}
-
-	constexpr const_pointer_t end() const noexcept {
+	constexpr auto end() noexcept -> decltype(auto) {
 		return begin() + core_t::size;
 	}
 
