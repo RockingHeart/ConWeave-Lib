@@ -3,6 +3,7 @@ export module cwlib : dast;
 export import dast.string;
 export import dast.fixed_vector;
 export import dast.vector;
+export import dast.symbol_table;
 
 export import dast.memory_mapping;
 export import dast.plmem_holder;

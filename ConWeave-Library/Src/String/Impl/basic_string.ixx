@@ -746,6 +746,7 @@ private:
 		object.cache.specs.mode = string_mode::storage;
 	}
 
+	// Caller move to 'object' string
 	constexpr void move_string(basic_string& object)
 		&& noexcept (
 			noexcept(move_self(std::move(core_t::value), object))

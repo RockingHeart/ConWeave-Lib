@@ -1,12 +1,10 @@
 export module dast.string;
 
-import string.impl;
-
 export import string.impl.context;
-
-import utility;
+	   import string.impl;
 
 import std;
+import utility;
 
 export using ::string_mode;
 

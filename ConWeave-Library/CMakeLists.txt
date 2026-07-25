@@ -24,7 +24,8 @@ file(GLOB VectorPath "Src/Vector/*.ixx")
 file(GLOB VectorImplPath "Src/Vector/Impl/*.ixx")
 file(GLOB FilerPath "Src/Filer/*.ixx")
 file(GLOB FilerImplPath "Src/Filer/Impl/*.ixx")
-file(GLOB ErrorPath "Src/Error/*.ixx")
+file(GLOB SymbolTablePath "Src/SymbolTable/*.ixx")
+file(GLOB SymbolTableImplPath "Src/SymbolTable/Impl/*.ixx")
 file(GLOB WrapPath "Src/Wrap/*.ixx")
 file(GLOB UtilityPath "Src/Utility/*.ixx")
 file(GLOB AllocatorPath "Src/Allocator/*.ixx")
@@ -42,11 +43,11 @@ target_sources(ConWeaveLib
     FILES
         ${UtilityPath}
         ${WrapPath}
-        ${ErrorPath}
         ${StringPath} ${StringImplPath}
         ${FixedVectorPath} ${FixedVectorImplPath}
         ${VectorPath} ${VectorImplPath}
         ${FilerPath} ${FilerImplPath}
+        ${SymbolTablePath} ${SymbolTableImplPath}
         ${AllocatorPath}
         ${BlockAllocatorPath}
         ${ComponentgPath}
@@ -67,7 +68,8 @@ source_group("Vector" FILES ${VectorPath})
 source_group("Vector\\Impl" FILES ${VectorImplPath})
 source_group("Filer" FILES ${FilerPath})
 source_group("Filer\\Impl" FILES ${FilerImplPath})
-source_group("Error" FILES ${ErrorPath})
+source_group("SymbolTable" FILES ${SymbolTablePath})
+source_group("SymbolTable\\Impl" FILES ${SymbolTableImplPath})
 source_group("Wrap" FILES ${WrapPath})
 source_group("Utility" FILES ${UtilityPath})
 source_group("Allocator" FILES ${AllocatorPath})
