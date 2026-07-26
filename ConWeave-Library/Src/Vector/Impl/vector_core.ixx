@@ -330,6 +330,10 @@ protected:
         return box_t::value.data.origin;
     }
 
+    const_pointer_t begin() const noexcept {
+        return begin();
+    }
+
     auto end() noexcept -> decltype(auto) {
         if constexpr (box_t::buffer_size) {
             if (box_t::value.mode == vector_mode::cache) {
@@ -337,6 +341,10 @@ protected:
             }
         }
         return box_t::value.data.curent;
+    }
+
+    const_pointer_t end() const noexcept {
+        return end();
     }
 
 protected:

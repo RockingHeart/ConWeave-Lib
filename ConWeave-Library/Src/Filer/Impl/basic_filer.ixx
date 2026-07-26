@@ -131,7 +131,10 @@ private:
 		);
 	}
 
-	constexpr auto read_impl(text_t buffer) noexcept {
+	constexpr auto read_impl(text_t			buffer,
+							 unsigned long& size)
+		noexcept
+	{
 		unsigned long size = 0;
 		fileid_t base_file = loader.base();
 		bool result = ReadFile (
@@ -141,13 +144,14 @@ private:
 	}
 
 	constexpr text_t copy_read() noexcept {
-		text_t result = new char_t [
+		text_t result = new char_t[
 			loader.size() + 1
 		];
-		static char_t buffer[255] {};
+		static char_t buffer[255]{};
 		unsigned long tosi = 0;
-		while (read_impl(buffer)) {
-			std::memcpy (
+		unsigned long size = 0;
+		while (read_impl(buffer, size)) {
+			std::memcpy(
 				result + tosi,
 				buffer, size
 			);
