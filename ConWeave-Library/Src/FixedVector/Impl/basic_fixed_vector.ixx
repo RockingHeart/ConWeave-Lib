@@ -91,16 +91,19 @@ public:
 
 public:
 
-	constexpr auto begin() noexcept -> decltype(auto) {
-		using PtrType = std::conditional_t <
-			std::is_const_v<std::remove_pointer_t<decltype(this)>>,
-				const_pointer_t,
-			pointer_t
-		>;
-		return reinterpret_cast<PtrType>(core_t::value.data);
+	constexpr pointer_t begin() noexcept {
+		return reinterpret_cast<pointer_t>(core_t::value.data);
 	}
 
-	constexpr auto end() noexcept -> decltype(auto) {
+	constexpr const_pointer_t begin() const noexcept {
+		return reinterpret_cast<const_pointer_t>(core_t::value.data);
+	}
+
+	constexpr pointer_t end() noexcept {
+		return begin() + core_t::size;
+	}
+
+	constexpr const_pointer_t end() const noexcept {
 		return begin() + core_t::size;
 	}
 
