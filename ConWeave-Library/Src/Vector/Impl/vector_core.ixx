@@ -331,7 +331,7 @@ protected:
     }
 
     const_pointer_t begin() const noexcept {
-        return begin();
+        return const_cast<vector_core*>(this)->begin();
     }
 
     auto end() noexcept -> decltype(auto) {
@@ -344,7 +344,7 @@ protected:
     }
 
     const_pointer_t end() const noexcept {
-        return end();
+        return const_cast<vector_core*>(this)->end();
     }
 
 protected:
