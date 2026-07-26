@@ -135,7 +135,6 @@ private:
 							 unsigned long& size)
 		noexcept
 	{
-		unsigned long size = 0;
 		fileid_t base_file = loader.base();
 		bool result = ReadFile (
 			base_file, buffer, 255, &size, nullptr
