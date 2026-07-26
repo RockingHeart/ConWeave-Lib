@@ -159,11 +159,13 @@ public:
 
 public:
 
-    constexpr auto begin(this basic_vector& vec) noexcept {
+    template <class SelfType>
+    constexpr auto begin(this SelfType&& vec) noexcept {
         return vec.core_t::begin();
     }
 
-    constexpr auto end(this basic_vector& vec) noexcept {
+    template <class SelfType>
+    constexpr auto end(this SelfType&& vec) noexcept {
         return vec.core_t::end();
     }
 
