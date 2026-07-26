@@ -6,8 +6,7 @@ import filer.basic;
 import sys.filoader;
 import sys.reader;
 import sys.writer;
-
-export import sys.access;
+import sys.access;
 
 export namespace sys
 {
@@ -16,6 +15,10 @@ export namespace sys
 		CharType, filoader, reader, writer
 	>;
 
-	template <rest::character CharType>
-	using adapt_filer = basic_adapt_filer<CharType>;
+	using ::comaccess;
+	using ::permission;
+	using ::read_order;
+
+	template <rest::character CharType, read_order Order = read_order::def>
+	using adapt_filer = basic_adapt_filer<CharType, Order>;
 }

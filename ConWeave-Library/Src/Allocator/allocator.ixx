@@ -1,3 +1,3 @@
 export module dast.allocator;
 
-export import :block;
+export import : block;

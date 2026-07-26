@@ -40,6 +40,7 @@ private:
 	using strutil      = typename string_traits::strutil;
 
 protected:
+
 	using box_t::value;
 	using box_t::cache;
 	using box_t::buffer_size;

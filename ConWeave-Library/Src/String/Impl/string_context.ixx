@@ -1,8 +1,7 @@
 export module string.impl.context;
 
-import utility;
-
 import std;
+import utility;
 
 export template <class StringModeType>
 struct string_info {

@@ -1,7 +1,6 @@
 export module dast.symbol_table;
 
-import symbol_table.impl.box;
-import symbol_table.impl.basic;
+import symbol_table.impl;
 
 import std;
 import utility;

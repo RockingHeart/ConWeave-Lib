@@ -86,11 +86,15 @@ public:
 	}
 };
 
-export template <rest::character CharType>
+export enum class read_order : std::size_t {
+	def, random
+};
+
+export template <rest::character CharType, read_order Order>
 class basic_adapt_filer {
 public:
-	using char_t = CharType;
-	using text_t = CharType*;
+	using char_t =		 CharType;
+	using text_t =		 CharType*;
 	using path_t = const CharType*;
 
 public:
@@ -127,19 +131,22 @@ private:
 		);
 	}
 
-	constexpr text_t copy_read() noexcept {
-		text_t result = new char_t[loader.size() + 1];
-		static char_t buffer[255]{};
-		fileid_t base_file = loader.base();
+	constexpr auto read_impl(text_t buffer) noexcept {
 		unsigned long size = 0;
+		fileid_t base_file = loader.base();
+		bool result = ReadFile (
+			base_file, buffer, 255, &size, nullptr
+		);
+		return result && size;
+	}
+
+	constexpr text_t copy_read() noexcept {
+		text_t result = new char_t [
+			loader.size() + 1
+		];
+		static char_t buffer[255] {};
 		unsigned long tosi = 0;
-		auto read = [&]() {
-			bool result = ReadFile(
-				base_file, buffer, 255, &size, nullptr
-			);
-			return result && size;
-		};
-		while (read()) {
+		while (read_impl(buffer)) {
 			std::memcpy (
 				result + tosi,
 				buffer, size
@@ -155,8 +162,19 @@ private:
 		return 2048 * size;
 	}
 
-	constexpr text_t read_text() noexcept {
+	[[nodiscard]]
+	constexpr bool can_mapping() const noexcept {
+		if constexpr (Order == read_order::random) {
+			return false;
+		}
 		if (loader.size() >= to_megabyte<100>()) {
+			return true;
+		}
+		return false;
+	}
+
+	constexpr text_t read_text() noexcept {
+		if (can_mapping()) {
 			loader.mapping();
 			return mapping_read();
 		}

@@ -1,12 +1,9 @@
 export module dast.string;
 
-export import string.impl.context;
-	   import string.impl;
+export import string.impl;
 
 import std;
 import utility;
-
-export using ::string_mode;
 
 template <rest::character CharType>
 using primary_traits = traits::string_traits <
@@ -16,6 +13,8 @@ using primary_traits = traits::string_traits <
 
 export namespace dast
 {
+	using ::string_mode;
+
 	template <rest::character CharType, template<class, class> class StringCore = string_core>
 	using string = basic_string<::primary_traits<CharType>, StringCore>;
 

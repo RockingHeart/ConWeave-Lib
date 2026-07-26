@@ -30,7 +30,7 @@ file(GLOB WrapPath "Src/Wrap/*.ixx")
 file(GLOB UtilityPath "Src/Utility/*.ixx")
 file(GLOB AllocatorPath "Src/Allocator/*.ixx")
 file(GLOB BlockAllocatorPath "Src/Allocator/BlockAllocator/*.ixx")
-file(GLOB ComponentgPath "Src/Allocator/Component/*.ixx")
+file(GLOB AllocatorComponentgPath "Src/Allocator/Component/*.ixx")
 
 add_library(ConWeaveLib)
 
@@ -50,7 +50,7 @@ target_sources(ConWeaveLib
         ${SymbolTablePath} ${SymbolTableImplPath}
         ${AllocatorPath}
         ${BlockAllocatorPath}
-        ${ComponentgPath}
+        ${AllocatorComponentgPath}
 )
 
 target_include_directories(ConWeaveLib
@@ -74,7 +74,7 @@ source_group("Wrap" FILES ${WrapPath})
 source_group("Utility" FILES ${UtilityPath})
 source_group("Allocator" FILES ${AllocatorPath})
 source_group("Allocator\\BlockAllocator" FILES ${BlockAllocatorPath})
-source_group("Allocator\\Component" FILES ${ComponentgPath})
+source_group("Allocator\\Component" FILES ${AllocatorComponentgPath})
 
 option(TEST "Build tests" OFF)
 
