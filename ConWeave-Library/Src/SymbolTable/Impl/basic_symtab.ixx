@@ -35,10 +35,8 @@ protected:
 		val.state = state::storage;
 	}
 
-public:
-
 	constexpr bool exist(symbol symbol) const noexcept {
-		value& val = box::value;
+		const value& val = box::value;
 		if (val.state == state::cache) {
 			for (auto elem : val.quick) {
 				if (elem == symbol) {
@@ -49,6 +47,8 @@ public:
 		}
 		return val.data.contains(symbol);
 	}
+
+public:
 
 	constexpr void add(symbol symbol) noexcept {
 		value& val = box::value;
@@ -64,7 +64,7 @@ public:
 	template <class HandlerType>
 	constexpr void for_each(HandlerType&& handler)
 		noexcept requires (
-			requires{ handler(symbol{}); }
+			std::is_invocable_v<HandlerType, symbol>
 		)
 	{
 		value& val = box::value;
@@ -77,6 +77,11 @@ public:
 		for (auto elem : val.data) {
 			handler(elem);
 		}
+	}
+
+	[[nodiscard]]
+	constexpr bool operator[](symbol symbol) const noexcept {
+		return exist(symbol);
 	}
 
 };

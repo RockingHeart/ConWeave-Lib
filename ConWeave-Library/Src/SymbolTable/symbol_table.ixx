@@ -7,6 +7,6 @@ import utility;
 
 export namespace dast
 {
-	template <rest::character CharType, std::size_t BufSize = 16>
+	template <rest::character CharType, std::size_t BufSize = 8>
 	using symbol_table = basic_symtab<symtabox<CharType, BufSize>>;
 }

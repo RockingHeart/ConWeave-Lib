@@ -7,10 +7,6 @@ int main() {
     dast::symbol_table<char> symtab;
     symtab.add("Var1");
     symtab.add("Var2");
-    symtab.for_each (
-        [&](auto symbol) {
-            std::cout << symbol << '\n';
-        }
-    );
+    std::cout << symtab["Var2"] << '\n';
     return 0;
 }
