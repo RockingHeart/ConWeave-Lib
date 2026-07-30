@@ -42,7 +42,7 @@ English：[EnglishMD] <br>
 | vector | Implemented | Basics finalized 2026.5.22 | 3.0.2 |
 | filer | Implemented | 2026.5.27 | 1.0.2 |
 | block_allocator | Implemented | 2026.6.21 | 1.7.0 |
-| symbol_table | Implemented | 2026.7.25 | 1.0.0 |
+| symbol_table | Implemented | 2026.7.25 | 2.0.0 |
 
 ## Performance Evaluation
 - string

@@ -2,86 +2,93 @@ export module symbol_table.impl.basic;
 
 import std;
 import utility;
-import symbol_table.impl.box;
+import symbol_table.impl.core;
 
-export template <class SymtaBox>
+export template <class SymtaCore>
 class basic_symtab
-				 : SymtaBox {
+	: SymtaCore {
 protected:
-	using box = SymtaBox;
+	using core = SymtaCore;
+	using core::cache_index;
+	using core::storage_index;
 
 public:
-	using char_t  = typename box::char_t;
-	using symbol  = typename box::symbol;
-	using quicks  = typename box::quicks;
-	using storage = typename box::storage;
-	using state   = typename box::table_state;
-	using value   = typename box::box_value;
+	using char_t = typename core::char_t;
+	using symbol = typename core::symbol;
+	using addal_info = typename core::addal_info;
+
+private:
+	using quicks	= typename core::quicks;
+	using storage	= typename core::storage;
+	using box_value = typename core::box_value;
 
 public:
 
 	constexpr basic_symtab()
-		noexcept : box()
+		noexcept : core()
 	{}
 
 protected:
 
 	constexpr void enable_storage() noexcept {
-		value& val  = box::value;
-		quicks temp = val.quick;
-		box::reset();
-		new (&val.data) storage();
-		val.data.insert(temp.begin(), temp.end());
-		val.state = state::storage;
-	}
-
-	constexpr bool exist(symbol symbol) const noexcept {
-		const value& val = box::value;
-		if (val.state == state::cache) {
-			for (auto elem : val.quick) {
-				if (elem == symbol) {
-					return true;
-				}
-			}
-			return false;
-		}
-		return val.data.contains(symbol);
+		box_value& val = core::value;
+		quicks temp = std::get<cache_index>(val);
+		val.template emplace<storage_index>(
+			temp.begin(), temp.end()
+		);
 	}
 
 public:
 
-	constexpr void add(symbol symbol) noexcept {
-		value& val = box::value;
-		if (val.state == state::cache) {
-			if (val.quick.push_back(symbol)) {
+	constexpr bool exist(symbol sym) const noexcept {
+		const box_value& val = core::value;
+		return std::visit([&](const auto& container) {
+			return container.contains(sym);
+		}, val);
+	}
+
+	constexpr void add(symbol sym, const addal_info& info) noexcept {
+		box_value& val = core::value;
+		if (auto* quick_ptr = std::get_if<cache_index>(&val)) {
+			if (quick_ptr->push_back({ sym, info })) {
 				return;
 			}
 			enable_storage();
 		}
-		val.data.insert(symbol);
+		std::get<storage_index>(val).insert({ sym, info });
 	}
 
 	template <class HandlerType>
 	constexpr void for_each(HandlerType&& handler)
 		noexcept requires (
-			std::is_invocable_v<HandlerType, symbol>
+			std::is_invocable_v <
+				HandlerType,
+				symbol, addal_info&
+			>
 		)
 	{
-		value& val = box::value;
-		if (val.state == state::cache) {
-			for (auto elem : val.quick) {
-				handler(elem);
+		std::visit([&](auto& container) {
+			for (auto& [key, value] : container) {
+				handler(key, value);
 			}
-			return;
-		}
-		for (auto elem : val.data) {
-			handler(elem);
-		}
+		}, core::value);
 	}
 
 	[[nodiscard]]
-	constexpr bool operator[](symbol symbol) const noexcept {
-		return exist(symbol);
+	constexpr match_result<addal_info> operator[](symbol sym)
+		const noexcept
+	{
+		const box_value& val = core::value;
+		return std::visit([&](const auto& container)
+			-> match_result<addal_info>
+		{
+			for (const auto& [key, value] : container) {
+				if (key == sym) {
+					return value;
+				}
+			}
+			return match::failed;
+		}, val);
 	}
 
 };
