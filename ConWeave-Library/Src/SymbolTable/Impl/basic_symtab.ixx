@@ -63,7 +63,8 @@ public:
 				std::declval<quicks&>().push_back (
 					std::declval<full_info>()
 				)
-			) &&
+			)
+			&&
 			noexcept (
 				std::declval<storage&>().insert (
 					std::declval<typename storage::value_type>()

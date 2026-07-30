@@ -122,22 +122,20 @@ protected:
 	struct cache_concord_little {
 		cache_size_t size	 : 5;
 		cache_size_t padding : padding_size;
-		bool         xored	 : 1;
 		string_mode  mode	 : 1;
 		constexpr cache_concord_little() noexcept = default;
 		constexpr cache_concord_little(cache_size_t size, string_mode mode)
-			noexcept : size(size), xored(false), mode(mode)
+			noexcept : size(size), mode(mode)
 		{}
 	};
 
 	struct cache_concord_big {
-		bool         xored	 : 1;
 		string_mode  mode	 : 1;
 		cache_size_t padding : padding_size;
 		cache_size_t size	 : 5;
 		constexpr cache_concord_big() noexcept = default;
 		constexpr cache_concord_big(cache_size_t size, string_mode mode)
-			noexcept : xored(false), mode(mode), size(size)
+			noexcept : mode(mode), size(size)
 		{}
 	};
 
@@ -156,9 +154,8 @@ protected:
 	struct specs_bits : cache_concord_t {
 		using concord_t = cache_concord_t;
 		using concord_t::concord_t;
-		using concord_t::size;
 		using concord_t::mode;
-		using concord_t::xored;
+		using concord_t::size;
 	};
 
 	struct cache_t {

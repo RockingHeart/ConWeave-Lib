@@ -622,4 +622,85 @@ public:
 		value.before = nullptr;
 		return true;
 	}
+
+public:
+
+	[[nodiscard]]
+	constexpr bool operator!(this basic_string& self) noexcept {
+		return !self.is_empty();
+	}
+
+	[[nodiscard]]
+	constexpr operator const_pointer_t(this basic_string& self) noexcept {
+		return self.pointer();
+	}
+
+	constexpr reference_t operator[](this basic_string& self, size_t position) noexcept {
+		return (self.pointer())[position];
+	}
+
+	template <class... ArgsType>
+	constexpr basic_string operator+(this basic_string& self, ArgsType&&... args)
+		noexcept requires (
+			requires {
+				basic_string { self, std::forward<ArgsType>(args)... };
+			}
+		)
+	{
+		return { self, std::forward<ArgsType>(args)... };
+	}
+
+	template <class... ArgsType>
+	constexpr basic_string& operator=(this basic_string& self, ArgsType&&... args)
+		noexcept requires (
+			requires {
+				self.assignment(std::forward<ArgsType>(args)...);
+			}
+		)
+	{
+		return self.assignment(std::forward<ArgsType>(args)...);
+	}
+
+	template <class... ArgsType>
+	constexpr decltype(auto) operator+=(this basic_string& self, ArgsType&&... args)
+		noexcept requires (
+			requires {
+				self.string_append(std::forward<ArgsType>(args)...);
+			}
+		)
+	{
+		if constexpr (self.trait_is_enhance_mode()) {
+			return self.template adder<basic_string&> (
+				self.string_append(std::forward<ArgsType>(args)...)
+			);
+		}
+		else {
+			return self.string_append (
+				std::forward<ArgsType>(args)...
+			);
+		}
+	}
+
+	template <class... ArgsType>
+	constexpr basic_string& operator^=(this basic_string& self, ArgsType&&... args)
+		noexcept requires (
+			requires {
+				self.xor_string(std::forward<ArgsType>(args)...);
+			}
+		)
+	{
+		return self.xor_string(std::forward<ArgsType>(args)...);
+	}
+
+	template <class... ArgsType>
+	constexpr bool operator==(this basic_string& self, ArgsType&&... args)
+		noexcept requires (
+			requires {
+				self.compare(std::forward<ArgsType>(args)...);
+			}
+		)
+	{
+		return self.compare(std::forward<ArgsType>(args)...);
+	}
+
 };

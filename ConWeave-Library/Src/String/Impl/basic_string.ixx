@@ -131,26 +131,26 @@ private:
 
 private:
 
-	constexpr basic_string(const basic_string& object, char_t value)
+	constexpr basic_string(basic_string& object, char_t value)
 		noexcept
 	{
 		assign_init(object, &value, 1);
 	}
 
-	constexpr basic_string(const basic_string& object, const_pointer_t pointer)
+	constexpr basic_string(basic_string& object, const_pointer_t pointer)
 		noexcept
 	{
 		assign_init(object, pointer, strutil::strlenof(pointer));
 	}
 
-	constexpr basic_string(const basic_string& object, basic_string& right_object)
+	constexpr basic_string(basic_string& object, basic_string& right_object)
 		noexcept
 	{
 		assign_init(object, right_object.pointer(), right_object.string_length());
 	}
 
 
-	constexpr basic_string(const basic_string& object, char_action act)
+	constexpr basic_string(basic_string& object, char_action act)
 		noexcept
 	{
 		assign_init(object);
@@ -1425,7 +1425,6 @@ private:
 		for (size_t i = 0; i < size; ++i) {
 			string[i] ^= key;
 		}
-		core_t::xored(true);
 		return string;
 	}
 
@@ -1995,94 +1994,6 @@ private:
 	[[nodiscard]]
 	constexpr bool is_empty() const noexcept {
 		return string_length() == 0;
-	}
-
-public:
-
-	[[nodiscard]]
-	constexpr bool operator!() const noexcept {
-		return !is_empty();
-	}
-
-	[[nodiscard]]
-	constexpr operator const_pointer_t() const noexcept {
-		return pointer();
-	}
-
-public:
-
-	constexpr reference_t operator[](size_t position) noexcept {
-		return pointer()[position];
-	}
-
-	constexpr char_t operator[](size_t position) const noexcept {
-		return pointer()[position];
-	}
-
-public:
-
-	template <class... ArgsType>
-	constexpr basic_string operator+(ArgsType&&... args)
-		const noexcept requires (
-		    requires {
-		        basic_string { *this, std::forward<ArgsType>(args)... };
-	        }
-		)
-	{
-		return { *this, std::forward<ArgsType>(args)... };
-	}
-
-	template <class... ArgsType>
-	constexpr basic_string& operator=(ArgsType&&... args)
-		noexcept requires (
-		    requires {
-		        assignment(std::forward<ArgsType>(args)...);
-	        }
-		)
-	{
-		return assignment(std::forward<ArgsType>(args)...);
-	}
-
-	template <class... ArgsType>
-	constexpr decltype(auto) operator+=(ArgsType&&... args)
-		noexcept requires (
-		    requires {
-		        string_append(std::forward<ArgsType>(args)...);
-	        }
-		)
-	{
-		if constexpr (trait_is_enhance_mode()) {
-			return adder<basic_string&> (
-				string_append(std::forward<ArgsType>(args)...)
-			);
-		}
-		else {
-			return string_append (
-				std::forward<ArgsType>(args)...
-			);
-		}
-	}
-
-	template <class... ArgsType>
-	constexpr basic_string& operator^=(ArgsType&&... args)
-		noexcept requires (
-			requires {
-				xor_string(std::forward<ArgsType>(args)...);
-			}
-		)
-	{
-		return xor_string(std::forward<ArgsType>(args)...);
-	}
-
-	template <class... ArgsType>
-	constexpr bool operator==(ArgsType&&... args)
-		noexcept requires (
-		    requires {
-		        compare(std::forward<ArgsType>(args)...);
-	        }
-		)
-	{
-		return compare(std::forward<ArgsType>(args)...);
 	}
 
 private:
