@@ -5,6 +5,8 @@ import symbol_table.impl;
 import std;
 import utility;
 
+export using ::table_state;
+
 export namespace dast
 {
 	template <rest::character CharType, class AddalType, std::size_t BufSize = 16>

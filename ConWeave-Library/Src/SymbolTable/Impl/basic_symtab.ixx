@@ -6,7 +6,7 @@ import symbol_table.impl.core;
 
 export template <class SymtaCore>
 class basic_symtab
-	: SymtaCore {
+				 : SymtaCore {
 protected:
 	using core = SymtaCore;
 	using core::cache_index;
@@ -21,18 +21,28 @@ private:
 	using quicks	= typename core::quicks;
 	using storage	= typename core::storage;
 	using box_value = typename core::box_value;
+	using full_info = typename core::full_info;
 
 public:
 
 	constexpr basic_symtab()
-		noexcept : core()
+		noexcept(std::is_nothrow_default_constructible_v<core>)
+		: core()
 	{}
 
 protected:
 
-	constexpr void enable_storage() noexcept {
+	constexpr void enable_storage() 
+		noexcept (
+			std::is_nothrow_move_constructible_v<quicks> &&
+			noexcept(std::declval<box_value&>().template emplace<storage_index> (
+				std::declval<typename quicks::pointer_t>(),
+				std::declval<typename quicks::pointer_t>()
+			))
+		)
+	{
 		box_value& val = core::value;
-		quicks temp = std::get<cache_index>(val);
+		quicks temp    = std::move(std::get<cache_index>(val));
 		val.template emplace<storage_index>(
 			temp.begin(), temp.end()
 		);
@@ -47,7 +57,20 @@ public:
 		}, val);
 	}
 
-	constexpr void add(symbol sym, const addal_info& info) noexcept {
+	constexpr void add(symbol sym, const addal_info& info) 
+		noexcept (
+			noexcept (
+				std::declval<quicks&>().push_back (
+					std::declval<full_info>()
+				)
+			) &&
+			noexcept (
+				std::declval<storage&>().insert (
+					std::declval<typename storage::value_type>()
+				)
+			)
+		)
+	{
 		box_value& val = core::value;
 		if (auto* quick_ptr = std::get_if<cache_index>(&val)) {
 			if (quick_ptr->push_back({ sym, info })) {
@@ -60,7 +83,10 @@ public:
 
 	template <class HandlerType>
 	constexpr void for_each(HandlerType&& handler)
-		noexcept requires (
+		noexcept(
+			std::is_nothrow_invocable_v<HandlerType, symbol, addal_info&>
+		)
+		requires (
 			std::is_invocable_v <
 				HandlerType,
 				symbol, addal_info&
@@ -72,6 +98,11 @@ public:
 				handler(key, value);
 			}
 		}, core::value);
+	}
+
+	[[nodiscard]]
+	constexpr table_state state() const noexcept {
+		return static_cast<table_state>(core::value.index());
 	}
 
 	[[nodiscard]]

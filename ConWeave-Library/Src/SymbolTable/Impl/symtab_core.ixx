@@ -5,6 +5,10 @@ import utility;
 
 import dast.fixed_vector;
 
+export enum class table_state : std::size_t {
+	cache, storage
+};
+
 export template <
 	rest::character CharType,
 	class AddalInfo,
@@ -22,10 +26,6 @@ public:
 
 protected:
 
-	enum class table_state : std::size_t {
-		cache, storage
-	};
-
 	static constexpr std::size_t cache_index   = static_cast<std::size_t>(table_state::cache);
 	static constexpr std::size_t storage_index = static_cast<std::size_t>(table_state::storage);
 
@@ -37,7 +37,9 @@ protected:
 public:
 
 	constexpr symtab_core()
-		noexcept : value(std::in_place_index<0>)
+		noexcept (
+			std::is_nothrow_constructible_v<quicks>
+		) : value(std::in_place_index<cache_index>)
 	{}
 
 	constexpr ~symtab_core() noexcept = default;
