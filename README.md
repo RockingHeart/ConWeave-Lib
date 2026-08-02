@@ -112,7 +112,7 @@ constexpr basic_string operator+(this basic_string& self, ArgsType&&... args)
     Finally MemFun(BasicCore::ConstString) -> FromCaller(BasicString::Pointer)
     ConstStringOfImpl: Call(ExplicitThis) -> MemFun(ExplicitThis::Pointer)
 ```
-### A：如果返回string_core，因显式this类型要求是basic_string以调用pointer（若是string_core，显式this是string_core，不满足），故而查找不到const_string <br> 若返回basic_string，则满足调用链要求。
+### A：如果返回string_core，因const_string的显式this参数类型要求具有pointer成员函数（若是string_core，stirng_core无pointer成员，不满足约束，故而查找不到const_string），若返回basic_string，则满足约束与形式调用链要求。
 
 [Download]: https://github.com/RockingHeart/ConWeave-Lib/archive/refs/heads/main.zip
 

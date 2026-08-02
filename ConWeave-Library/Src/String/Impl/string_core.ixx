@@ -639,12 +639,6 @@ public:
 		return (self.pointer())[position];
 	}
 
-	// What the return type is basic_string?
-	// If (str1 + str2).const_string:
-	//	Caller(BasicString::Operator+) -> Return(BasicString)
-	//	Caller(BasicCore::ConstString) -> FromExplicitThis(CallerOfBasicString) -> Inheritance(StringCore)
-	//	Finally MemFun(BasicCore::ConstString) -> FromCaller(BasicString::Pointer)
-	// COnstStringOfImpl: Call(ExplicitThis) -> MemFun(ExplicitThis::Pointer)
 	template <class... ArgsType>
 	constexpr basic_string operator+(this basic_string& self, ArgsType&&... args)
 		noexcept requires (
