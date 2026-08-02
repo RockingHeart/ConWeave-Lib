@@ -92,8 +92,29 @@ English：[EnglishMD] <br>
 **In the project's current directory, enter the command in the console: `CMake -B "/CML"`. This command specifies the output directory — the value after the -B parameter is the designated directory, and the value type is a string** <br>
 
 ## Q&A
-### Q: Regarding String, why is the interface named `core`, with `basic` as the core implementation, and why does `basic` implement constructors, destructors, and operators?
-### A: This String uses CRTP with explicit `this` to achieve separation and independent implementation of interface and implementation. In the CRTP interface class, the internal interface implementation actually uses explicit `this` to call the parent class's implementation. If the parent class's implementation needs to pass in its own type, then `this` needs to be cast within the CRTP interface, which introduces runtime conversion overhead, defeating the purpose. Combined with the philosophy that the foundation is implemented by me while the core may not necessarily be, this is a choice I made after careful consideration.
+### About the code: (str1 + str2).const_string
+### Q: Why is the return type of operator+ basic_string?
+```C++
+// This is the interface for operator+
+template <class... ArgsType>
+constexpr basic_string operator+(this basic_string& self, ArgsType&&... args)
+	noexcept requires (
+		requires {
+			basic_string { self, std::forward<ArgsType>(args)... };
+		}
+	)
+{
+	return { self, std::forward<ArgsType>(args)... };
+}
+```
+``` text
+Call chain:
+    Caller(BasicString::Operator+) -> Return(BasicString)
+    Caller(BasicCore::ConstString) -> FromExplicitThis(CallerOfBasicString) -> Inheritance(StringCore)
+    Finally MemFun(BasicCore::ConstString) -> FromCaller(BasicString::Pointer)
+    ConstStringOfImpl: Call(ExplicitThis) -> MemFun(ExplicitThis::Pointer)
+```
+### A: If it returns string_core, the explicit this type would be string_core. Since pointer() needs to be called from the explicit this inside const_string, and string_core has no pointer(), the call fails. <br> If it returns basic_string, the call chain requirement is satisfied.
 
 [Download]: https://github.com/RockingHeart/ConWeave-Lib/archive/refs/heads/main.zip
 

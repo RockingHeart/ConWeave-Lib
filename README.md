@@ -90,8 +90,29 @@
 **在项目当前目录下使用控制台输入指令：CMake -B "/ML"，此指令用于指定生成目录，而-B命令参数之后的值是指定的目录，值类型为字符串** <br>
 
 ## Q&A
-### Q: 关于String，为什么接口是core，basic是核心实现，而basic又实现构造函数、析构函数、运算符？
-### A: 此String利用CRTP与显示this以实现接口与实现的分离及独立实现，而在CRTP接口类中，接口内部实现实际使用显示this调用父类的实现，若父类的实现需传入自身类型，那么需在CRTP接口中对this进行转换，会引入转换运行时开销，导致本末倒置，结合其基础由我实现，核心可不由我实现的思想，这是一个经由我深思熟虑过后的选择。
+### 关于代码：(str1 + str2).const_string
+### Q: 为什么operator+的返回类型是basic_string？
+```C++
+// 此为operator+的接口
+template <class... ArgsType>
+constexpr basic_string operator+(this basic_string& self, ArgsType&&... args)
+	noexcept requires (
+		requires {
+			basic_string { self, std::forward<ArgsType>(args)... };
+		}
+	)
+{
+	return { self, std::forward<ArgsType>(args)... };
+}
+```
+``` text
+调用链：
+    Caller(BasicString::Operator+) -> Return(BasicString)
+    Caller(BasicCore::ConstString) -> FromExplicitThis(CallerOfBasicString) -> Inheritance(StringCore)
+    Finally MemFun(BasicCore::ConstString) -> FromCaller(BasicString::Pointer)
+    ConstStringOfImpl: Call(ExplicitThis) -> MemFun(ExplicitThis::Pointer)
+```
+### A：如果返回string_core，因显式this类型要求是basic_string以调用pointer（若是string_core，显式this是string_core，不满足），故而查找不到const_string <br> 若返回basic_string，则满足调用链要求。
 
 [Download]: https://github.com/RockingHeart/ConWeave-Lib/archive/refs/heads/main.zip
 

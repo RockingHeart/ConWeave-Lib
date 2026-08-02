@@ -5,7 +5,7 @@ import utility;
 
 import dast.fixed_vector;
 
-export enum class table_state : std::size_t {
+export enum class symtab_state : std::size_t {
 	cache, storage
 };
 
@@ -26,8 +26,8 @@ public:
 
 protected:
 
-	static constexpr std::size_t cache_index   = static_cast<std::size_t>(table_state::cache);
-	static constexpr std::size_t storage_index = static_cast<std::size_t>(table_state::storage);
+	static constexpr std::size_t cache_index   = static_cast<std::size_t>(symtab_state::cache);
+	static constexpr std::size_t storage_index = static_cast<std::size_t>(symtab_state::storage);
 
 protected:
 
