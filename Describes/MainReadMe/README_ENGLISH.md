@@ -16,6 +16,7 @@ English：[EnglishMD] <br>
         - Updates: [UpdateLog-String]
         - Implementation files: [ImplationFile-String]
         - Basics: [Base-String]
+        - Defect report: [DefectReport-String]
     - FixedVector
         - Interface: [ClassInterface-FixedVector]
         - Future plans: [Future-FixedVector]
@@ -133,6 +134,7 @@ Call chain:
 [UpdateLog-String]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/String/UpdateLog-String.md
 [ImplationFile-String]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/String/ImplationFile-String.md
 [Base-String]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/String/Base-String.md
+[DefectReport-String]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/String/DefectReport-String.md
 
 <!-- FixedVector -->
 [ClassInterface-FixedVector]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/FixedVector/ClassInterface-FixedVector.md

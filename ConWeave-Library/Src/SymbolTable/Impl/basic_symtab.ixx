@@ -102,8 +102,8 @@ public:
 	}
 
 	[[nodiscard]]
-	constexpr table_state state() const noexcept {
-		return static_cast<table_state>(core::value.index());
+	constexpr symtab_state state() const noexcept {
+		return static_cast<symtab_state>(core::value.index());
 	}
 
 	[[nodiscard]]

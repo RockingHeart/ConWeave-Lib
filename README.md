@@ -14,6 +14,7 @@
         - 更新：[UpdateLog-String]
         - 文介：[ImplationFile-String]
         - 基础：[Base-String]
+        - 缺报：[DefectReport-String]
     - FixedVector
         - 接文：[ClassInterface-FixedVector]
         - 未来：[Future-FixedVector]
@@ -129,6 +130,7 @@ constexpr basic_string operator+(this basic_string& self, ArgsType&&... args)
 [UpdateLog-String]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/String/UpdateLog-String.md
 [ImplationFile-String]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/String/ImplationFile-String.md
 [Base-String]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/String/Base-String.md
+[DefectReport-String]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/String/DefectReport-String.md
 
 <!-- FixedVector -->
 [ClassInterface-FixedVector]: https://github.com/RockingHeart/ConWeave-Lib/blob/main/Describes/FixedVector/ClassInterface-FixedVector.md

@@ -4,9 +4,10 @@ module;
 export module string.impl.box;
 
 import string.impl.traits;
+import string.impl.context;
 
-import utility;
 import std;
+import utility;
 
 using namespace traits;
 using namespace bitinfo;

@@ -27,5 +27,9 @@ struct assign_operation<assoptions::async, Type> {
 	
 };
 
+export enum class string_mode : bool {
+	cache, storage
+};
+
 export template <assoptions AssignOption, class Type>
 using assign_operation_t = typename assign_operation<AssignOption, Type>::type;

@@ -1,7 +1,7 @@
 export module string.impl.traits;
 
-import utility;
 import std;
+import utility;
 
 template <class Utility>
 concept string_utility_type = requires(Utility util) {
@@ -9,10 +9,6 @@ concept string_utility_type = requires(Utility util) {
 	util.strset;
 	util.strcmp;
 	util.strlenof;
-};
-
-export enum class string_mode : bool {
-	cache, storage
 };
 
 export namespace traits
@@ -25,8 +21,7 @@ export namespace traits
 		template <class> class AllocatorType, class SizeType
 	> requires (
 		rest::allocator<AllocatorType<CharType>> &&
-		is_character_v<typename AllocatorType<CharType>::value_type>
-		&&
+		is_character_v<typename AllocatorType<CharType>::value_type> &&
 		string_utility_type<StringUtility<CharType, SizeType>>
 	) struct string_traits;
 };
@@ -56,7 +51,6 @@ template <
 	using alloc_t	   = AllocatorType<CharType>;
 	using strutil	   = StringUtility<CharType, SizeType>;
 	using value_traits = string_value_traits;
-
 	using cache_size_t = unsigned char;
 
 	constexpr static value_traits value_trait = StringValueTrait;
