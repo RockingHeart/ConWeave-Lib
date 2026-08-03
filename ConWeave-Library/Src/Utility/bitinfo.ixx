@@ -16,12 +16,12 @@ export namespace bitinfo
 	template <std::size_t position, class ObjectType>
 	constexpr void set(ObjectType& object, bool level) noexcept;
 
-	enum class endpoint : bool {
-		little, big
-	};
+	enum class endpoint : bool;
 
-	constexpr auto layout_endian() noexcept;
+	constexpr endpoint layout_endian() noexcept;
 }
+
+using namespace bitinfo;
 
 template <std::size_t position, class ObjectType>
 constexpr bool bitinfo::at(const ObjectType& object) noexcept {
@@ -36,7 +36,11 @@ constexpr void bitinfo::set(ObjectType& object, bool level) noexcept {
 		object &= ~(1 << position);
 }
 
-constexpr auto bitinfo::layout_endian() noexcept {
+enum class bitinfo::endpoint : bool {
+	little, big
+};
+
+constexpr endpoint bitinfo::layout_endian() noexcept {
 	struct layout {
 		std::uint8_t low : 4;
 		std::uint8_t hig : 4;
