@@ -485,8 +485,7 @@ private:
 		size_t alloc_size = count * 2;
 		alloc_size += 1;
 		value.pointer = allocator().allocate(alloc_size);
-		size_t new_left = alloc_size - size;
-		value.concord.left = new_left ? new_left -= 1 : new_left;
+		value.concord.left    = alloc_size - sumlen - 1;
 		strutil::strcopy(value.pointer, object.pointer(), obj_size);
 		strutil::strcopy(value.pointer + obj_size, pointer, size);
 		value.pointer[count] = char_t();
