@@ -64,7 +64,7 @@ private:
 	struct value_concord {
 		using type = std::conditional_t <
 			EndPoint == endpoint::little,
-			value_concord_little,
+				value_concord_little,
 			value_concord_big
 		>;
 	};
@@ -145,7 +145,7 @@ protected:
 	struct cache_concord {
 		using type = std::conditional_t <
 			EndPoint == endpoint::little,
-			cache_concord_little,
+				cache_concord_little,
 			cache_concord_big
 		>;
 	};
@@ -192,6 +192,7 @@ public:
 		noexcept : cache {}
 	{
 		if (size > buffer_size) {
+			std::construct_at(&value);
 			value.count		 = size;
 			cache.specs.mode = string_mode::storage;
 			return;

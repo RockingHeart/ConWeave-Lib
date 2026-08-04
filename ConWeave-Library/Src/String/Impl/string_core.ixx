@@ -650,7 +650,7 @@ public:
 		return { self, std::forward<ArgsType>(args)... };
 	}
 
-	template <class... ArgsType>
+	/*template <class... ArgsType>
 	constexpr basic_string& operator=(this basic_string& self, ArgsType&&... args)
 		noexcept requires (
 			requires {
@@ -659,7 +659,7 @@ public:
 		)
 	{
 		return self.assignment(std::forward<ArgsType>(args)...);
-	}
+	}*/
 
 	template <class... ArgsType>
 	constexpr decltype(auto) operator+=(this basic_string& self, ArgsType&&... args)
