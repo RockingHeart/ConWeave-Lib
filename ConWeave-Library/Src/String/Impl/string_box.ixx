@@ -25,17 +25,17 @@ template<> struct bandwidth_calculator<4> { static constexpr size_t value = 3; }
 
 export template <class StringTraits>
 class string_box {
-public:
+protected:
 	using string_traits = StringTraits;
 
+public:
 	using char_t          = typename string_traits::char_t;
 	using pointer_t       = typename string_traits::pointer_t;
 	using const_pointer_t = typename string_traits::const_pointer_t;
 	using size_t		  = typename string_traits::size_t;
 	using value_traits	  = typename string_traits::value_traits;
-
-	using alloc_t	   = typename string_traits::alloc_t;
-	using cache_size_t = typename string_traits::cache_size_t;
+	using alloc_t		  = typename string_traits::alloc_t;
+	using cache_size_t	  = typename string_traits::cache_size_t;
 
 protected:
 
@@ -159,7 +159,7 @@ protected:
 		using concord_t::size;
 	};
 
-	struct cache_t {
+	struct box_cache_type {
 		char_t	   pointer[buffer_size];
 		specs_bits specs [[indeterminate]];
 	};
@@ -167,9 +167,14 @@ protected:
 protected:
 
 	union {
-		cache_t        cache;
+		box_cache_type cache;
 		box_value_type value;
 	};
+
+	[[
+			  no_unique_address,
+		msvc::no_unique_address
+	]] alloc_t memalloc;
 
 public:
 
@@ -192,8 +197,8 @@ public:
 		noexcept : cache {}
 	{
 		if (size > buffer_size) {
-			std::construct_at(&value);
-			value.count		 = size;
+			box_value_type newval{ nullptr, size, {} };
+			std::construct_at(&value, newval);
 			cache.specs.mode = string_mode::storage;
 			return;
 		}

@@ -36,8 +36,8 @@ private:
 	static_assert(requires{ string_core_type<core_t>; });
 
 private:
-	using box_value_t = typename core_t::box_value_type;
-	using box_cache_t = typename core_t::cache_t;
+	using box_value_t = typename core_t::box_value_t;
+	using box_cache_t = typename core_t::box_cache_t;
 	using box_specs_t = typename core_t::box_specs_t;
 
 private:
@@ -191,7 +191,7 @@ public:
 private:
 
 	constexpr alloc_t& allocator() noexcept {
-		return *reinterpret_cast<alloc_t*>(this);
+		return core_t::memalloc;
 	}
 
 	constexpr std::size_t alloc_size() const noexcept {
@@ -1295,7 +1295,7 @@ private:
 		                           size_t          end)
 		noexcept
 	{
-		if (std::strlen(str) > end) {
+		if (strutil::strlenof(str) > end) {
 			return false;
 		}
 		if (!within_range(point, end)) {

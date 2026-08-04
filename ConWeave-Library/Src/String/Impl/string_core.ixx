@@ -14,7 +14,6 @@ export template <class BasicString, class StringTraits>
         }
 	)
 class string_core :
-	private		  StringTraits::alloc_t,
 	protected     string_box<StringTraits> {
 public:
 	using string_traits = StringTraits;
@@ -22,7 +21,7 @@ public:
 protected:
 	using box_t		  =          string_box<StringTraits>;
 	using box_value_t = typename box_t::box_value_type;
-	using box_cache_t = typename box_t::cache_t;
+	using box_cache_t = typename box_t::box_cache_type;
 	using box_specs_t = typename box_t::specs_bits;
 	using box_t::box_t;
 
@@ -33,14 +32,12 @@ public:
 	using const_pointer_t = typename string_traits::const_pointer_t;
 	using size_t          = typename string_traits::size_t;
 
-	using alloc_t = typename box_t::alloc_t;
-
 private:
+	using alloc_t	   = typename box_t::alloc_t;
 	using basic_string =          BasicString;
 	using strutil      = typename string_traits::strutil;
 
 protected:
-
 	using box_t::value;
 	using box_t::cache;
 	using box_t::buffer_size;
