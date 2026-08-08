@@ -1625,7 +1625,7 @@ private:
 
 private:
 
-	constexpr match::option<size_t> front_index (char_t target,
+	constexpr std::optional<size_t> front_index (char_t target,
 												 size_t point,
 												 size_t end)
 		noexcept
@@ -1636,10 +1636,10 @@ private:
 				return point;
 			}
 		}
-		return match::failed;
+		return std::nullopt;
 	}
 
-	constexpr match::option<size_t> last_index (char_t target,
+	constexpr std::optional<size_t> last_index (char_t target,
 												size_t point,
 												size_t end)
 		noexcept
@@ -1650,14 +1650,14 @@ private:
 				return point;
 			}
 		}
-		return match::failed;
+		return std::nullopt;
 	}
 
 	constexpr bool index_string(size_t position) noexcept {
 		return position < string_length();
 	}
 
-	constexpr match::option<size_t> index_string (char_t target,
+	constexpr std::optional<size_t> index_string (char_t target,
 												  size_t point,
 												  size_t end)
 		noexcept

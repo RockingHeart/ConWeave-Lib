@@ -128,12 +128,12 @@ public:
 		return result;
 	}
 
-	constexpr match::option<size_t> size() const noexcept {
+	constexpr std::optional<size_t> size() const noexcept {
 		LARGE_INTEGER size;
 		if (GetFileSizeEx(fileid, &size)) {
 			return size.QuadPart;
 		}
-		return match::failed;
+		return std::nullopt;
 	}
 
 	constexpr bool close() const noexcept {

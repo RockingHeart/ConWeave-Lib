@@ -1,9 +1,7 @@
 export module utility : strutil;
 
-import :type_restion;
-import :match;
-
 import std;
+import : type_restion;
 
 template <rest::character CharacterType>
 struct compile {
@@ -43,19 +41,19 @@ struct compile {
 	}
 
 	template <size_t strlen, size_t tarlen>
-	constexpr static match::option<size_t> strmatch (const char_t* str,
+	constexpr static std::optional<size_t> strmatch (const char_t* str,
 													 const char_t* target)
 		noexcept
 	{
 		for (size_t i = 0; i < strlen; ++i, ++str) {
 			if (i + tarlen > strlen) {
-				return match::failed;
+				return std::nullopt;
 			}
 			if (std::strcmp(str, target, tarlen)) {
 				return i;
 			}
 		}
-		return match::failed;
+		return std::nullopt;
 	}
 	
 };
@@ -210,7 +208,7 @@ public:
 	}
 
 	template <rest::character CharacterType = char_t>
-	constexpr static match::option<size_t> strmatch (const CharacterType* str,
+	constexpr static std::optional<size_t> strmatch (const CharacterType* str,
 													const CharacterType* target)
 		noexcept
 	{
@@ -227,7 +225,7 @@ public:
 		auto strcompare = compare_function(strlen);
 		for (size_t i = 0; i < strlen;) {
 			if (i + tarlen > strlen) {
-				return match::failed;
+				return std::nullopt;
 			}
 			size_t resu = strcompare (
 				str + i, target, tarlen
@@ -237,7 +235,7 @@ public:
 			}
 			i += resu;
 		}
-		return match::failed;
+		return std::nullopt;
 	}
 
 private:
