@@ -4,11 +4,21 @@ import std;
 
 export namespace match
 {
-	enum behav {
-		failed,
-		success
-	};
+	enum behav;
+
+	template <typename ResultType>
+	class option;
+
+	template <class Type, typename... Kinds>
+	constexpr bool   deserved(Type& resu, Kinds... kinds) noexcept;
+	template <class Type, typename... Kinds>
+	constexpr bool undeserved(Type& resu, Kinds... kinds) noexcept;
 }
+
+enum match::behav {
+	failed,
+	success
+};
 
 // It's not only used for looking up results ¡ª as the name suggests,
 // it can be a match for a result.
@@ -22,7 +32,8 @@ public:
 
 protected:
 
-	match::behav found; value_t result;
+	match::behav found;
+	value_t		 result;
 
 public:
 
@@ -54,9 +65,9 @@ public:
 
 };
 
-export template <typename ResultType>
-class match_result :
-    public	  match_box_t<ResultType> {
+template <typename ResultType>
+class match::option :
+    public		    match_box_t<ResultType> {
 private:
 	using box_t = match_box_t<ResultType>;
 
@@ -81,7 +92,6 @@ public:
 		return box_t::found == match::success;
 	}
 
-	[[nodiscard]]
 	constexpr reference_t value() noexcept {
 		return box_t::result;
 	}
@@ -93,3 +103,15 @@ public:
 		return is_success();
 	}
 };
+
+template <class Type, typename... Kinds>
+constexpr bool match::deserved(Type& resu, Kinds... kinds) noexcept {
+	auto& token = resu.value();
+	return resu.is_success() && ((token.type == kinds) || ...);
+}
+
+template <class Type, typename... Kinds>
+constexpr bool match::undeserved(Type& resu, Kinds... kinds) noexcept {
+	auto& token = resu.value();
+	return resu.is_failed() || ((token.type != kinds) && ...);
+}

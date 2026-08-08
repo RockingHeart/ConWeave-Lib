@@ -233,8 +233,8 @@ public:
 	}
 
 	template <class AllocType, class... ArgsType>
-	constexpr match_result<AllocType*> try_alloc (std::size_t		 size,
-													   ArgsType&&... args)
+	constexpr match::option<AllocType*> try_alloc (std::size_t		 size,
+													    ArgsType&&... args)
 		noexcept
 	{
 		if (need_realloc(size)) {
@@ -247,7 +247,7 @@ public:
 	}
 
 	template <rest::character CharType>
-	constexpr match_result<CharType*> try_alloc(const CharType* string,
+	constexpr match::option<CharType*> try_alloc(const CharType* string,
 													   size_t	 size)
 		noexcept
 	{
@@ -274,7 +274,7 @@ public:
 	}
 
 	template <class DataType>
-	constexpr match_result<DataType*> data(std::size_t off) const noexcept {
+	constexpr match::option<DataType*> data(std::size_t off) const noexcept {
 		return current->area.template address<DataType>(off);
 	}
 

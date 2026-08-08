@@ -43,8 +43,8 @@ struct compile {
 	}
 
 	template <size_t strlen, size_t tarlen>
-	constexpr static match_result<size_t> strmatch (const char_t* str,
-		                                       const char_t* target)
+	constexpr static match::option<size_t> strmatch (const char_t* str,
+													 const char_t* target)
 		noexcept
 	{
 		for (size_t i = 0; i < strlen; ++i, ++str) {
@@ -210,7 +210,7 @@ public:
 	}
 
 	template <rest::character CharacterType = char_t>
-	constexpr static match_result<size_t> strmatch (const CharacterType* str,
+	constexpr static match::option<size_t> strmatch (const CharacterType* str,
 													const CharacterType* target)
 		noexcept
 	{

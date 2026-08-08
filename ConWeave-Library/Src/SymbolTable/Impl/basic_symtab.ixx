@@ -107,12 +107,12 @@ public:
 	}
 
 	[[nodiscard]]
-	constexpr match_result<addal_info> operator[](symbol sym)
+	constexpr match::option<addal_info> operator[](symbol sym)
 		const noexcept
 	{
 		const box_value& val = core::value;
 		return std::visit([&](const auto& container)
-			-> match_result<addal_info>
+			noexcept -> match::option<addal_info>
 		{
 			for (const auto& [key, value] : container) {
 				if (key == sym) {

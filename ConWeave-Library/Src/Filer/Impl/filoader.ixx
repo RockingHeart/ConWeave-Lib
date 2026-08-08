@@ -128,7 +128,7 @@ public:
 		return result;
 	}
 
-	constexpr match_result<size_t> size() const noexcept {
+	constexpr match::option<size_t> size() const noexcept {
 		LARGE_INTEGER size;
 		if (GetFileSizeEx(fileid, &size)) {
 			return size.QuadPart;

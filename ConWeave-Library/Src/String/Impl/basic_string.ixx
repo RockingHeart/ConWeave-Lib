@@ -1625,9 +1625,9 @@ private:
 
 private:
 
-	constexpr match_result<size_t> front_index (char_t target,
-		                                  size_t point,
-		                                  size_t end)
+	constexpr match::option<size_t> front_index (char_t target,
+												 size_t point,
+												 size_t end)
 		noexcept
 	{
 		const_pointer_t data = pointer();
@@ -1639,9 +1639,9 @@ private:
 		return match::failed;
 	}
 
-	constexpr match_result<size_t> last_index (char_t target,
-										  size_t point,
-										  size_t end)
+	constexpr match::option<size_t> last_index (char_t target,
+												size_t point,
+												size_t end)
 		noexcept
 	{
 		const_pointer_t data = pointer();
@@ -1657,9 +1657,9 @@ private:
 		return position < string_length();
 	}
 
-	constexpr match_result<size_t> index_string (char_t target,
-												 size_t point,
-												 size_t end)
+	constexpr match::option<size_t> index_string (char_t target,
+												  size_t point,
+												  size_t end)
 		noexcept
 	{
 		if (point > end) {
