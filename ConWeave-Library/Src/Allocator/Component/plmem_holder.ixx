@@ -8,19 +8,27 @@ export namespace dast
 import std;
 
 class dast::plmem_holder {
-private:
-	using size_t = std::size_t;
+public:
+	using size_t	= std::size_t;
+	using pointer_t = char*;
 
 private:
 
-	char*  addr;
-	size_t aend;
+	pointer_t addr;
+	size_t	  aend;
 
 private:
 
 	constexpr void reset(plmem_holder& memory) noexcept {
 		memory.addr = nullptr;
 		memory.aend = 0;
+	}
+
+	constexpr void set(void* pointer, size_t size) noexcept {
+		addr = static_cast<pointer_t> (
+			pointer
+		);
+		aend = size;
 	}
 
 	constexpr void copy_assign(plmem_holder& memory) noexcept {
@@ -33,6 +41,13 @@ private:
 		reset(memory);
 	}
 
+private:
+
+	constexpr void release() noexcept {
+		std::free(addr);
+		addr = nullptr;
+	}
+
 public:
 
 	constexpr plmem_holder()
@@ -40,8 +55,14 @@ public:
 
 	constexpr plmem_holder(size_t size)
 		noexcept : addr (
-			static_cast<char*>(std::malloc(size))
+			static_cast<pointer_t>(std::malloc(size))
 		), aend(size)
+	{}
+
+	constexpr plmem_holder(size_t alloc_size, size_t init_size)
+		noexcept : addr (
+			static_cast<pointer_t>(std::malloc(alloc_size))
+		), aend(init_size)
 	{}
 
 	constexpr plmem_holder(plmem_holder& memory)
@@ -70,8 +91,8 @@ public:
 	}
 
 	constexpr void reallocate(size_t size) noexcept {
-		addr = static_cast<char*>(std::malloc(size));
-		aend = size;
+		release();
+		set(std::malloc(size), size);
 	}
 
 public:
@@ -87,7 +108,7 @@ public:
 public:
 
 	constexpr ~plmem_holder() {
-		std::free(addr);
+		release();
 	}
 
 };

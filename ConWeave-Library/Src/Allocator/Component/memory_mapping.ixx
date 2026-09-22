@@ -14,9 +14,12 @@ export namespace dast
 };
 
 class dast::memory_mapping {
+public:
+	using size_t	= std::size_t;
+	using pointer_t = char*;
+
 private:
-	using size_t = std::size_t;
-	using handle =		HANDLE;
+	using handle = HANDLE;
 
 private:
 
@@ -72,7 +75,7 @@ public:
 			)
 		),
 		addr (
-			static_cast<char*> (
+			static_cast<pointer_t> (
 				MapViewOfFile (
 					hand, FILE_MAP_ALL_ACCESS,
 					0, 0, size

@@ -334,7 +334,6 @@ private:
 			data			  = value.pointer;
 			strlen			  = value.count;
 		}
-
 		return { data, strlen };
 	}
 
@@ -423,21 +422,23 @@ private:
 			noexcept(allocator().deallocate(nullptr, 0ull))
 		)
 	{
-		size_t cache_size = self_cache.specs.size;
-		size_t next_size  = cache_size + 1;
-		pointer_t cache   = alloc.allocate(next_size);
+		box_specs_t& self_sepcs   = self_cache.specs;
+		box_specs_t& object_specs = object_cache.specs;
+		size_t cache_size		  = self_sepcs.size;
+		size_t next_size		  = cache_size + 1;
+		pointer_t cache			  = alloc.allocate(next_size);
 		strutil::strcopy(cache, self_cache.pointer, cache_size);
 		cache[cache_size] = char_t();
 		strutil::strcopy(
 			self_cache.pointer,
 			object_cache.pointer,
-			object_cache.specs.size
+			object_specs.size
 		);
-		self_cache.specs.size = object_cache.specs.size;
-		cache_size			  = self_cache.specs.size;
+		self_sepcs.size = object_specs.size;
+		cache_size		= self_sepcs.size;
 		self_cache.pointer[cache_size] = char_t();
 		strutil::strcopy(object_cache.pointer, cache, next_size);
-		object_cache.specs.size = cache_size;
+		object_specs.size = cache_size;
 		alloc.deallocate(cache, next_size);
 	}
 
@@ -459,19 +460,21 @@ private:
 		                             box_value_t& object_value)
 		noexcept
 	{
-		pointer_t old_ptr = object_value.pointer;
-		size_t old_size   = object_value.count;
+		pointer_t old_ptr		  = object_value.pointer;
+		size_t old_size			  = object_value.count;
+		box_specs_t& self_sepcs   = self_cache.specs;
+		box_specs_t& object_specs = object_cache.specs;
 		strutil::strcopy (
 			object_cache.pointer,
 			self_cache.pointer,
-			self_cache.specs.size
+			self_sepcs.size
 		);
-		object_cache.specs.size = self_cache.specs.size;
-		object_cache.pointer[object_cache.specs.size] = char_t();
-		object_cache.specs.mode = string_mode::storage;
-		self_value.pointer		= old_ptr;
-		self_value.count		= old_size;
-		self_cache.specs.mode	= string_mode::cache;
+		object_specs.size		  = self_sepcs.size;
+		object_cache.pointer[object_specs.size] = char_t();
+		object_specs.mode  = string_mode::storage;
+		self_value.pointer = old_ptr;
+		self_value.count   = old_size;
+		self_sepcs.mode	   = string_mode::cache;
 	}
 
 private:
@@ -1557,24 +1560,71 @@ private:
 		reset_value(value, fill, size, strlen);
 	}
 
+	constexpr bool reserve_small(size_t size) noexcept {
+		if (size < core_t::cache.specs.size) {
+			return false;
+		}
+		if (size > core_t::buffer_size) {
+			reserve_cache(size);
+		}
+		return true;
+	}
+
+	constexpr bool reseve_large(size_t size) noexcept {
+		if (size < core_t::value.count) {
+			return false;
+		}
+		respace<false>(size);
+	}
+
 	constexpr bool reserve_string(size_t size)
 		noexcept (
 			noexcept(respace<false>(0ull))
 		)
 	{
 		if (is_cache_mode()) {
-			if (size < core_t::cache.specs.size) {
-				return false;
-			}
-			if (size > core_t::buffer_size) {
-				reserve_cache(size);
-			}
+			return reserve_small(size);
 		}
-		else {
-			if (size < core_t::value.count) {
-				return false;
-			}
-			respace<false>(size);
+		return reseve_large(size);
+	}
+
+	template <class OptionType>
+	constexpr bool resize_small (size_t		  size,
+								 OptionType&& option)
+		noexcept
+	{
+		box_cache_t& cache = core_t::cache;
+		if (size < core_t::buffer_size) {
+			cache.pointer[size] = char_t();
+			return true;
+		}
+		box_specs_t& specs = cache.specs;
+		size_t strlen	   = specs.size;
+		respace<true>(size);
+		size_t resu = option(core_t::value, size, strlen);
+		specs.size  = resu;
+		if (cache.pointer[resu] != char_t()) {
+			cache.pointer[resu]  = char_t();
+		}
+		return true;
+	}
+
+	template <class OptionType>
+	constexpr bool resize_large (size_t		  size,
+								 OptionType&& option)
+		noexcept
+	{
+		box_value_t& value = core_t::value;
+		if (size < value.alloc_size) {
+			value.pointer[size] = char_t();
+			return true;
+		}
+		size_t strlen = value.count;
+		respace<false>(size);
+		size_t resu = option(value, size, strlen);
+		value.count = resu;
+		if (value.pointer[resu] != char_t()) {
+			value.pointer[resu]  = char_t();
 		}
 		return true;
 	}
@@ -1586,41 +1636,17 @@ private:
 		)
 		requires (
 			std::is_same_v <
-				decltype(option(core_t::value, size_t(), size_t())),
-		        size_t
+				decltype (
+					option(core_t::value, size_t(), size_t())
+				),
+				size_t
 		    >
 		)
 	{
 		if (is_cache_mode()) {
-			box_cache_t& cache = core_t::cache;
-			if (size < core_t::buffer_size) {
-				cache.pointer[size] = char_t();
-				return true;
-			}
-			box_specs_t& specs = cache.specs;
-			size_t strlen      = specs.size;
-			respace<true>(size);
-			size_t resu = option(core_t::value, size, strlen);
-			specs.size  = resu;
-			if (cache.pointer[resu] != char_t()) {
-				cache.pointer[resu]  = char_t();
-			}
+			return resize_small(size, option);
 		}
-		else {
-			box_value_t& value = core_t::value;
-			if (size < value.alloc_size) {
-				value.pointer[size] = char_t();
-				return true;
-			}
-			size_t strlen = value.count;
-			respace<false>(size);
-			size_t resu = option(value, size, strlen);
-			value.count = resu;
-			if (value.pointer[resu] != char_t()) {
-				value.pointer[resu]  = char_t();
-			}
-		}
-		return true;
+		return resize_large(size, option);
 	}
 
 private:
