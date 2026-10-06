@@ -13,8 +13,8 @@ protected:
 	using core::storage_index;
 
 public:
-	using char_t = typename core::char_t;
-	using symbol = typename core::symbol;
+	using char_t	 = typename core::char_t;
+	using symbol	 = typename core::symbol;
 	using addal_info = typename core::addal_info;
 
 private:
@@ -35,17 +35,17 @@ protected:
 	constexpr void enable_storage() 
 		noexcept (
 			std::is_nothrow_move_constructible_v<quicks> &&
-			noexcept(std::declval<box_value&>().template emplace<storage_index> (
-				std::declval<typename quicks::pointer_t>(),
-				std::declval<typename quicks::pointer_t>()
-			))
+			noexcept (
+				std::declval<box_value&>().template emplace<storage_index> (
+					std::declval<typename quicks::pointer_t>(),
+					std::declval<typename quicks::pointer_t>()
+				)
+			)
 		)
 	{
-		box_value& val = core::value;
-		quicks temp    = std::move(std::get<cache_index>(val));
-		val.template emplace<storage_index>(
-			temp.begin(), temp.end()
-		);
+		box_value& val  = core::value;
+		quicks	   temp = std::move(std::get<cache_index>(val));
+		val.template emplace<storage_index>(temp.begin(), temp.end());
 	}
 
 public:

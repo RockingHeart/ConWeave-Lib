@@ -80,7 +80,11 @@ protected:
 		noexcept (
 			box_t::trivial_copy ?
 			std::is_trivially_constructible_v<value_t> :
-			noexcept(construct_init(list.begin()))
+			noexcept (
+				construct_init (
+					std::declval<const_pointer_t>()
+				)
+			)
 		)
 	{
 		const_pointer_t data = list.begin();
@@ -130,7 +134,11 @@ protected:
 	constexpr void construct_impl(Ty&& vec, size_t size)
 		noexcept (
 			box_t::trivial_copy ||
-			noexcept(construct_impl(vec.pointer(), 0ull))
+			noexcept (
+				construct_impl (
+					std::declval<pointer_t>(), 0ull
+				)
+			)
 		)
 	{
 		if constexpr (box_t::trivial_copy) {
@@ -155,7 +163,13 @@ protected:
 	}
 
 	constexpr void construct_vector(fixed_vec_core&& vec)
-		noexcept(noexcept(construct_impl(std::move(vec), 0ull)))
+		noexcept (
+			noexcept (
+				construct_impl (
+					std::declval<fixed_vec_core>(), 0ull
+				)
+			)
+		)
 	{
 		construct_impl(std::move(vec), vec.size);
 		vec.size = 0;

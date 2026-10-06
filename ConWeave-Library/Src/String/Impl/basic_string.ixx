@@ -58,18 +58,6 @@ public:
 public:
 	using self_t = basic_string;
 
-private:
-
-	template <assoptions AssignOption>
-	using option_t = std::conditional_t <
-		AssignOption == assoptions::pull,
-		char_t,
-		void
-	>;
-
-	template <assoptions AssignOption>
-	using assign_option_t = assign_operation_t<AssignOption, option_t<AssignOption>>;
-
 public:
 
 	constexpr basic_string()
@@ -568,22 +556,6 @@ private:
 		value.concord.left = alloc_size - size - 1;
 		strutil::strset(value.pointer, char_value, size);
 		value.pointer[size] = char_t();
-	}
-
-	template <assoptions Option>
-	assign_option_t<Option> assign_string(const char_t* pointer)
-		noexcept (
-			noexcept(append_impl(char_t()))
-		)
-	{
-		std::size_t size = strutil::strlenof(pointer);
-		for (std::size_t i = 0; i < size; i++) {
-			char_t current = pointer[i];
-			append_impl(current);
-			if constexpr (Option == assoptions::pull) {
-				co_yield current;
-			}
-		}
 	}
 
 	constexpr void assign_before (alloc_t&     alloc,

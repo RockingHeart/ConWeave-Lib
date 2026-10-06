@@ -1,6 +1,3 @@
-module;
-#include <limits.h>
-
 export module string.impl.box;
 
 import string.impl.traits;
@@ -40,6 +37,7 @@ public:
 protected:
 
 	static constexpr size_t specs_max_length = 8;
+	static constexpr size_t char_max_bit	 = std::numeric_limits<unsigned char>::digits;
 
 private:
 
@@ -50,13 +48,13 @@ private:
 	};
 
 	struct value_concord_little {
-		size_t left  : (sizeof(size_t)* CHAR_BIT) - 8;
+		size_t left  : (sizeof(size_t)* char_max_bit) - 8;
 		size_t specs : specs_max_length;
 	};
 
 	struct value_concord_big {
 		size_t specs : specs_max_length;
-		size_t left  : (sizeof(size_t)* CHAR_BIT) - 8;
+		size_t left  : (sizeof(size_t)* char_max_bit) - 8;
 	};
 
 

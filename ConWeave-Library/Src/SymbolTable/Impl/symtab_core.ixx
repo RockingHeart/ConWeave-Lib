@@ -29,7 +29,7 @@ protected:
 	static constexpr std::size_t cache_index   = static_cast<std::size_t>(symtab_state::cache);
 	static constexpr std::size_t storage_index = static_cast<std::size_t>(symtab_state::storage);
 
-protected:
+private:
 
 	using box_value = std::variant<quicks, storage>;
 		  box_value value;

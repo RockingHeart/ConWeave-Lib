@@ -44,15 +44,6 @@ protected:
 
 public:
 
-	// Beta function
-	template <assoptions Option, class SelfType, class... ArgsType>
-	auto assign(this SelfType&& self, ArgsType&&... args) noexcept {
-		static_assert(Option != assoptions::async, "Waiting for C++26 of std::exec");
-		return self.template assign_string<Option>(std::forward<ArgsType>(args)...);
-	};
-
-public:
-
 	template <class SelfType>
 	constexpr auto size(this SelfType&& self) noexcept {
 		return self.string_length();

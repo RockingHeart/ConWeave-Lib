@@ -207,11 +207,15 @@ protected:
 
     template <class Ty>
     constexpr void construct (pointer_t address,
-							  Ty* begin,
-							  Ty* end)
+							  Ty*       begin,
+							  Ty*       end)
         noexcept (
 			box_t::trivial_copy ||
-			noexcept(construct_at(nullptr, begin))
+			noexcept (
+                construct_at (
+                    nullptr, std::declval<Ty*>()
+                )
+            )
         )
 	{
         for (; begin != end; ++begin, ++address) {
@@ -229,7 +233,11 @@ protected:
 		noexcept (
 			box_t::buffer_size ?
 			std::is_nothrow_assignable_v<box_buffer_t, Ty> :
-			noexcept(construct(nullptr, vec.begin(), vec.end()))
+			noexcept (
+                construct (
+                    nullptr, std::declval<Ty>().begin(), std::declval<Ty>().end()
+                )
+            )
         )
 	{
         size_t size = vec.vector_size();
@@ -245,10 +253,7 @@ protected:
             }
         }
     	respace<true, 1>(size);
-        construct (
-            box_t::value.data.origin,
-            vec.begin(), vec.end()
-        );
+        construct(box_t::value.data.origin, vec.begin(), vec.end());
     }
 
     constexpr void construct(const vector_core& vec)

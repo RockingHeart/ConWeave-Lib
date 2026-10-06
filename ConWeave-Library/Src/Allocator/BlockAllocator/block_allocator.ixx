@@ -112,8 +112,8 @@ private:
 	}
 
 	template <class AllocType, class InfoType, class... ArgsTyp>
-	constexpr auto hold_space(InfoType& info,
-		ArgsTyp&&... args)
+	constexpr auto hold_space(InfoType&    info,
+							  ArgsTyp&&... args)
 		noexcept
 	{
 		auto result = info.memory.template address<AllocType>(info.cursize);
@@ -132,8 +132,8 @@ private:
 
 	template <rest::character CharType, class InfoType>
 	constexpr auto hold_space(InfoType& info,
-		const CharType* string,
-		size_t	 size)
+						const CharType* string,
+							  size_t	size)
 		noexcept
 	{
 		auto result = info.memory.template address<CharType>(info.cursize);
@@ -154,7 +154,7 @@ private:
 
 	template <rest::character CharType>
 	constexpr CharType* allocate_impl(const CharType* string,
-		size_t	   size)
+											size_t	  size)
 		noexcept
 	{
 		auto info = block_info(sizeof(CharType*));
@@ -235,7 +235,7 @@ public:
 
 	template <class AllocType, class... ArgsType>
 	constexpr std::optional<AllocType*> try_alloc(std::size_t		 size,
-		ArgsType&&... args)
+													   ArgsType&&... args)
 		noexcept
 	{
 		if (need_realloc(size)) {
@@ -249,7 +249,7 @@ public:
 
 	template <rest::character CharType>
 	constexpr std::optional<CharType*> try_alloc(const CharType* string,
-		size_t	 size)
+													   size_t	 size)
 		noexcept
 	{
 		if (need_realloc(size)) {
@@ -294,11 +294,11 @@ public:
 		allocator.block = nullptr;
 	}
 
-	constexpr pointer_t operator[](std::size_t position) const noexcept {
+	constexpr block_holder& operator[](std::size_t position) const noexcept {
 		if (position > size()) {
 			throw "No such block";
 		}
-		return block[position].area.address(0);
+		return block[position].area;
 	};
 
 public:

@@ -53,9 +53,15 @@ public:
         )
     constexpr basic_vector(std::initializer_list<Ty> list)
 		noexcept (
-			noexcept(core_t::template construct<Ty>(nullptr, nullptr, nullptr))
+			noexcept (
+                core_t::template construct<Ty> (
+                    nullptr, nullptr, nullptr
+                )
+            )
 			&&
-			noexcept(core_t::template respace<false, 0ull>(0ull))
+			noexcept (
+                core_t::template respace<false, 0ull>(0ull)
+            )
         )
 	{
         size_t size = list.size();
@@ -91,8 +97,10 @@ public:
 public:
 
     constexpr void push_back(const value_t& value)
-        noexcept(noexcept(core_t::push_to_data(value_t())) &&
-        noexcept(core_t::template new_space<2>()))
+        noexcept (
+            noexcept(core_t::push_to_data(value)) &&
+            noexcept(core_t::template new_space<2>())
+        )
     {
         if constexpr (core_t::buffer_size) {
             if (core_t::value.mode == vector_mode::cache) {
