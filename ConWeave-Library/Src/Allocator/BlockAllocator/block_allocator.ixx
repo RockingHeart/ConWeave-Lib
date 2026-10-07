@@ -62,22 +62,20 @@ private:
 		return static_cast<size_t>(last - base);
 	}
 
-	constexpr size_t spacing() const noexcept {
-		return static_cast<size_t>(last - current);
-	}
-
 	constexpr void exten_block() noexcept {
-		memory_block* old = base;
-		size_t spalen	  = spacing();
-		size_t newlen	  = total_number_block() + 2;
+		block_allocator old = *this;
+		size_t used_block   = used();
+		size_t newlen	    = total_number_block() + 2;
 		base = static_cast<memory_block*> (
 			std::malloc(sizeof(memory_block) * newlen)
 		);
-		current = base + spalen;
-		last	= base + newlen;
-		for (size_t i = 0; i < spalen; i++) {
-			base[i] = std::move(old[i]);
+		memory_block* old_base = old.base;
+		for (size_t i = 0; i < used_block; i++) {
+			base[i] = std::move(old_base[i]);
 		}
+		last	= base + newlen;
+		current = base + used_block + 1;
+		old.release();
 	}
 
 	constexpr bool leftover_block() const noexcept {
@@ -120,7 +118,7 @@ private:
 
 	template <class AllocType, class... ArgsTyp>
 	constexpr auto hold_space(ArgsTyp&&...   args)
-		noexcept
+		noexcept -> AllocType*
 	{
 		std::size_t& block_size = current->acur;
 		block_holder& block     = current->area;
@@ -128,7 +126,9 @@ private:
 			block_size
 		);
 		block_size += sizeof(AllocType);
-		new (result) AllocType(std::forward<ArgsTyp>(args)...);
+		new (result) AllocType (
+			std::forward<ArgsTyp>(args)...
+		);
 		return result;
 	}
 
@@ -137,40 +137,6 @@ private:
 		check_block(sizeof(AllocType));
 		return hold_space<AllocType> (
 			std::forward<ArgsType>(args)...
-		);
-	}
-
-	template <rest::character CharType>
-	constexpr auto hold_space(const CharType*     string,
-									size_t	    size)
-		noexcept
-	{
-		std::size_t& block_size = current->acur;
-		block_holder& block		= current->area;
-		auto result = block.template address<CharType>(block_size);
-		if (size >= 1 && string[size - 1] == CharType()) {
-			block_size += 1;
-			result[size] = CharType();
-		}
-		if constexpr (std::is_same_v<CharType, char>) {
-			std::memcpy(result, string, size);
-		}
-		else {
-			std::wmemcpy(result, string, size);
-			size *= sizeof(wchar_t);
-		}
-		block_size += size;
-		return result;
-	}
-
-	template <rest::character CharType>
-	constexpr CharType* allocate_impl(const CharType* string,
-											size_t	  size)
-		noexcept
-	{
-		check_block(sizeof(CharType*));
-		return hold_space<CharType> (
-			string, size
 		);
 	}
 
@@ -204,15 +170,34 @@ private:
 		return is_empty() || length + size > block.size();
 	}
 
+private:
+
+	constexpr void release() noexcept {
+		if (base == nullptr) {
+			return;
+		}
+		for (auto& block : *this) {
+			block.~memory_block();
+		}
+		std::free(base);
+	}
+
 public:
 
 	constexpr block_allocator()
-		noexcept = default;
+		noexcept : base(nullptr),
+				   current(nullptr),
+				   last(nullptr)
+	{};
 
-	constexpr block_allocator(block_allocator&& allocator)
+	constexpr block_allocator(const block_allocator& allocator)
 		noexcept : base(allocator.base),
 				   current(allocator.current),
 				   last(allocator.last)
+	{}
+
+	constexpr block_allocator(block_allocator&& allocator)
+		noexcept : block_allocator(allocator)
 	{
 		allocator.base = nullptr;
 	}
@@ -237,15 +222,6 @@ public:
 		return allocate_impl<AllocType>(std::forward<ArgsType>(args)...);
 	}
 
-	template <rest::character CharType>
-	CharType* allocate(const CharType* string,
-							 size_t	   size)
-		noexcept
-	{
-		initialize();
-		return allocate_impl<CharType>(string, size);
-	}
-
 	template <class AllocType, class... ArgsType>
 	constexpr std::optional<AllocType*> try_alloc(std::size_t		 size,
 													   ArgsType&&... args)
@@ -256,19 +232,6 @@ public:
 		}
 		return hold_space<AllocType> (
 			std::forward<ArgsType>(args)...
-		);
-	}
-
-	template <rest::character CharType>
-	constexpr std::optional<CharType*> try_alloc(const CharType* string,
-													   size_t	 size)
-		noexcept
-	{
-		if (should_allocate(size)) {
-			return std::nullopt;
-		}
-		return hold_space<CharType> (
-			string, size
 		);
 	}
 
@@ -321,7 +284,13 @@ public:
 		return base == nullptr;
 	}
 
-	constexpr std::size_t number() const noexcept {
+public:
+
+	constexpr size_t spacing() const noexcept {
+		return static_cast<size_t>(last - current);
+	}
+
+	constexpr std::size_t used() const noexcept {
 		return last - base;
 	}
 
@@ -332,12 +301,13 @@ public:
 public:
 
 	constexpr void operator=(block_allocator&& allocator) noexcept {
+		release();
 		assign(allocator);
 		allocator.base = nullptr;
 	}
 
-	constexpr memory_block& operator[](std::size_t position) const noexcept {
-		if (position > number()) {
+	constexpr memory_block& operator[](std::size_t position) const {
+		if (position >= used()) {
 			throw "No such base";
 		}
 		return base[position];
@@ -346,13 +316,7 @@ public:
 public:
 
 	constexpr ~block_allocator() noexcept {
-		if (base == nullptr) {
-			return;
-		}
-		for (auto& block : *this) {
-			block.~memory_block();
-		}
-		std::free(base);
+		release();
 	}
 
 };

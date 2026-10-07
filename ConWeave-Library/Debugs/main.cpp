@@ -4,6 +4,7 @@ import cwlib;
 int main() {
 	std::cout << sizeof(dast::cstring) << '\n';
 	dast::block_allocator<dast::plmem_holder> alloc(20);
-	alloc.allocate("Hello World", 12);
-	std::cout << alloc.unchecked_retreat<const char*>(0) << '\n';
+	std::string_view obj = "Hello";
+	alloc.allocate<std::string_view>(obj);
+	std::cout << *alloc.unchecked_retreat<std::string_view>(0) << '\n';
 }

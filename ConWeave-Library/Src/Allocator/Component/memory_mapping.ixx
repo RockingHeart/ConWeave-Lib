@@ -99,9 +99,10 @@ public:
 public:
 
 	template <class AddrType = char>
-	constexpr auto* address(std::size_t size) noexcept {
-		using pointer_t = std::remove_pointer_t<AddrType>;
-		return reinterpret_cast<pointer_t*>(addr + size);
+	constexpr AddrType* address(std::size_t offset) noexcept {
+		return reinterpret_cast<AddrType*> (
+			reinterpret_cast<char*>(addr) + offset
+		);
 	}
 
 	constexpr std::size_t size() const noexcept {
