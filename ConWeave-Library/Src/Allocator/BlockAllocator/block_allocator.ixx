@@ -32,20 +32,20 @@ protected:
 
 private:
 
-	memory_block* block;
+	memory_block* base;
 	memory_block* current;
 	memory_block* last;
 
 private:
 
 	constexpr size_t align_to(size_t value,
-		size_t align)
+							  size_t align)
 		const noexcept
 	{
 		return (value + align - 1) & ~(align - 1);
 	}
 
-	constexpr void init_cur_block(size_t block_size) noexcept {
+	constexpr void set_cur_block(size_t block_size) noexcept {
 		std::construct_at(current, block_size, 0);
 	}
 
@@ -59,7 +59,7 @@ private:
 	}
 
 	constexpr size_t total_number_block() const noexcept {
-		return static_cast<size_t>(last - block);
+		return static_cast<size_t>(last - base);
 	}
 
 	constexpr size_t spacing() const noexcept {
@@ -67,78 +67,89 @@ private:
 	}
 
 	constexpr void exten_block() noexcept {
-		memory_block* old = block;
-		size_t spalen = spacing();
-		size_t newlen = total_number_block() + 2;
-		block = static_cast<memory_block*> (
+		memory_block* old = base;
+		size_t spalen	  = spacing();
+		size_t newlen	  = total_number_block() + 2;
+		base = static_cast<memory_block*> (
 			std::malloc(sizeof(memory_block) * newlen)
-			);
-		current = block + spalen;
-		last = block + newlen;
+		);
+		current = base + spalen;
+		last	= base + newlen;
 		for (size_t i = 0; i < spalen; i++) {
-			block[i] = std::move(old[i]);
+			base[i] = std::move(old[i]);
 		}
+	}
+
+	constexpr bool leftover_block() const noexcept {
+		return current + 1 < last;
 	}
 
 	constexpr void respace() noexcept {
-		if (current + 1 >= last) {
+		if (!leftover_block()) {
 			exten_block();
 		}
-		init_cur_block(4000);
+		set_cur_block(4000);
 	}
 
-	constexpr auto curr_info(std::size_t size) noexcept {
-		struct info {
-			block_holder& memory;
-			size_t		  cursize;
-			size_t		  sumsize;
-		};
-		info result = {
-			.memory = current->area,
-			.cursize = current->acur
-		};
-		result.sumsize = result.cursize + size;
-		return result;
-	}
-
-	constexpr auto block_info(std::size_t size) noexcept {
-		auto result = curr_info(size);
-		if (result.sumsize > result.memory.size()) {
-			respace();
-			result.memory = current->area;
-			result.cursize = current->acur;
+	constexpr auto search_block(std::size_t size)
+		noexcept -> memory_block*
+	{
+		if (base == nullptr) {
+			return nullptr;
 		}
-		return result;
+		block_holder& block    = current->area;
+		std::size_t block_size = current->acur;
+		if (block_size + size > block.size()) {
+			if (!leftover_block()) {
+				return nullptr;
+			}
+			++current;
+		}
+		return current;
 	}
 
-	template <class AllocType, class InfoType, class... ArgsTyp>
-	constexpr auto hold_space(InfoType&    info,
-							  ArgsTyp&&... args)
+	constexpr void check_block(std::size_t size) noexcept {
+		block_holder& block    = current->area;
+		std::size_t block_size = current->acur;
+		std::size_t next_size  = block_size + size;
+		if (next_size < block.size()) {
+			return;
+		}
+		respace();
+	}
+
+	template <class AllocType, class... ArgsTyp>
+	constexpr auto hold_space(ArgsTyp&&...   args)
 		noexcept
 	{
-		auto result = info.memory.template address<AllocType>(info.cursize);
-		current->acur += sizeof(AllocType);
+		std::size_t& block_size = current->acur;
+		block_holder& block     = current->area;
+		auto result = block.template address<AllocType> (
+			block_size
+		);
+		block_size += sizeof(AllocType);
 		new (result) AllocType(std::forward<ArgsTyp>(args)...);
 		return result;
 	}
 
 	template <class AllocType, class... ArgsType>
 	AllocType* allocate_impl(ArgsType&&... args) noexcept {
-		auto info = block_info(sizeof(AllocType));
-		return hold_space<AllocType>(
-			info, std::forward<ArgsType>(args)...
+		check_block(sizeof(AllocType));
+		return hold_space<AllocType> (
+			std::forward<ArgsType>(args)...
 		);
 	}
 
-	template <rest::character CharType, class InfoType>
-	constexpr auto hold_space(InfoType& info,
-						const CharType* string,
-							  size_t	size)
+	template <rest::character CharType>
+	constexpr auto hold_space(const CharType*     string,
+									size_t	    size)
 		noexcept
 	{
-		auto result = info.memory.template address<CharType>(info.cursize);
+		std::size_t& block_size = current->acur;
+		block_holder& block		= current->area;
+		auto result = block.template address<CharType>(block_size);
 		if (size >= 1 && string[size - 1] == CharType()) {
-			current->acur += 1;
+			block_size += 1;
 			result[size] = CharType();
 		}
 		if constexpr (std::is_same_v<CharType, char>) {
@@ -148,7 +159,7 @@ private:
 			std::wmemcpy(result, string, size);
 			size *= sizeof(wchar_t);
 		}
-		current->acur += size;
+		block_size += size;
 		return result;
 	}
 
@@ -157,38 +168,40 @@ private:
 											size_t	  size)
 		noexcept
 	{
-		auto info = block_info(sizeof(CharType*));
-		return hold_space<CharType>(
-			info, string, size
+		check_block(sizeof(CharType*));
+		return hold_space<CharType> (
+			string, size
 		);
 	}
 
-	constexpr void reconstruct(std::size_t size) noexcept {
-		block = static_cast<memory_block*> (
+	constexpr void construct(std::size_t size) noexcept {
+		base = static_cast<memory_block*> (
 			std::malloc(sizeof(memory_block) * 2)
-			);
-		current = block;
-		last = block + 2;
-		init_cur_block(size);
+		);
+		current = base;
+		last	= base + 2;
+		set_cur_block(size);
 	}
 
-	constexpr void checked() noexcept {
+	constexpr void initialize() noexcept {
 		if (!is_empty()) {
 			return;
 		}
-		reconstruct(1);
+		construct(1);
 	}
 
 private:
 
 	constexpr void assign(block_allocator& allocator) noexcept {
-		block	= allocator.block;
+		base	= allocator.base;
 		current = allocator.current;
 		last	= allocator.last;
 	}
 
-	constexpr bool need_realloc(std::size_t size) noexcept {
-		return is_empty() || current->acur + size > current->area.size();
+	constexpr bool should_allocate(std::size_t size) noexcept {
+		block_holder& block = current->area;
+		std::size_t length  = current->acur;
+		return is_empty() || length + size > block.size();
 	}
 
 public:
@@ -197,22 +210,22 @@ public:
 		noexcept = default;
 
 	constexpr block_allocator(block_allocator&& allocator)
-		noexcept : block(allocator.block),
+		noexcept : base(allocator.base),
 				   current(allocator.current),
 				   last(allocator.last)
 	{
-		allocator.block = nullptr;
+		allocator.base = nullptr;
 	}
 
 	constexpr block_allocator(size_t size) noexcept :
-		block (
+		base (
 			static_cast<memory_block*> (
 				std::malloc(sizeof(memory_block) * 2)
 			)
 		),
-		current(block), last(block + 2)
+		current(base), last(base + 2)
 	{
-		init_cur_block(size);
+		set_cur_block(size);
 	}
 
 
@@ -220,7 +233,7 @@ public:
 
 	template <class AllocType, class... ArgsType>
 	AllocType* allocate(ArgsType&&... args) noexcept {
-		checked();
+		initialize();
 		return allocate_impl<AllocType>(std::forward<ArgsType>(args)...);
 	}
 
@@ -229,7 +242,7 @@ public:
 							 size_t	   size)
 		noexcept
 	{
-		checked();
+		initialize();
 		return allocate_impl<CharType>(string, size);
 	}
 
@@ -238,12 +251,11 @@ public:
 													   ArgsType&&... args)
 		noexcept
 	{
-		if (need_realloc(size)) {
+		if (should_allocate(size)) {
 			return std::nullopt;
 		}
-		auto info = curr_info(sizeof(AllocType));
-		return hold_space<AllocType>(
-			info, std::forward<ArgsType>(args)...
+		return hold_space<AllocType> (
+			std::forward<ArgsType>(args)...
 		);
 	}
 
@@ -252,67 +264,95 @@ public:
 													   size_t	 size)
 		noexcept
 	{
-		if (need_realloc(size)) {
+		if (should_allocate(size)) {
 			return std::nullopt;
 		}
-		auto info = curr_info(sizeof(CharType*));
-		return hold_space<CharType>(
-			info, string, size
+		return hold_space<CharType> (
+			string, size
 		);
 	}
 
-	constexpr char* begin() const noexcept {
-		return data<char>(0).value();
+public:
+
+	constexpr void reset_state(memory_block& block) noexcept {
+		block_holder& memory = block.area;
+		char* address		 = block.template address(0);
+		std::size_t& size	 = block.acur;
+		std::memset(address, 0, size);
+		size = 0;
 	}
 
-	constexpr char* end() const noexcept {
-		return current->area.template address<>(current->acur);
+	constexpr void reset_status() noexcept {
+		for (auto& block : *this) {
+			reset_state(block);
+		}
 	}
 
-	constexpr void reset() noexcept {
-		current->acur = 0;
-		begin()[0] = char();
+	constexpr void start_over() noexcept {
+		current = base;
 	}
+
+public:
 
 	template <class DataType>
 	constexpr std::optional<DataType*> data(std::size_t off) const noexcept {
 		return current->area.template address<DataType>(off);
 	}
 
+	template <class AccType>
+	constexpr decltype(auto) unchecked_retreat(std::size_t size = sizeof(AccType))
+		noexcept
+	{
+		block_holder& block = search_block(size)->area;
+		return block.template address<AccType>(size);
+	};
+
+public:
+
+	constexpr memory_block* begin() const noexcept {
+		return base;
+	}
+
+	constexpr memory_block* end() const noexcept {
+		return current;
+	}
+
 	constexpr bool is_empty() const noexcept {
-		return !block;
+		return base == nullptr;
+	}
+
+	constexpr std::size_t number() const noexcept {
+		return last - base;
 	}
 
 	constexpr std::size_t size() const noexcept {
-		return last - block;
+		return current->acur;
 	}
 
 public:
 
 	constexpr void operator=(block_allocator&& allocator) noexcept {
 		assign(allocator);
-		allocator.block = nullptr;
+		allocator.base = nullptr;
 	}
 
-	constexpr block_holder& operator[](std::size_t position) const noexcept {
-		if (position > size()) {
-			throw "No such block";
+	constexpr memory_block& operator[](std::size_t position) const noexcept {
+		if (position > number()) {
+			throw "No such base";
 		}
-		return block[position].area;
+		return base[position];
 	};
 
 public:
 
 	constexpr ~block_allocator() noexcept {
-		if (block == nullptr) {
+		if (base == nullptr) {
 			return;
 		}
-		memory_block* memory = block;
-		memory_block* end    = current + 1;
-		for (; memory != end; ++memory) {
-			memory->~memory_block();
+		for (auto& block : *this) {
+			block.~memory_block();
 		}
-		std::free(block);
+		std::free(base);
 	}
 
 };

@@ -37,7 +37,7 @@ private:
 		);
 		*end = '\0';
 		dast::cstring mapping_identity (
-			"CW.MemoryMapping: "
+			"CWL.MemoryMapping: "
 		);
 		mapping_identity += buffer;
 		mapping_count	 += 1;
@@ -99,8 +99,9 @@ public:
 public:
 
 	template <class AddrType = char>
-	constexpr AddrType* address(std::size_t size) noexcept {
-		return reinterpret_cast<AddrType*>(addr + size);
+	constexpr auto* address(std::size_t size) noexcept {
+		using pointer_t = std::remove_pointer_t<AddrType>;
+		return reinterpret_cast<pointer_t*>(addr + size);
 	}
 
 	constexpr std::size_t size() const noexcept {
