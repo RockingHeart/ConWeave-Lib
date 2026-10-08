@@ -185,9 +185,9 @@ private:
 public:
 
 	constexpr block_allocator()
-		noexcept : base(nullptr),
+		noexcept : base	  (nullptr),
 				   current(nullptr),
-				   last(nullptr)
+				   last	  (nullptr)
 	{};
 
 	constexpr block_allocator(const block_allocator& allocator)

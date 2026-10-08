@@ -48,13 +48,13 @@ private:
 	};
 
 	struct value_concord_little {
-		size_t left  : (sizeof(size_t)* char_max_bit) - 8;
+		size_t left  : (sizeof(size_t) * char_max_bit) - 8;
 		size_t specs : specs_max_length;
 	};
 
 	struct value_concord_big {
 		size_t specs : specs_max_length;
-		size_t left  : (sizeof(size_t)* char_max_bit) - 8;
+		size_t left  : (sizeof(size_t) * char_max_bit) - 8;
 	};
 
 

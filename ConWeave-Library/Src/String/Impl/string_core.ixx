@@ -68,8 +68,8 @@ public:
 public:
 
 	template <class SelfType>
-	constexpr auto info(this SelfType&& self) {
-		return self.curr_info();
+	constexpr auto specs_info(this SelfType&& self) {
+		return self.cache_specs_info();
 	}
 
 	template <class SelfType>
@@ -356,11 +356,11 @@ public:
 		return self.delivered (
 			[](reference_t value) constexpr noexcept {
 			    if (value >= 'A' && value <= 'Z') {
-				    value += 32;
+				    value += ('a' - 'A');
 			    }
 				else
 				if (value >= 'a' && value <= 'z') {
-					value -= 32;
+					value -= ('a' - 'A');
 				}
 		    }
 		);
@@ -371,7 +371,7 @@ public:
 		return self.delivered (
 			[](reference_t value) constexpr noexcept {
 			    if (value >= 'A' && value <= 'Z') {
-				    value += 32;
+				    value += ('a' - 'A');
 			    }
 		    }
 		);
@@ -382,7 +382,7 @@ public:
 		return self.delivered (
 			[](reference_t value) constexpr noexcept {
 			    if (value >= 'a' && value <= 'z') {
-				    value -= 32;
+				    value -= ('a' - 'A');
 			    }
 		    }
 		);
@@ -568,7 +568,7 @@ public:
 		return typename box_t::residue_info {
 			self.value.before,
 			self.value.before_count,
-			self.value.before_alloc_size
+			self.value.before_left
 		};
 	}
 
@@ -605,7 +605,7 @@ public:
 		}
 		auto& value = self.value;
 		self.allocator().deallocate (
-			value.before, value.before_alloc_size
+			value.before, value.before_count + value.before_left
 		);
 		value.before = nullptr;
 		return true;
@@ -615,11 +615,11 @@ public:
 
 	[[nodiscard]]
 	constexpr bool operator!(this basic_string& self) noexcept {
-		return !self.is_empty();
+		return self.is_empty();
 	}
 
 	[[nodiscard]]
-	constexpr operator const_pointer_t(this basic_string& self) noexcept {
+	explicit constexpr operator const_pointer_t(this basic_string& self) noexcept {
 		return self.pointer();
 	}
 

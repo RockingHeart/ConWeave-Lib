@@ -6,7 +6,7 @@ import utility;
 export template <class StringModeType>
 struct string_info {
 	using string_mode = StringModeType;
-	string_mode modes : 1;
+	string_mode mode  : 1;
 	bool	 is_xored : 1;
 };
 
