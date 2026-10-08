@@ -24,7 +24,7 @@ private:
 	using block_holder = BlockHolder;
 
 public:
-	using size_t	=		   std::size_t;
+	using size_t	=	  std::size_t;
 	using pointer_t = typename block_holder::pointer_t;
 
 protected:
@@ -74,7 +74,7 @@ private:
 			base[i] = std::move(old_base[i]);
 		}
 		last	= base + newlen;
-		current = base + used_block + 1;
+		current = base + used_block;
 		old.release();
 	}
 
@@ -86,10 +86,16 @@ private:
 		if (!leftover_block()) {
 			exten_block();
 		}
+		current = current + 1;
 		set_cur_block(4000);
 	}
 
-	constexpr auto search_block(std::size_t size)
+	constexpr void enhance_current() noexcept {
+		++current;
+		current->acur = 0;
+	}
+
+	constexpr auto enhance_block(std::size_t size)
 		noexcept -> memory_block*
 	{
 		if (base == nullptr) {
@@ -101,7 +107,7 @@ private:
 			if (!leftover_block()) {
 				return nullptr;
 			}
-			++current;
+			enhance_current();
 		}
 		return current;
 	}
@@ -255,6 +261,10 @@ public:
 		current = base;
 	}
 
+	constexpr void resize_curr() noexcept {
+		current->acur = 0;
+	}
+
 public:
 
 	template <class DataType>
@@ -263,11 +273,21 @@ public:
 	}
 
 	template <class AccType>
-	constexpr decltype(auto) unchecked_retreat(std::size_t size = sizeof(AccType))
-		noexcept
+	constexpr auto section(memory_block& block) noexcept {
+		block_holder& holder = block.area;
+		return holder.template address<AccType>(block.acur);
+	}
+
+	template <class AccType>
+	constexpr auto retreat(std::size_t size = sizeof(AccType))
+		noexcept -> AccType*
 	{
-		block_holder& block = search_block(size)->area;
-		return block.template address<AccType>(size);
+		memory_block* result = enhance_block(size);
+		if (result == nullptr) return nullptr;
+		memory_block& block  = *result;
+		auto current_element = section<AccType>(block);
+		block.acur			+= sizeof(AccType);
+		return current_element;
 	};
 
 public:
