@@ -43,9 +43,7 @@
 | block_allocator | 已实现 | 2026.6.21 | 1.9.0 |
 | symbol_table | 已实现 | 2026.7.25 | 2.0.0 |
 
-## 性能评估
-- string
-    请查阅：[PerformanceReport-String]
+## 此项目仅兼容MSVC：由于此项目为纯模块实现，且因除MSVC以外的两大家编译器相关支持比较不完善。
 
 <br>
 

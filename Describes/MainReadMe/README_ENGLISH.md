@@ -33,8 +33,7 @@ English：[EnglishMD] <br>
     - Utility
         - Implementation files: [ImplationFile-Utility]
 
-## Status Table
-> *Status updates at any time*
+## This project only supports MSVC. It is a pure C++ module implementation, and the two other major compilers (aside from MSVC) still have relatively incomplete module support.
 
 | Implementation | Status | Completion Time | Version |
 | :---: | :---: | :---: | :---: |
