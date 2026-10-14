@@ -4,7 +4,8 @@ import std;
 import : type_restion;
 
 template <rest::character CharacterType>
-struct compile {
+struct compile
+{
 	using char_t          =       CharacterType;
 	using pointer_t       =       CharacterType*;
 	using const_pointer_t = const CharacterType*;

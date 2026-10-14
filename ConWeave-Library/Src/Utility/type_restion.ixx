@@ -9,7 +9,8 @@ export template<typename Type, typename... Pars>
 constexpr bool is_any_of_v = is_any_of<Type, Pars...>::value;
 
 export template <class Type>
-struct is_character {
+struct is_character
+{
 	static constexpr bool value = is_any_of_v <
 		Type, char, wchar_t, char8_t, char16_t, char32_t
 	>;

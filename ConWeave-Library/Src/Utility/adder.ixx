@@ -1,9 +1,8 @@
-﻿export module utility : adder;
+export module utility : adder;
 
 export template <class Type>
-class adder {
-
-private:
+class adder
+{
 	Type& value;
 
 public:

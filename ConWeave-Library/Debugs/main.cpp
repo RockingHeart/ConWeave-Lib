@@ -1,8 +1,14 @@
 import std;
 import cwlib;
 
+constexpr sequence_list<unsigned char, 0, 10> list = {};
+
 int main() {
-	dast::block_allocator<dast::plmem_holder> alloc(20);
+	auto init = list.list();
+	for (const auto v : init) {
+		std::cout << static_cast<int>(v) << '\n';
+	}
+	/*dast::block_allocator<dast::plmem_holder> alloc(20);
 	std::string_view obj1 = "Hello";
 	std::string_view obj2 = "World";
 	alloc.allocate<std::string_view>(obj1);
@@ -14,5 +20,5 @@ int main() {
 	std::cout << *alloc.retreat<std::string_view>();
 	std::cout << *alloc.retreat<char>();
 	std::cout << *alloc.retreat<std::string_view>();
-	std::cout << *alloc.retreat<char>() << '\n';
+	std::cout << *alloc.retreat<char>() << '\n';*/
 }
