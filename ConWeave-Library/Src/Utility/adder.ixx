@@ -3,7 +3,12 @@ export module utility : adder;
 export template <class Type>
 class adder
 {
-	Type& value;
+public:
+	using value_t = Type;
+
+private:
+
+	value_t& value;
 
 public:
 

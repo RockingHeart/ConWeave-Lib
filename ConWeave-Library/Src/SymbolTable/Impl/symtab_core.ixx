@@ -14,7 +14,8 @@ export template <
 	class AddalInfo,
 	std::size_t BufSize
 >
-class symtab_core {
+class symtab_core
+{
 	static_assert(BufSize != 0, "BufSize Can't be zero");
 public:
 	using char_t	 =		CharType;

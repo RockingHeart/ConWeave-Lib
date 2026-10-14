@@ -17,12 +17,12 @@ export namespace traits
 
 	template <
 		rest::character CharType, string_value_traits StringValueTrait,
-		template <rest::character, class> class StringUtility,
+		template <class> class StringUtility,
 		template <class> class AllocatorType, class SizeType
 	> requires (
 		rest::allocator<AllocatorType<CharType>> &&
 		is_character_v<typename AllocatorType<CharType>::value_type> &&
-		string_utility_type<StringUtility<CharType, SizeType>>
+		string_utility_type<StringUtility<SizeType>>
 	) struct string_traits;
 };
 
@@ -34,12 +34,12 @@ enum class traits::string_value_traits {
 
 template <
 	rest::character CharType, traits::string_value_traits StringValueTrait,
-	template <rest::character, class> class StringUtility,
+	template <class> class StringUtility,
 	template <class> class AllocatorType, class SizeType = std::size_t
 > requires (
 	rest::allocator<AllocatorType<CharType>> &&
 	is_character_v<typename AllocatorType<CharType>::value_type> &&
-	string_utility_type<StringUtility<CharType, SizeType>>
+	string_utility_type<StringUtility<SizeType>>
 ) struct traits::string_traits {
 	using char_t          =       CharType;
 	using reference_t     =       CharType&;
@@ -49,7 +49,7 @@ template <
 	using size_t = SizeType;
 
 	using alloc_t	   = AllocatorType<CharType>;
-	using strutil	   = StringUtility<CharType, SizeType>;
+	using strutil	   = StringUtility<SizeType>;
 	using value_traits = string_value_traits;
 	using cache_size_t = unsigned char;
 
