@@ -1,18 +1,12 @@
 cmake_minimum_required(VERSION 3.31)
 
-if (NOT MSVC)
-    set(CMAKE_EXPERIMENTAL_CXX_MODULE_SCAN ON)
-endif()
-
-project(ConWeaveLib)
+project(ConWeaveLib LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(ConWeaveLib_Path ${CMAKE_CURRENT_SOURCE_DIR})
 
 if (MSVC)
     add_compile_options(/std:c++latest /std:clatest /experimental:module /permissive-)
-else()
-    add_compile_options(-std=c++23 -stdlib=libc++)
 endif()
 
 file(GLOB ExportPath "Export/*.ixx")
@@ -56,7 +50,6 @@ target_sources(ConWeaveLib
 target_include_directories(ConWeaveLib
     PUBLIC
     ${ConWeaveLib_Path}/Export
-    ${ConWeaveLib_Path}/Src
 )
 
 source_group("Export" FILES ${ExportPath})

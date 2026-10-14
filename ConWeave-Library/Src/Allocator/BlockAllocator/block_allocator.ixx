@@ -38,8 +38,8 @@ private:
 
 private:
 
-	constexpr size_t align_to(size_t value,
-							  size_t align)
+	constexpr size_t align_to (size_t value,
+							   size_t align)
 		const noexcept
 	{
 		return (value + align - 1) & ~(align - 1);
@@ -52,7 +52,7 @@ private:
 	constexpr size_t block_size(size_t base) noexcept {
 		SYSTEM_INFO system_info{};
 		GetSystemInfo(&system_info);
-		size_t block_size = align_to(
+		size_t block_size = align_to (
 			base, system_info.dwPageSize
 		);
 		return block_size;
