@@ -21,7 +21,9 @@ protected:
 private:
 
 	template <value_t... Is>
-	static constexpr std::array<value_t, seqlen> make_source(sequence<Is...>) noexcept {
+	static constexpr auto make_source(sequence<Is...>)
+		noexcept -> std::array<value_t, seqlen>
+	{
 		return { static_cast<value_t>(Begin + Is)... };
 	}
 

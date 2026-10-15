@@ -7,8 +7,7 @@ import utility;
 
 template <rest::character CharType>
 using primary_traits = traits::string_traits <
-	CharType, traits::string_value_traits::no_residue,
-	strutil, std::allocator
+	CharType, traits::string_value_traits::no_residue, std::allocator
 >;
 
 export namespace dast

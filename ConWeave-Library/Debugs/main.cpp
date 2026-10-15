@@ -8,6 +8,8 @@ int main() {
 	for (const auto v : init) {
 		std::cout << static_cast<int>(v) << '\n';
 	}
+	dast::cstring str1;
+	dast::cstring str2 = str1;
 	/*dast::block_allocator<dast::plmem_holder> alloc(20);
 	std::string_view obj1 = "Hello";
 	std::string_view obj2 = "World";

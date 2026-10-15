@@ -8,63 +8,65 @@ export class strutil
 {
 public:
     using size_t = std::size_t;
+    template <rest::character CharType>
+    using traits = std::char_traits<CharType>;
 
 private:
 
-    template <rest::character CharacterType>
-    static constexpr size_t length (const CharacterType* str)
+    template <rest::character CharType>
+    static constexpr size_t length (const CharType* str)
         noexcept
     {
-        return std::char_traits<CharacterType>::length(str);
+        return traits<CharType>::length(str);
     }
 
-    template <rest::character CharacterType>
-    static constexpr CharacterType* copy (CharacterType* dest,
-                                    const CharacterType* src,
-                                          size_t         size)
+    template <rest::character CharType>
+    static constexpr CharType* copy (CharType* dest,
+                               const CharType* src,
+                                     size_t    size)
         noexcept
     {
-        return std::char_traits<CharacterType>::copy(dest, src, size);
+        return traits<CharType>::copy(dest, src, size);
     }
 
-    template <rest::character CharacterType>
-    static constexpr CharacterType* move (CharacterType* dest,
-                                    const CharacterType* src,
-                                          size_t         size)
+    template <rest::character CharType>
+    static constexpr CharType* move (CharType* dest,
+                               const CharType* src,
+                                     size_t    size)
         noexcept
     {
-        return std::char_traits<CharacterType>::move(dest, src, size);
+        return traits<CharType>::move(dest, src, size);
     }
 
-    template <rest::character CharacterType>
-    static constexpr CharacterType* set (CharacterType* dest,
-                                         CharacterType  value,
-                                         size_t         size)
+    template <rest::character CharType>
+    static constexpr CharType* set (CharType* dest,
+                                    CharType  value,
+                                    size_t    size)
         noexcept
     {
-        return std::char_traits<CharacterType>::assign(dest, size, value);
+        return traits<CharType>::assign(dest, size, value);
     }
 
-    template <rest::character CharacterType>
-    static constexpr bool compare (const CharacterType* left,
-                                   const CharacterType* src,
-                                         size_t         size)
+    template <rest::character CharType>
+    static constexpr bool compare (const CharType* left,
+                                   const CharType* src,
+                                         size_t    size)
         noexcept
     {
-        return std::char_traits<CharacterType>::compare(left, src, size) == 0;
+        return traits<CharType>::compare(left, src, size) == 0;
     }
 
 public:
 
-    template <rest::character CharacterType>
-    static constexpr size_t strlenof (const CharacterType* str)
+    template <rest::character CharType>
+    static constexpr size_t strlenof (const CharType* str)
         noexcept
     {
-        return length<CharacterType>(str);
+        return length<CharType>(str);
     }
 
-    template <rest::character CharacterType>
-    static constexpr size_t strlenof(const std::initializer_list<const CharacterType*>& list)
+    template <rest::character CharType>
+    static constexpr size_t strlenof(const std::initializer_list<const CharType*>& list)
         noexcept
     {
         size_t sumlen = 0;
@@ -74,58 +76,60 @@ public:
         return sumlen;
     }
 
-    template <rest::character CharacterType>
-    static constexpr CharacterType* strcopy (CharacterType* dest,
-                                       const CharacterType* src,
+    template <rest::character CharType>
+    static constexpr CharType* strcopy (CharType* dest,
+                                       const CharType* src,
                                              size_t         size)
         noexcept
     {
-        return copy<CharacterType>(dest, src, size);
+        return copy<CharType>(dest, src, size);
     }
 
-    template <rest::character CharacterType>
-    static constexpr CharacterType* strmove (CharacterType* dest,
-                                       const CharacterType* src,
-                                             size_t         size)
+    template <rest::character CharType>
+    static constexpr CharType* strmove (CharType* dest,
+                                  const CharType* src,
+                                        size_t    size)
         noexcept
     {
-        return move<CharacterType>(dest, src, size);
+        return move<CharType>(dest, src, size);
     }
 
-    template <rest::character CharacterType>
-    static constexpr CharacterType* strset (CharacterType* dest,
-                                            CharacterType  value,
-                                            size_t         size)
+    template <rest::character CharType>
+    static constexpr CharType* strset (CharType* dest,
+                                       CharType  value,
+                                       size_t    size)
         noexcept
     {
-        return set<CharacterType>(dest, value, size);
+        return set<CharType>(dest, value, size);
     }
 
-    template <rest::character CharacterType>
-    static constexpr bool strcmp (const CharacterType* left,
-                                  const CharacterType* src,
-                                        size_t         size)
+    template <rest::character CharType>
+    static constexpr bool strcmp (const CharType* left,
+                                  const CharType* src,
+                                        size_t    size)
         noexcept
     {
-        return compare<CharacterType>(left, src, size);
+        return compare<CharType>(left, src, size);
     }
 
-    template <rest::character CharacterType>
-    static constexpr std::optional<size_t> strmatch (const CharacterType* str,
-                                                           CharacterType  target,
-                                                           size_t         len)
+    template <rest::character CharType>
+    static constexpr std::optional<size_t> strmatch (const CharType* str,
+                                                           CharType  target,
+                                                           size_t    len)
         noexcept
     {
-        const CharacterType* p = std::char_traits<CharacterType>::find(str, len, target);
-        if (p == nullptr) {
+        const CharType* resu = traits<CharType>::find (
+            str, len, target
+        );
+        if (resu == nullptr) {
             return std::nullopt;
         }
-        return static_cast<size_t>(p - str);
+        return static_cast<size_t>(resu - str);
     }
 
-    template <rest::character CharacterType>
-    static constexpr std::optional<size_t> strmatch (const CharacterType* str,
-                                                     const CharacterType* target)
+    template <rest::character CharType>
+    static constexpr std::optional<size_t> strmatch (const CharType* str,
+                                                     const CharType* target)
         noexcept
     {
         const size_t strlen = strlenof(str);
@@ -136,7 +140,7 @@ public:
         if (tarlen > strlen) {
             return std::nullopt;
         }
-        using string_view = std::basic_string_view<CharacterType>;
+        using string_view = std::basic_string_view<CharType>;
         const string_view hay   {str,    static_cast<std::size_t>(strlen)};
         const string_view needle{target, static_cast<std::size_t>(tarlen)};
         const auto pos = hay.find(needle);
