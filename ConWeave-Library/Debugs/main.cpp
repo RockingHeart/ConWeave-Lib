@@ -1,15 +1,18 @@
 import std;
 import cwlib;
 
-constexpr sequence_list<unsigned char, 0, 10> list = {};
+using list1 = sequence_list<ordered_source<unsigned char, 0, 10>>;
+using list2 = sequence_list<unordered_source<unsigned char, ';', '+'>>;
 
 int main() {
-	auto init = list.list();
-	for (const auto v : init) {
-		std::cout << static_cast<int>(v) << '\n';
+	std::array<std::span<const unsigned char>, 2> arr {
+		list1::list(), list2::list()
+	};
+	for (auto& list : arr) {
+		for (auto v : list) {
+			std::cout << static_cast<std::size_t>(v) << '\n';
+		}
 	}
-	dast::cstring str1;
-	dast::cstring str2 = str1;
 	/*dast::block_allocator<dast::plmem_holder> alloc(20);
 	std::string_view obj1 = "Hello";
 	std::string_view obj2 = "World";
