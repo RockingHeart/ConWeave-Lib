@@ -52,18 +52,20 @@ protected:
 
 };
 
-template <std::integral Type, std::size_t Length>
-using make_sequence = std::make_integer_sequence<Type, Length>;
-
-template <std::integral Type, Type... Is>
-using sequence = std::integer_sequence<Type, Is...>;
-
 export template <std::integral Type, std::size_t Begin, std::size_t End>
 	requires (End >= Begin)
 class ordered_source
 {
 public:
 	using value_t = Type;
+
+private:
+
+	template <std::integral Type, std::size_t Length>
+	using make_sequence = std::make_integer_sequence<Type, Length>;
+
+	template <std::integral Type, Type... Is>
+	using sequence = std::integer_sequence<Type, Is...>;
 
 public:
 
