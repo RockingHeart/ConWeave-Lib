@@ -19,7 +19,8 @@ struct memory_block_t {
 };
 
 template <class BlockHolder>
-class dast::block_allocator {
+class dast::block_allocator
+{
 private:
 	using block_holder = BlockHolder;
 
@@ -78,12 +79,12 @@ private:
 		old.release();
 	}
 
-	constexpr bool leftover_block() const noexcept {
+	constexpr bool reachable() const noexcept {
 		return current + 1 < last;
 	}
 
 	constexpr void respace() noexcept {
-		if (!leftover_block()) {
+		if (!reachable()) {
 			exten_block();
 		}
 		current = current + 1;
@@ -101,14 +102,16 @@ private:
 		if (base == nullptr) {
 			return nullptr;
 		}
+
 		block_holder& block    = current->area;
 		std::size_t block_size = current->acur;
 		if (block_size + size > block.size()) {
-			if (!leftover_block()) {
+			if (!reachable()) {
 				return nullptr;
 			}
 			enhance_current();
 		}
+
 		return current;
 	}
 
@@ -122,19 +125,39 @@ private:
 		respace();
 	}
 
+	template <class Type>
+	constexpr Type* enhance_space(std::size_t size) noexcept {
+		std::size_t& block_size = current->acur;
+		block_holder& block		= current->area;
+		auto result = block.template address<Type> (
+			block_size
+		);
+		block_size += size;
+		return result;
+	}
+
 	template <class AllocType, class... ArgsTyp>
 	constexpr auto hold_space(ArgsTyp&&...   args)
 		noexcept -> AllocType*
 	{
-		std::size_t& block_size = current->acur;
-		block_holder& block     = current->area;
-		auto result = block.template address<AllocType> (
-			block_size
+		auto result = enhance_space<AllocType> (
+			sizeof(AllocType)
 		);
-		block_size += sizeof(AllocType);
 		new (result) AllocType (
 			std::forward<ArgsTyp>(args)...
 		);
+		return result;
+	}
+
+	template <rest::character CharType>
+	constexpr auto hold_space (const CharType* string,
+								std::size_t	   size)
+		noexcept -> CharType*
+	{
+		auto result = enhance_space<CharType> (
+			size * sizeof(CharType)
+		);
+		strutil::strcopy(result, string, size);
 		return result;
 	}
 
@@ -144,6 +167,15 @@ private:
 		return hold_space<AllocType> (
 			std::forward<ArgsType>(args)...
 		);
+	}
+
+	template <rest::character CharType>
+	CharType* allocate_impl (const CharType* string,
+							   std::size_t	  size)
+		noexcept
+	{
+		check_block(size);
+		return hold_space<CharType>(string, size);
 	}
 
 	constexpr void construct(std::size_t size) noexcept {
@@ -182,6 +214,7 @@ private:
 		if (base == nullptr) {
 			return;
 		}
+
 		for (auto& block : *this) {
 			block.~memory_block();
 		}
@@ -225,7 +258,9 @@ public:
 	template <class AllocType, class... ArgsType>
 	AllocType* allocate(ArgsType&&... args) noexcept {
 		initialize();
-		return allocate_impl<AllocType>(std::forward<ArgsType>(args)...);
+		return allocate_impl<AllocType> (
+			std::forward<ArgsType>(args)...
+		);
 	}
 
 	template <class AllocType, class... ArgsType>
@@ -236,6 +271,7 @@ public:
 		if (should_allocate(size)) {
 			return std::nullopt;
 		}
+
 		return hold_space<AllocType> (
 			std::forward<ArgsType>(args)...
 		);
@@ -259,6 +295,15 @@ public:
 
 	constexpr void start_over() noexcept {
 		current = base;
+	}
+
+	constexpr bool next_block() noexcept {
+		if (!reachable()) {
+			return false;
+		}
+
+		current += 1;
+		return true;
 	}
 
 	constexpr void resize_curr() noexcept {
@@ -296,8 +341,12 @@ public:
 		return base;
 	}
 
-	constexpr memory_block* end() const noexcept {
+	constexpr memory_block* cur_block() const noexcept {
 		return current;
+	}
+
+	constexpr memory_block* end() const noexcept {
+		return cur_block();
 	}
 
 	constexpr bool is_empty() const noexcept {

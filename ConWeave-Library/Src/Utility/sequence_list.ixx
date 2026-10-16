@@ -10,13 +10,11 @@ public:
 	using source  =			 Source;
 	using value_t = typename Source::value_t;
 
-public:
-
 	static constexpr std::size_t seqlen = Source::length;
 
 private:
 
-	static constexpr std::span<const value_t> span = {
+	static constexpr std::span<const value_t> span {
 		source::sequence
 	};
 
@@ -26,8 +24,6 @@ public:
 	sequence_list(const sequence_list&)			   = delete;
 	sequence_list& operator=(const sequence_list&) = delete;
 
-public:
-
 	static constexpr std::span<const value_t> list() noexcept {
 		return span;
 	}
@@ -35,20 +31,16 @@ public:
 };
 
 export template <std::integral Type, Type... Sequence>
-class unordered_source
+struct unordered_source
 {
 public:
-	using value_t = Type;
-
-public:
-
-	static constexpr std::size_t length = sizeof...(Sequence);
+	using value_t =		 Type;
+	using array_t = std::array<value_t, length>;
+	static constexpr std::size_t length { sizeof...(Sequence) };
 
 protected:
 
-	static constexpr std::array<value_t, length> sequence = {
-		Sequence...
-	};
+	static constexpr array_t sequence { Sequence... };
 
 };
 
@@ -58,20 +50,17 @@ class ordered_source
 {
 public:
 	using value_t = Type;
+	static constexpr std::size_t length = End - Begin;
 
 private:
 
-	template <std::integral Type, std::size_t Length>
+	template <std::size_t Length>
 	using make_sequence = std::make_integer_sequence<Type, Length>;
 
-	template <std::integral Type, Type... Is>
+	template <Type... Is>
 	using sequence = std::integer_sequence<Type, Is...>;
 
-public:
-
-	static constexpr std::size_t length = End - Begin;
-
-public:
+protected:
 
 	template <value_t... Is>
 	static constexpr auto make_source(sequence<value_t, Is...>)
@@ -79,8 +68,6 @@ public:
 	{
 		return { (Is + Begin)... };
 	}
-
-protected:
 
 	static constexpr std::array<value_t, length> sequence = {
 		make_source(make_sequence<value_t, length>{})
