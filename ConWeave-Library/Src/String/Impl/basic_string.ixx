@@ -225,73 +225,83 @@ private:
 	}
 
 	template <size_t Expand = 2>
-	constexpr void heapify_cache (alloc_t&     alloc,
-								  box_value_t& value,
-		                          size_t       size)
+	constexpr void heapify_cache(size_t size)
 		noexcept (
 			noexcept(allocator().allocate(0ull)) &&
 			noexcept(allocator().deallocate(nullptr, 0ull))
 		)
 	{
+		alloc_t&     alloc = allocator();
+		box_value_t& value = core_t::value;
 		box_cache_t& cache = core_t::cache;
 		box_specs_t& specs = cache.specs;
+
 		size_t buf_size    = specs.size;
 		size			   = std::max(size, buf_size);
 		size_t alloc_size  = size * Expand + 1;
 		pointer_t buffer   = alloc.allocate(alloc_size);
+
 		strutil::strcopy(buffer, cache.pointer, buf_size);
 		buffer[buf_size]	= char_t();
+
 		value.pointer		= buffer;
 		specs.mode			= string_mode::storage;
+
 		if constexpr (trait_is_advanced_mode()) {
 			value.before = nullptr;
 		}
+
 		value.count			= buf_size;
 		value.concord.left  = alloc_size - buf_size;
 	}
 
 	constexpr void reserve_cache(size_t size) noexcept {
-		box_value_t& value = core_t::value;
-		alloc_t&	 alloc = allocator();
-		return heapify_cache<1>(alloc, value, size);
+		return heapify_cache<1>(size);
 	}
 
-	constexpr void reserve_before (alloc_t&     alloc,
-								   box_value_t& value,
-		                           size_t	    size)
+	constexpr void reserve_before(size_t size)
 		noexcept (
 			noexcept(allocator().allocate(0ull)) &&
 			noexcept(allocator().deallocate(nullptr, 0ull))
 		)
 	{
+		alloc_t&     alloc = allocator();
+		box_value_t& value = core_t::value;
+
 		alloc.deallocate(value.before, value.before_count + value.before_left);
+
 		value.before            = value.pointer;
 		value.before_count      = value.count;
 		value.before_left		= value.concord.left;
+
 		value.pointer           = alloc.allocate(size);
 		strutil::strcopy(value.pointer, value.before, value.before_count);
 	}
 
 	template <size_t Expand>
-	constexpr void new_space (alloc_t&     alloc,
-							  box_value_t& value,
-		                      size_t       size)
+	constexpr void new_space(size_t size)
 		noexcept (
 			noexcept(allocator().allocate(0ull)) &&
 			noexcept(allocator().deallocate(nullptr, 0ull))
 		)
 	{
+		alloc_t&     alloc = allocator();
+		box_value_t& value = core_t::value;
+
 		pointer_t old_ptr	  = value.pointer;
 		size_t old_count	  = value.count;
 		size_t old_left		  = value.concord.left;
 		size_t old_alloc_size = old_count + old_left;
-		size_t alloc_size  = size * Expand + 1;
-		pointer_t new_ptr  = alloc.allocate(alloc_size);
+		size_t alloc_size     = size * Expand + 1;
+		pointer_t new_ptr     = alloc.allocate(alloc_size);
+
 		strutil::strcopy(new_ptr, old_ptr, old_count);
 		new_ptr[old_count] = char_t();
+
 		if (old_alloc_size > 1) {
 			alloc.deallocate(old_ptr, old_alloc_size);
 		}
+
 		value.pointer	   = new_ptr;
 		value.count		   = old_count;
 		value.concord.left = alloc_size - old_count;
@@ -300,37 +310,19 @@ private:
 	template <bool InitHeap = false, size_t Expand = 2>
 	constexpr void respace(size_t size)
 		noexcept (
-			noexcept (
-				respace<InitHeap, Expand> (
-					allocator(), core_t::value, size
-				)
-			)
-		)
-	{
-		box_value_t& value = core_t::value;
-		alloc_t& alloc     = allocator();
-		return respace<InitHeap, Expand> (
-			alloc, value, size
-		);
-	}
-
-	template <bool InitHeap = false, size_t Expand = 2>
-	constexpr void respace (alloc_t&	 alloc,
-							box_value_t& value,
-							size_t		 size)
-		noexcept (
 			noexcept(allocator().allocate(0ull)) &&
 			noexcept(allocator().deallocate(nullptr, 0ull))
 		)
 	{
 		if constexpr (trait_is_advanced_mode()) {
-			return reserve_before(alloc, value, size);
+			return reserve_before(size);
 		}
+
 		if constexpr (InitHeap) {
-			return heapify_cache<Expand>(alloc, value, size);
+			return heapify_cache<Expand>(size);
 		}
 		else {
-			return new_space<Expand>(alloc, value, size);
+			return new_space<Expand>(size);
 		}
 	}
 
@@ -338,28 +330,22 @@ private:
 		const auto& cache = core_t::cache;
 		const auto* data  = cache.pointer;
 		size_t strlen	  = cache.specs.size;
+
 		if (is_large_mode()) {
 			const auto& value = core_t::value;
 			data			  = value.pointer;
 			strlen			  = value.count;
 		}
+
 		return { data, strlen };
 	}
 
-	constexpr void set_length (box_value_t& value,
-							   box_cache_t& cache,
-							   size_t		size)
-		noexcept
-	{
+	constexpr void set_length(size_t size) noexcept {
 		if (is_large_mode()) {
-			value.count = size;
+			core_t::value.count = size;
 			return;
 		}
-		cache.specs.size = size;
-	}
-
-	constexpr void set_length(size_t size) noexcept {
-		return set_length(core_t::value, core_t::cache, size);
+		core_t::cache.specs.size = size;
 	}
 
 	static constexpr void set_value_null(box_value_t& value) noexcept {
@@ -370,17 +356,16 @@ private:
 		if (is_large_mode()) {
 			return core_t::value.count -= size;
 		}
+
 		box_specs_t& specs = core_t::cache.specs;
 		size_t result	   = specs.size - size;
 		specs.size		   = result;
 		return result;
 	}
 
-	constexpr void copy_cache (const box_cache_t& object,
-									 box_cache_t& self)
-		noexcept
-	{
-		strutil::strcopy (
+	constexpr void copy_cache(const box_cache_t& object) noexcept {
+		box_cache_t& self = core_t::cache;
+		strutil::strcopy(
 			self.pointer,
 			object.pointer,
 			object.specs.size
@@ -388,114 +373,139 @@ private:
 		self.specs = object.specs;
 	}
 
-	constexpr void move_cache(box_cache_t& object, basic_string& self) noexcept {
-		box_cache_t& self_cache = self.cache;
-		box_specs_t& self_specs = self_cache.specs;
-		box_specs_t& obje_specs = object.specs;
-		if (self.is_large_mode()) {
-			alloc_t alloc	   = self.allocator();
-			box_value_t& value = self.value;
-			alloc.deallocate(value.pointer, self.alloc_size());
-			self_specs.mode = string_mode::cache;
-			self_cache.pointer[obje_specs.size] = char_t();
+	constexpr void move_cache(basic_string& object) noexcept {
+		box_cache_t& source_cache = core_t::cache;
+		box_specs_t& source_specs = source_cache.specs;
+		box_cache_t& target_cache = object.cache;
+		box_specs_t& target_specs = target_cache.specs;
+
+		if (object.is_large_mode()) {
+			alloc_t     alloc = object.allocator();
+			box_value_t& value = object.value;
+
+			alloc.deallocate(value.pointer, object.alloc_size());
+
+			target_specs.mode = string_mode::cache;
+			target_cache.pointer[source_specs.size] = char_t();
 		}
-		strutil::strcopy (
-			self_cache.pointer,
-			object.pointer,
-			obje_specs.size
+
+		strutil::strcopy(
+			target_cache.pointer,
+			source_cache.pointer,
+			source_specs.size
 		);
-		self_specs.size   = obje_specs.size;
-		object.pointer[0] = char_t();
-		obje_specs.size   = 0;
+
+		target_specs.size = source_specs.size;
+
+		source_cache.pointer[0] = char_t();
+		source_specs.size       = 0;
 	}
 
-	constexpr void copy_cache (box_cache_t&    cache,
-		                       size_t          buf_size,
-		                       const_pointer_t pointer,
-		                       size_t          size)
+	constexpr void copy_cache(size_t          buf_size,
+		                      const_pointer_t pointer,
+		                      size_t          size)
 		noexcept
 	{
-		strutil::strcopy (
+		box_cache_t& cache = core_t::cache;
+
+		strutil::strcopy(
 			cache.pointer + buf_size,
 			pointer, size
 		);
-		box_specs_t& specs = core_t::cache.specs;
+
+		box_specs_t& specs = cache.specs;
 		size_t next_size   = specs.size + size;
 		specs.size		   = next_size;
 	}
 
-	constexpr void reset_value (box_value_t& value,
-		                               char_t       char_value,
-		                               size_t       size,
-		                               size_t       strlen)
+	constexpr void reset_value(char_t char_value,
+		                       size_t size,
+		                       size_t strlen)
 		noexcept
 	{
+		box_value_t& value = core_t::value;
+
 		strutil::strset(value.pointer + strlen, char_value, size - strlen);
+
 		size_t total	   = alloc_size(value);
 		value.count		   = size;
 		value.concord.left = total - size;
+
 		set_value_null(value);
 	}
 
-	constexpr void swap_cache (alloc_t&     alloc,
-		                       box_cache_t& self_cache,
-		                       box_cache_t& object_cache)
+	constexpr void swap_cache(box_cache_t& object_cache)
 		noexcept (
 			noexcept(allocator().allocate(0ull)) &&
 			noexcept(allocator().deallocate(nullptr, 0ull))
 		)
 	{
-		box_specs_t& self_sepcs   = self_cache.specs;
+		alloc_t&     alloc       = allocator();
+		box_cache_t& self_cache  = core_t::cache;
+		box_specs_t& self_sepcs  = self_cache.specs;
 		box_specs_t& object_specs = object_cache.specs;
+
 		size_t cache_size		  = self_sepcs.size;
 		size_t next_size		  = cache_size + 1;
 		pointer_t cache			  = alloc.allocate(next_size);
+
 		strutil::strcopy(cache, self_cache.pointer, cache_size);
 		cache[cache_size] = char_t();
+
 		strutil::strcopy(
 			self_cache.pointer,
 			object_cache.pointer,
 			object_specs.size
 		);
+
 		size_t temp_size = self_sepcs.size;
 		self_sepcs.size  = object_specs.size;
 		cache_size		 = self_sepcs.size;
 		self_cache.pointer[cache_size] = char_t();
+
 		strutil::strcopy(object_cache.pointer, cache, next_size);
 		object_specs.size = temp_size;
+
 		alloc.deallocate(cache, next_size);
 	}
 
-	constexpr void swap_value (box_value_t& self_value,
+	constexpr void swap_value(box_value_t& self_value,
 		                       box_value_t& object_value)
 		noexcept
 	{
 		pointer_t cache      = self_value.pointer;
 		size_t cache_size    = self_value.count;
+
 		self_value.pointer   = object_value.pointer;
 		self_value.count     = object_value.count;
+
 		object_value.pointer = cache;
 		object_value.count   = cache_size;
 	}
 
-	constexpr void cache_swap_value (box_cache_t& self_cache,
-		                             box_cache_t& object_cache,
-		                             box_value_t& self_value,
+	constexpr void cache_swap_value(box_cache_t& object_cache,
 		                             box_value_t& object_value)
 		noexcept
 	{
+		box_cache_t& self_cache  = core_t::cache;
+		box_value_t& self_value  = core_t::value;
+
 		pointer_t old_ptr		  = object_value.pointer;
 		size_t old_size			  = object_value.count;
+
 		box_specs_t& self_sepcs   = self_cache.specs;
 		box_specs_t& object_specs = object_cache.specs;
-		strutil::strcopy (
+
+		strutil::strcopy(
 			object_cache.pointer,
 			self_cache.pointer,
 			self_sepcs.size
 		);
-		object_specs.size		  = self_sepcs.size;
+
+		object_specs.size = self_sepcs.size;
 		object_cache.pointer[object_specs.size] = char_t();
-		object_specs.mode  = string_mode::cache;
+		object_specs.mode = string_mode::cache;
+
 		self_value.pointer = old_ptr;
 		self_value.count   = old_size;
 		self_sepcs.mode	   = string_mode::storage;
@@ -503,7 +513,7 @@ private:
 
 private:
 
-	constexpr void assign_init (basic_string&   object,
+	constexpr void assign_init(basic_string&   object,
 		                        const_pointer_t pointer,
 		                        size_t          size)
 		noexcept (
@@ -513,20 +523,27 @@ private:
 		box_cache_t& cache = core_t::cache;
 		size_t obj_size    = object.string_length();
 		size_t sumlen      = obj_size + size;
+
 		if (sumlen < core_t::buffer_size) {
 			strutil::strcopy(cache.pointer, object.pointer(), obj_size);
 			strutil::strcopy(cache.pointer + obj_size, pointer, size);
 			cache.specs.size = sumlen;
 			return;
 		}
+
 		box_value_t& value = core_t::value;
+
 		value.count        = sumlen;
+
 		size_t count	   = sumlen;
 		size_t alloc_size  = count * 2 + 1;
+
 		value.pointer      = allocator().allocate(alloc_size);
 		value.concord.left = alloc_size - size;
+
 		strutil::strcopy(value.pointer, object.pointer(), obj_size);
 		strutil::strcopy(value.pointer + obj_size, pointer, size);
+
 		value.pointer[count] = char_t();
 	}
 
@@ -537,43 +554,51 @@ private:
 	{
 		if (is_cache_mode()) {
 			box_cache_t& cache = core_t::cache;
-			size_t buf_size    = core_t::cache.specs.size;
+			size_t buf_size    = cache.specs.size;
 			strutil::strcopy(cache.pointer, str, buf_size);
 			return;
 		}
+
 		box_value_t& value = core_t::value;
 		size_t size		   = value.count;
 		size_t alloc_size  = size * 2 + 1;
+
 		value.pointer	   = allocator().allocate(alloc_size);
 		value.concord.left = alloc_size - size;
+
 		strutil::strcopy(value.pointer, str, size);
 		value.pointer[size] = char_t();
 	}
 
 	constexpr void assign_init(const basic_string& object) noexcept {
 		if (object.is_cache_mode()) {
-			return copy_cache(object.cache, core_t::cache);
+			return copy_cache(object.cache);
 		}
-		assign_data(core_t::value, object.value);
+
+		assign_data(object.value);
 		core_t::cache.specs.mode = string_mode::storage;
 	}
 
-	constexpr void assign_init (const_initlist& list,
-								char_t			fill)
+	constexpr void assign_init(const_initlist& list,
+							   char_t          fill)
 		noexcept (
 			noexcept(allocator().allocate(0ull))
 		)
 	{
-		pointer_t data     = core_t::cache.pointer;
+		pointer_t data = core_t::cache.pointer;
+
 		if (is_large_mode()) {
 			box_value_t& value   = core_t::value;
 			size_t size			 = value.count;
 			size_t alloc_size    = size * 2 + 1;
+
 			data = value.pointer = allocator().allocate(alloc_size);
 			value.concord.left   = alloc_size - size;
 		}
+
 		const auto* begin = list.begin();
 		const auto* end   = list.end() - 1;
+
 		for (; begin != end; ++begin) {
 			size_t strlen = strutil::strlenof(*begin);
 			strutil::strcopy(data, *begin, strlen);
@@ -581,6 +606,7 @@ private:
 			*data = fill;
 			data += 1;
 		}
+
 		size_t strlen = strutil::strlenof(*begin);
 		strutil::strcopy(data, *begin, strlen);
 	}
@@ -592,25 +618,27 @@ private:
 	{
 		if (is_cache_mode()) {
 			size_t buf_size = core_t::cache.specs.size;
-			strutil::strset (
+
+			strutil::strset(
 				core_t::cache.pointer,
 				char_value,
 				buf_size
 			);
 			return;
 		}
+
 		box_value_t& value = core_t::value;
 		size_t size        = value.count;
 		size_t alloc_size  = size * 2 + 1;
+
 		value.pointer      = allocator().allocate(alloc_size);
 		value.concord.left = alloc_size - size;
+
 		strutil::strset(value.pointer, char_value, size);
 		value.pointer[size] = char_t();
 	}
 
-	constexpr void assign_before (alloc_t&     alloc,
-		                          box_value_t& self_value,
-		                    const box_value_t& object_value)
+	constexpr void assign_before(const box_value_t& object_value)
 		noexcept
 	{
 		if constexpr (trait_is_advanced_mode()) {
@@ -618,7 +646,10 @@ private:
 				return;
 			}
 
-			self_value.before = alloc.allocate (
+			alloc_t&     alloc      = allocator();
+			box_value_t& self_value = core_t::value;
+
+			self_value.before = alloc.allocate(
 				object_value.before_count + object_value.before_left
 			);
 
@@ -633,19 +664,20 @@ private:
 		}
 	}
 
-	constexpr void assign_data (box_value_t& self_value,
-						  const box_value_t& object_value)
+	constexpr void assign_data(const box_value_t& object_value)
 		noexcept
 	{
-		alloc_t& alloc     = allocator();
+		alloc_t&     alloc      = allocator();
+		box_value_t& self_value = core_t::value;
+
 		size_t object_size = object_value.count;
 		size_t object_left = object_value.concord.left;
 
-		self_value.pointer = alloc.allocate (
+		self_value.pointer = alloc.allocate(
 			object_size + object_left
 		);
 
-		strutil::strcopy (
+		strutil::strcopy(
 			self_value.pointer,
 			object_value.pointer,
 			object_size
@@ -655,16 +687,15 @@ private:
 		self_value.concord.left				 = object_left;
 		self_value.pointer[self_value.count] = char_t();
 
-
-		assign_before(alloc, self_value, object_value);
+		assign_before(object_value);
 	}
 
 	constexpr void assign_init(basic_string& object) noexcept {
 		if (object.is_cache_mode()) {
-			return copy_cache(object.cache, core_t::cache);
+			return copy_cache(object.cache);
 		}
 
-		assign_data(core_t::value, object.value);
+		assign_data(object.value);
 		core_t::cache.specs.mode = string_mode::storage;
 	}
 
@@ -674,14 +705,17 @@ private:
 		box_cache_t& cache = core_t::cache;
 		box_specs_t& specs = cache.specs;
 		size_t next		   = specs.size + size;
+
 		if (next >= core_t::buffer_size) {
 			respace<true>(next);
+
 			box_value_t& value = core_t::value;
 			strutil::strcopy(value.pointer, pointer, size);
 			value.count = size;
 			set_value_null(value);
 			return *this;
 		}
+
 		strutil::strcopy(cache.pointer, pointer, size);
 		specs.size = size;
 		cache.pointer[specs.size] = char_t();
@@ -691,9 +725,11 @@ private:
 	constexpr basic_string& assignment_value(const_pointer_t pointer, size_t size) noexcept {
 		box_value_t& value = core_t::value;
 		size_t next		   = value.count + size;
+
 		if (next >= alloc_size(value)) {
 			respace<false>(next);
 		}
+
 		strutil::strcopy(value.pointer, pointer, size);
 		value.count = size;
 		set_value_null(value);
@@ -737,6 +773,7 @@ private:
 				return *this;
 			}
 		}
+
 		std::forward<basic_string&&>(object).move_string(*this);
 		return *this;
 	}
@@ -754,16 +791,17 @@ private:
 		self.before			= nullptr;
 	}
 
-	constexpr void move_self(box_value_t&& self, basic_string& object)
+	constexpr void move_self(basic_string& object)
 		noexcept (
 			noexcept(allocator().deallocate(nullptr, 0ull))
 		)
 	{
-		alloc_t& object_alloc     = object.allocator();
+		box_value_t& self         = core_t::value;
+		alloc_t&     object_alloc = object.allocator();
 		box_value_t& object_value = object.value;
 
 		if (object.is_large_mode()) {
-			object_alloc.deallocate (
+			object_alloc.deallocate(
 				object_value.pointer,
 				object.alloc_size()
 			);
@@ -772,12 +810,13 @@ private:
 		object_value.pointer	  = self.pointer;
 		object_value.count		  = self.count;
 		object_value.concord.left = self.concord.left;
+
 		self.pointer			  = nullptr;
 		self.count				  = 0;
 		self.concord.left		  = 0;
 
 		if constexpr (trait_is_advanced_mode()) {
-			release_before(object_alloc, object);
+			release_before(object);
 			swap_before(self, object_value);
 		}
 
@@ -787,46 +826,40 @@ private:
 	// Caller move to 'object' string
 	constexpr void move_string(basic_string& object)
 		&& noexcept (
-			noexcept(move_self(std::move(core_t::value), object))
+			noexcept(move_self(object)) &&
+			noexcept(move_cache(object))
 		)
 	{
 		if (is_cache_mode()) {
-			move_cache(core_t::cache, object);
+			move_cache(object);
 			return;
 		}
-		move_self(std::move(core_t::value), object);
+		move_self(object);
 	}
 
-	constexpr void exchange_self (basic_string& object,
-								  alloc_t&      alloc,
-								  box_cache_t&  self_cache,
-								  box_value_t&  self_value)
+	constexpr void exchange_self(basic_string& object)
 		noexcept (
-			noexcept(swap_cache(alloc, self_cache, object.cache))
+			noexcept(swap_cache(object.cache)) &&
+			noexcept(cache_swap_value(object.cache, object.value))
 		)
 	{
 		if (object.is_cache_mode()) {
-			return swap_cache (
-				alloc,
-				self_cache,
-				object.cache
-			);
+			return swap_cache(object.cache);
 		}
-		
-		return cache_swap_value (
-			self_cache,
+
+		return cache_swap_value(
 			object.cache,
-			self_value,
 			object.value
 		);
 	}
 
-	constexpr void value_swap_cache (box_value_t& self_value,
-									 box_cache_t& self_cache,
-									 box_cache_t& object_cache,
+	constexpr void value_swap_cache(box_cache_t& object_cache,
 									 box_value_t& object_value)
 		noexcept
 	{
+		box_value_t& self_value = core_t::value;
+		box_cache_t& self_cache = core_t::cache;
+
 		pointer_t self_heap_ptr = self_value.pointer;
 		size_t    self_count	= self_value.count;
 		size_t    self_left		= self_value.concord.left;
@@ -846,51 +879,36 @@ private:
 		self_cache.specs.mode = string_mode::cache;
 	}
 
-
-	constexpr void exchange_object (basic_string& object,
-									alloc_t&      alloc,
-									box_cache_t&  self_cache,
-									box_value_t&  self_value)
+	constexpr void exchange_object(basic_string& object)
 		noexcept (
-			noexcept(swap_cache(alloc, self_cache, object.cache))
+			noexcept(value_swap_cache(object.cache, object.value)) &&
+			noexcept(swap_value(object.value, core_t::value))
 		)
 	{
 		if (object.is_cache_mode()) {
-			return value_swap_cache (
-				self_value,
-				self_cache,
+			return value_swap_cache(
 				object.cache,
 				object.value
 			);
 		}
-		
-		return swap_value (
+
+		return swap_value(
 			object.value,
-			self_value
+			core_t::value
 		);
 	}
 
 	constexpr void exchange_string(basic_string& object)
 		noexcept (
-			noexcept (
-				exchange_self(object, allocator(), core_t::cache, core_t::value)
-			) &&
-			noexcept (
-				exchange_object(object, allocator(), core_t::cache, core_t::value)
-			)
+			noexcept(exchange_self(object)) &&
+			noexcept(exchange_object(object))
 		)
 	{
 		if (is_cache_mode()) {
-			return exchange_self (
-				object, allocator(),
-				core_t::cache, core_t::value
-			);;
+			return exchange_self(object);
 		}
 
-		return exchange_object (
-			object, allocator(),
-			core_t::cache, core_t::value
-		);
+		return exchange_object(object);
 	}
 
 private:
@@ -997,14 +1015,17 @@ private:
 
 private:
 
-	constexpr size_t count_string (
+	constexpr size_t count_string(
 		char_t char_value, size_t point, size_t end
-	) noexcept {
+	) noexcept
+	{
 		if (!within_range(point, end)) {
 			return 0;
 		}
+
 		size_t cont = 0;
 		const_pointer_t data = pointer();
+
 		for (; point != end; ++point) {
 			if (data[point] == char_value) {
 				++cont;
@@ -1031,7 +1052,7 @@ private:
 		noexcept
 	{
 		if (old == nullptr) {
-			strutil::strmove (
+			strutil::strmove(
 				data + fill_size, data, str_len
 			);
 			return;
@@ -1046,7 +1067,7 @@ private:
 		noexcept
 	{
 		if (old == nullptr) {
-			strutil::strmove (
+			strutil::strmove(
 				data + fill_size, data, str_len
 			);
 			return;
@@ -1066,13 +1087,13 @@ private:
 	}
 
 	template <fill_action fill_act>
-	[[noreturn]] constexpr void single_fill (pointer_t,
-											 pointer_t, char_t,
-											 size_t, size_t)
+	[[noreturn]] constexpr void single_fill(pointer_t,
+											pointer_t, char_t,
+											size_t, size_t)
 		noexcept = delete;
 
 	template <>
-	constexpr void single_fill<fill_action::left> (pointer_t data,
+	constexpr void single_fill<fill_action::left>(pointer_t data,
 												   pointer_t old,
 												   char_t    fill,
 												   size_t    fill_size,
@@ -1084,7 +1105,7 @@ private:
 	}
 
 	template <>
-	constexpr void single_fill<fill_action::center> (pointer_t data,
+	constexpr void single_fill<fill_action::center>(pointer_t data,
 													 pointer_t old,
 													 char_t    fill,
 													 size_t    fill_size,
@@ -1097,7 +1118,7 @@ private:
 	}
 
 	template <>
-	constexpr void single_fill<fill_action::right> (pointer_t data,
+	constexpr void single_fill<fill_action::right>(pointer_t data,
 													pointer_t old,
 													char_t    fill,
 													size_t    fill_size,
@@ -1109,13 +1130,13 @@ private:
 	}
 
 	template <fill_action fill_act>
-	[[noreturn]] constexpr void multiple_fill (pointer_t, pointer_t,
+	[[noreturn]] constexpr void multiple_fill(pointer_t, pointer_t,
 											   const_pointer_t,
 											   size_t, size_t)
 		noexcept = delete;
 
 	template <>
-	constexpr void multiple_fill<fill_action::left> (pointer_t		 data,
+	constexpr void multiple_fill<fill_action::left>(pointer_t		 data,
 													 pointer_t		 old,
 													 const_pointer_t fill,
 													 size_t			 fill_size,
@@ -1127,7 +1148,7 @@ private:
 	}
 
 	template <>
-	constexpr void multiple_fill<fill_action::center> (pointer_t	   data,
+	constexpr void multiple_fill<fill_action::center>(pointer_t	   data,
 													   pointer_t	   old,
 													   const_pointer_t fill,
 													   size_t		   fill_size,
@@ -1140,7 +1161,7 @@ private:
 	}
 
 	template <>
-	constexpr void multiple_fill<fill_action::right> (pointer_t		  data,
+	constexpr void multiple_fill<fill_action::right>(pointer_t		  data,
 													  pointer_t		  old,
 													  const_pointer_t fill,
 													  size_t		  fill_size,
@@ -1151,34 +1172,42 @@ private:
 		strutil::strcopy(data + str_len, fill, fill_size);
 	}
 
-	constexpr pointer_t align_switch_data (pointer_t&   data,
-		                                   size_t&      strlen,
-		                                   size_t&      sumlen,
-		                                   alloc_t&     alloc,
-		                                   box_value_t& value)
+	constexpr pointer_t align_switch_data(pointer_t& data,
+		                                   size_t&    strlen,
+		                                   size_t&    sumlen)
 		noexcept
 	{
+		alloc_t&     alloc = allocator();
+		box_value_t& value = core_t::value;
+
 		bool large_mode = is_large_mode();
+
 		if (large_mode) {
 			data		= value.pointer;
 			strlen		= value.count;
 			value.count = sumlen;
 		}
+
 		sumlen			 += strlen;
+
 		size_t max_size   = large_mode ? alloc_size(value)
 			: core_t::buffer_size;
+
 		if (sumlen >= max_size) {
 			pointer_t old = alloc.allocate(strlen);
 			strutil::strcopy(old, data, strlen);
+
 			if (large_mode) {
 				alloc.deallocate(value.pointer, max_size);
 			}
+
 			size_t size			 = sumlen * 2;
 			value.concord.left	 = size - sumlen;
 			data = value.pointer = alloc.allocate(alloc_size(value));
 			data[sumlen]         = char_t();
 			return old;
 		}
+
 		return nullptr;
 	}
 
@@ -1195,31 +1224,38 @@ private:
 	{
 		box_cache_t& cache = core_t::cache;
 		box_value_t& value = core_t::value;
+
 		size_t strlen      = cache.specs.size;
 		pointer_t data     = cache.pointer;
 		size_t sumlen      = fill_size;
+
 		if constexpr (fill_act == fill_action::center) {
 			sumlen *= 2;
 		}
-		alloc_t alloc     = allocator();
-		pointer_t address = align_switch_data (
-			data, strlen, sumlen, alloc, value
+
+		alloc_t& alloc     = allocator();
+		pointer_t address  = align_switch_data(
+			data, strlen, sumlen
 		);
+
 		if constexpr (std::is_same_v<FillType, char_t>) {
-			single_fill<fill_act> (
+			single_fill<fill_act>(
 				data, address, fill, fill_size, strlen
 			);
 		}
 		else {
-			multiple_fill<fill_act> (
+			multiple_fill<fill_act>(
 				data, address, fill, fill_size, strlen
 			);
 		}
+
 		data[sumlen] = char_t();
+
 		if (address != nullptr) {
 			alloc.deallocate(address, strlen);
 		}
-		set_length(value, cache, sumlen);
+
+		set_length(sumlen);
 	}
 
 	constexpr void center_string(char_t fill, size_t size = 1)
@@ -1280,10 +1316,13 @@ private:
 		box_cache_t& cache = core_t::cache;
 		box_specs_t& specs = cache.specs;
 		pointer_t data     = cache.pointer;
+
 		size_t bufsize     = specs.size;
 		size_t nextsize    = bufsize + size;
+
 		if (nextsize >= core_t::buffer_size) {
 			respace<true, 2>(nextsize);
+
 			box_value_t& value = core_t::value;
 			data               = value.pointer;
 			value.count        = nextsize;
@@ -1292,12 +1331,14 @@ private:
 		else {
 			specs.size = nextsize;
 		}
-		strutil::strmove (
+
+		strutil::strmove(
 			data + size,
 			data,
 			bufsize
 		);
-		strutil::strcopy (
+
+		strutil::strcopy(
 			data,
 			str,
 			size
@@ -1310,21 +1351,26 @@ private:
 		)
 	{
 		box_value_t& value = core_t::value;
+
 		size_t curlen      = value.count;
 		size_t nextlen     = curlen + size;
+
 		if (nextlen >= alloc_size(value)) {
 			respace<false, 2>(nextlen);
 		}
-		strutil::strmove (
+
+		strutil::strmove(
 			value.pointer + size,
 			value.pointer,
 			curlen
 		);
-		strutil::strcopy (
+
+		strutil::strcopy(
 			value.pointer,
 			str,
 			size
 		);
+
 		value.count = nextlen;
 		value.pointer[nextlen] = char_t();
 	}
@@ -1342,7 +1388,7 @@ private:
 
 private:
 
-	constexpr bool replace_string (const_pointer_t str,
+	constexpr bool replace_string(const_pointer_t str,
 		                           size_t          point,
 		                           size_t          end)
 		noexcept
@@ -1353,15 +1399,17 @@ private:
 		if (!within_range(point, end)) {
 			return false;
 		}
+
 		pointer_t data = pointer();
 		size_t index = 0;
+
 		for (; point < end; ++point) {
 			data[point] = str[index++];
 		}
 		return true;
 	}
 
-	constexpr bool replace_string (reference_t char_value,
+	constexpr bool replace_string(reference_t char_value,
 		                           size_t      point,
 		                           size_t      end)
 		noexcept
@@ -1369,6 +1417,7 @@ private:
 		if (!within_range(point, end)) {
 			return false;
 		}
+
 		pointer_t data = pointer();
 		for (; point < end; ++point) {
 			data[point] = char_value;
@@ -1378,7 +1427,7 @@ private:
 
 private:
 
-	constexpr bool insert_cache (const_pointer_t str,
+	constexpr bool insert_cache(const_pointer_t str,
 		                         size_t          strlen,
 		                         size_t          position)
 		noexcept (
@@ -1386,43 +1435,52 @@ private:
 		)
 	{
 		box_specs_t& specs = core_t::cache.specs;
+
 		size_t buflen      = specs.size;
 		if (position > buflen) {
 			return false;
 		}
+
 		size_t sumlen  = buflen + strlen;
 		pointer_t data = core_t::cache.pointer;
+
 		if (sumlen >= core_t::buffer_size) {
 			respace<true, 2>(sumlen);
+
 			box_value_t& value = core_t::value;
 			data               = value.pointer;
 			value.count        = sumlen;
 			data[sumlen]       = char_t();
 		}
+
 		specs.size			 = sumlen;
+
 		const size_t consize = buflen - position;
 		if (!consize) {
-			strutil::strcopy (
+			strutil::strcopy(
 				data + position,
 				str,
 				strlen
 			);
 			return true;
 		}
+
 		size_t point = position + strlen;
-		strutil::strmove (
+
+		strutil::strmove(
 			data + point,
 			data + position,
 			consize
 		);
-		strutil::strcopy (
+
+		strutil::strcopy(
 			data + position,
 			str, strlen
 		);
 		return true;
 	}
 
-	constexpr bool insert_heap (const_pointer_t str,
+	constexpr bool insert_heap(const_pointer_t str,
 		                        size_t          strlen,
 		                        size_t          position)
 		noexcept (
@@ -1430,40 +1488,49 @@ private:
 		)
 	{
 		box_value_t& value = core_t::value;
+
 		size_t curlen      = value.count;
 		if (position > curlen) {
 			return false;
 		}
+
 		size_t sumlen = curlen + strlen;
+
 		if (sumlen >= alloc_size(value)) {
 			respace<false, 2>(sumlen);
 		}
+
 		value.concord.left  -= strlen;
+
 		const size_t consize = curlen - position;
 		if (!consize) {
-			strutil::strcopy (
+			strutil::strcopy(
 				value.pointer + position,
 				str,
 				strlen
 			);
 			return true;
 		}
+
 		size_t point = position + strlen;
-		strutil::strmove (
+
+		strutil::strmove(
 			value.pointer + point,
 			value.pointer + position,
 			consize
 		);
-		strutil::strcopy (
+
+		strutil::strcopy(
 			value.pointer + position,
 			str, strlen
 		);
+
 		value.count           = sumlen;
 		value.pointer[sumlen] = char_t();
 		return true;
 	}
 
-	constexpr bool insert_string (const_pointer_t str,
+	constexpr bool insert_string(const_pointer_t str,
 		                          size_t          position)
 	    noexcept (
 			noexcept(respace(0ull))
@@ -1478,7 +1545,7 @@ private:
 
 private:
 
-	constexpr basic_string& xor_impl (basic_string& string,
+	constexpr basic_string& xor_impl(basic_string& string,
 									  char_t        key)
 		noexcept
 	{
@@ -1504,23 +1571,31 @@ private:
 		if (is_cache_mode() || size >= core_t::buffer_size) {
 			return false;
 		}
+
 		if (!index_string(size)) {
 			return false;
 		}
-		alloc_t& alloc     = allocator();
+
+		alloc_t&     alloc = allocator();
 		box_value_t& value = core_t::value;
+
 		pointer_t buffer   = alloc.allocate(size + 1);
 		strutil::strcopy(buffer, value.pointer, size);
 		buffer[size] = char_t();
+
 		alloc.deallocate(value.pointer, alloc_size(value));
+
 		box_cache_t& cache  = core_t::cache;
-		box_specs_t& specs  = core_t::cache.specs;
+		box_specs_t& specs  = cache.specs;
+
 		specs.size			= size;
 		cache.pointer[size] = '\0';
 		specs.mode			= string_mode::cache;
+
 		if constexpr (trait_is_advanced_mode()) {
-			release_before(alloc, value);
+			release_before();
 		}
+
 		strutil::strcopy(cache.pointer, buffer, size);
 		alloc.deallocate(buffer, size + 1);
 		return true;
@@ -1535,11 +1610,13 @@ private:
 		if (value.count < core_t::buffer_size) {
 			return restore_string_cache_mode(value.count);
 		}
+
 		size_t bufsize = core_t::buffer_size;
 		if (!is_large_mode()) {
 			return restore_string_cache_mode(bufsize);
 		}
-		return restore_string_cache_mode (
+
+		return restore_string_cache_mode(
 			bufsize * bufsize / (string_capacity() + 1)
 		);
 	}
@@ -1553,18 +1630,25 @@ private:
 		if (is_large_mode()) {
 			return false;
 		}
+
 		box_cache_t& cache = core_t::cache;
+
 		size_t strlen      = cache.specs.size;
 		alloc_t alloc      = allocator();
+
 		pointer_t buffer   = alloc.allocate(strlen);
 		strutil::strcopy(buffer, cache.pointer, strlen);
+
 		box_value_t& value = core_t::value;
 		size_t alloc_size  = strlen * 2;
+
 		value.pointer      = alloc.allocate(alloc_size);
 		strutil::strcopy(value.pointer, buffer, strlen);
+
 		value.concord.left	  = alloc_size - strlen;
 		value.count           = strlen;
 		value.pointer[strlen] = char_t();
+
 		alloc.deallocate(buffer, strlen);
 		return true;
 	}
@@ -1577,42 +1661,53 @@ private:
 		if (is_cache_mode()) {
 			box_cache_t& cache = core_t::cache;
 			box_specs_t& specs = cache.specs;
+
 			size_t	strlen	   = specs.size;
 			if (size < core_t::buffer_size) {
 				specs.size = size;
+
 				if (size < strlen) {
 					cache.pointer[size] = char_t();
 					return;
 				}
+
 				strutil::strset (
 					cache.pointer + strlen,
 					fill, size - strlen
 				);
+
 				cache.pointer[size] = char_t();
 				return;
 			}
+
 			respace<true>(size);
-			reset_value(core_t::value, fill, size, strlen);
+			reset_value(fill, size, strlen);
 			return;
 		}
+
 		box_value_t& value  = core_t::value;
+
 		size_t	allsize		= alloc_size(value);
 		pointer_t data		= value.pointer;
 		size_t	  count		= value.count;
+
 		if (size < allsize) {
 			if (size > count) {
 				strutil::strset (
 					data + count, fill, size - count
 				);
 			}
+
 			data[size]		   = char_t();
 			value.concord.left = allsize - size;
 			value.count		   = size;
 			return;
 		}
+
 		size_t strlen = value.count;
+
 		respace<false>(size);
-		reset_value(value, fill, size, strlen);
+		reset_value(fill, size, strlen);
 	}
 
 	constexpr bool reserve_small(size_t size) noexcept {
@@ -1645,20 +1740,25 @@ private:
 	}
 
 	template <class OptionType>
-	constexpr bool resize_small (size_t		  size,
+	constexpr bool resize_small(size_t        size,
 								 OptionType&& option)
 		noexcept
 	{
 		box_cache_t& cache = core_t::cache;
+
 		if (size < core_t::buffer_size) {
 			cache.pointer[size] = char_t();
 			return true;
 		}
+
 		box_specs_t& specs = cache.specs;
 		size_t strlen	   = specs.size;
+
 		respace<true>(size);
+
 		box_value_t& value = core_t::value;
 		size_t resu = option(value, size, strlen);
+
 		value.count = resu;
 		if (value.pointer[resu] != char_t()) {
 			value.pointer[resu]  = char_t();
@@ -1667,19 +1767,24 @@ private:
 	}
 
 	template <class OptionType>
-	constexpr bool resize_large (size_t		  size,
+	constexpr bool resize_large(size_t        size,
 								 OptionType&& option)
 		noexcept
 	{
 		box_value_t& value = core_t::value;
+
 		if (size < alloc_size(value)) {
 			value.pointer[size] = char_t();
 			return true;
 		}
+
 		size_t strlen = value.count;
+
 		respace<false>(size);
+
 		size_t resu = option(value, size, strlen);
 		value.count = resu;
+
 		if (value.pointer[resu] != char_t()) {
 			value.pointer[resu]  = char_t();
 		}
@@ -1708,7 +1813,7 @@ private:
 
 private:
 
-	constexpr std::optional<size_t> front_index (char_t target,
+	constexpr std::optional<size_t> front_index(char_t  target,
 												 size_t point,
 												 size_t end)
 		noexcept
@@ -1722,7 +1827,7 @@ private:
 		return std::nullopt;
 	}
 
-	constexpr std::optional<size_t> last_index (char_t target,
+	constexpr std::optional<size_t> last_index(char_t  target,
 												size_t point,
 												size_t end)
 		noexcept
@@ -1740,7 +1845,7 @@ private:
 		return position < string_length();
 	}
 
-	constexpr std::optional<size_t> index_string (char_t target,
+	constexpr std::optional<size_t> index_string(char_t  target,
 												  size_t point,
 												  size_t end)
 		noexcept
@@ -1826,15 +1931,19 @@ private:
 		if (is_cache_mode()) {
 			box_cache_t& cache = core_t::cache;
 			box_specs_t& specs = cache.specs;
+
 			size_t buf_size    = specs.size;
 			size_t next_count  = buf_size + 1;
 			size_t alloc_count = buf_size + 2;
+
 			if (next_count < core_t::buffer_size) {
 				cache.pointer[buf_size] = char_value;
 				specs.size				= buf_size + 1;
 				return;
 			}
+
 			respace<true, 2>(alloc_count);
+
 			box_value_t& value		  = core_t::value;
 			value.pointer[buf_size]   = char_value;
 			value.pointer[next_count] = char_t();
@@ -1843,12 +1952,15 @@ private:
 		}
 		else {
 			box_value_t& value = core_t::value;
+
 			size_t heap_count  = value.count;
 			size_t next_size   = heap_count + 1;
 			size_t allocsize   = alloc_size(value);
+
 			if (next_size >= allocsize) {
 				respace<false, 2>(next_size);
 			}
+
 			value.concord.left		 -= 1;
 			value.pointer[heap_count] = char_value;
 			value.count				 += 1;
@@ -1856,17 +1968,19 @@ private:
 		}
 	}
 
-	constexpr void append_value (box_value_t&    value,
-								 const_pointer_t pointer,
-		                         size_t&         heap_count,
-								 size_t          offset,
-								 size_t          size)
+	constexpr void append_value(const_pointer_t pointer,
+								 size_t         offset,
+								 size_t         size)
 		noexcept
 	{
-		strutil::strcopy (
+		box_value_t& value = core_t::value;
+		size_t& heap_count = value.count;
+
+		strutil::strcopy(
 			value.pointer + offset,
 			pointer, size
 		);
+
 		heap_count += size;
 		value.pointer[heap_count] = char_t();
 	}
@@ -1877,20 +1991,19 @@ private:
 		)
 	{
 		box_cache_t& cache = core_t::cache;
+
 		size_t buf_size    = cache.specs.size;
 		size_t next_size   = buf_size + size;
+
 		if (next_size < core_t::buffer_size) {
-			return copy_cache (
-				cache, buf_size, pointer, size
+			return copy_cache(
+				buf_size, pointer, size
 			);
 		}
+
 		respace<true, 2>(next_size);
-		box_value_t& value = core_t::value;
-		size_t& heap_count = value.count;
-		return append_value (
-			value, pointer, heap_count,
-			buf_size, size
-		);
+
+		return append_value(pointer, buf_size, size);
 	}
 
 	constexpr void append_storage(const_pointer_t pointer, size_t size)
@@ -1900,18 +2013,22 @@ private:
 	{
 		box_value_t& value = core_t::value;
 		size_t& heap_count = value.count;
+
 		size_t next_size   = heap_count + size;
 		pointer_t old_ptr  = value.pointer;
+
 		if (next_size >= alloc_size(value)) {
 			respace<false, 2>(next_size);
 		}
+
 		if (pointer == old_ptr) {
 			pointer = value.pointer;
 		}
+
 		value.concord.left -= size;
-		return append_value (
-			value, pointer, heap_count,
-			heap_count, size
+
+		return append_value(
+			pointer, heap_count, size
 		);
 	}
 
@@ -2005,33 +2122,39 @@ private:
 	constexpr size_t str_cut(char_t char_value) noexcept {
 		pointer_t data = pointer();
 		size_t strlen  = string_length();
+
 		if (!strlen) {
 			return 0;
 		}
+
 		size_t count = 0;
+
 		for (size_t i = 0; i < strlen; ++i) {
 			if (data[i] != char_value) {
 				break;
 			}
 			++count;
 		}
+
 		for (size_t i = strlen - 1; i > 0; --i) {
 			if (data[i] != char_value) {
 				break;
 			}
 			++count;
 		}
+
 		return count;
 	}
 
-	constexpr auto corner_info (pointer_t data,
-		                        size_t    strlen,
-		                        char_t    char_value)
+	constexpr auto corner_info(pointer_t data,
+		                        size_t   strlen,
+		                        char_t   char_value)
 	    const noexcept
 	{
 		struct cut_info_t {
 			size_t count, string_begin, end;
 		} result{};
+
 		for (size_t i = 0; i < strlen; ++i) {
 			if (data[i] != char_value) {
 				result.string_begin = i;
@@ -2039,6 +2162,7 @@ private:
 			}
 			++result.count;
 		}
+
 		if (result.count != strlen) {
 			size_t i = strlen - 1;
 			for (; i > 0; --i) {
@@ -2049,6 +2173,7 @@ private:
 				++result.count;
 			}
 		}
+
 		return result;
 	}
 
@@ -2057,19 +2182,23 @@ private:
 		if (!strlen) {
 			return 0;
 		}
+
 		pointer_t data = pointer();
+
 		auto [
 			trimmed_count,
 			string_begin,
 			trimmed_end
-		] = corner_info (
+		] = corner_info(
 			data, strlen, char_value
 		);
+
 		if (size_t next = strlen - trimmed_count; next) {
-			strutil::strmove (
+			strutil::strmove(
 				data, data + string_begin, next
 			);
 		}
+
 		data[sublen(trimmed_count)] = char_t();
 		return trimmed_count;
 	}
@@ -2088,9 +2217,11 @@ private:
 	constexpr bool compare(const_pointer_t str) const noexcept {
 		size_t strlen = strutil::strlenof(str);
 		size_t size   = string_length();
+
 		if (strlen != size) {
 			return false;
 		}
+
 		const_pointer_t data = pointer();
 		if (data[size - 1] != str[size - 1]) {
 			return false;
@@ -2102,6 +2233,7 @@ private:
 	constexpr bool compare(basic_string& str) const noexcept {
 		size_t strlen = str.string_length();
 		size_t size   = string_length();
+
 		if (strlen != size) {
 			return false;
 		}
@@ -2128,22 +2260,28 @@ public:
 
 private:
 
-	constexpr void release_before(alloc_t& alloc, box_value_t& value) noexcept {
+	constexpr void release_before(basic_string& object) noexcept {
 		if constexpr (trait_is_advanced_mode()) {
+			box_value_t& value = object.value;
+
 			if (!value.before) {
 				return;
 			}
 
-			alloc.deallocate (
+			object.allocator().deallocate(
 				value.before,
 				value.before_count + value.before_left
 			);
 		}
 	}
 
-	constexpr void release(alloc_t& alloc, box_value_t& value) noexcept {
-		release_before(alloc, value);
-		alloc.deallocate(value.pointer, alloc_size());
+	constexpr void release_before() noexcept {
+		release_before(*this);
+	}
+
+	constexpr void release() noexcept {
+		release_before();
+		allocator().deallocate(core_t::value.pointer, alloc_size());
 	}
 
 public:
@@ -2153,6 +2291,6 @@ public:
 			return;
 		}
 
-		release(allocator(), core_t::value);
+		release();
 	}
 };

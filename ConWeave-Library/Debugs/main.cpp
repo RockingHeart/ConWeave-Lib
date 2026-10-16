@@ -13,9 +13,12 @@ int main() {
 			std::cout << static_cast<std::size_t>(v) << '\n';
 		}
 	}*/
-	dast::block_allocator<dast::plmem_holder> alloc(20);
+	dast::block_allocator<dast::plmem_holder> alloc(9);
 	alloc.allocate<char>("Hello World", 12ull);
 	alloc.start_over();
 	alloc.resize_curr();
-	std::cout << alloc.retreat<char>(12) << '\n';
+	std::cout << alloc.section();
+	if (alloc.next_block()) {
+		std::cout << alloc.section() << '\n';
+	}
 }

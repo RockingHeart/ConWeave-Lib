@@ -96,6 +96,22 @@ private:
 		current->acur = 0;
 	}
 
+	constexpr bool cross(std::size_t size)
+		const noexcept
+	{
+		block_holder& block = current->area;
+		std::size_t length  = current->acur;
+		return length + size > block.size();
+	}
+
+	constexpr bool leftover(std::size_t size)
+		const noexcept
+	{
+		block_holder& block = current->area;
+		std::size_t length  = current->acur;
+		return size > block.size() - length;
+	}
+
 	constexpr auto enhance_block(std::size_t size)
 		noexcept -> memory_block*
 	{
@@ -103,15 +119,15 @@ private:
 			return nullptr;
 		}
 
-		block_holder& block    = current->area;
-		std::size_t block_size = current->acur;
-		if (block_size + size > block.size()) {
-			if (!reachable()) {
-				return nullptr;
-			}
-			enhance_current();
+		if (!cross(size)) {
+			return current;
 		}
 
+		if (!reachable()) {
+			return nullptr;
+		}
+
+		enhance_current();
 		return current;
 	}
 
@@ -119,16 +135,18 @@ private:
 		block_holder& block    = current->area;
 		std::size_t block_size = current->acur;
 		std::size_t next_size  = block_size + size;
-		if (next_size < block.size()) {
+		if (next_size <= block.size()) {
 			return;
 		}
 		respace();
 	}
 
 	template <class Type>
-	constexpr Type* enhance_space(std::size_t size) noexcept {
-		std::size_t& block_size = current->acur;
-		block_holder& block		= current->area;
+	constexpr Type* enhance_space (std::size_t size)
+		noexcept
+	{
+		block_holder& block    = current->area;
+		std::size_t block_size = current->acur;
 		auto result = block.template address<Type> (
 			block_size
 		);
@@ -149,16 +167,58 @@ private:
 		return result;
 	}
 
+	constexpr bool write_segment(std::size_t size)
+		noexcept
+	{
+		return cross(size) && leftover(size);
+	}
+
+	template <class CharType>
+	constexpr auto write_remain(const CharType* string) noexcept {
+		struct _
+		{
+			CharType* address;
+			size_t	  length;
+		} result { section(), remain() };
+		if (result.length) result.length -= 1;
+		strutil::strcopy (
+			result.address, string, result.length
+		);
+		result.address[result.length] = '\0';
+		return result;
+	}
+
+	template <class Type>
+	constexpr Type* append_string (const Type*  string,
+									std::size_t size)
+		noexcept
+	{
+		auto result = enhance_space<Type> (
+			size * sizeof(Type)
+		);
+		strutil::strcopy(result, string, size);
+		return result;
+	}
+
+	template <class Type>
+	constexpr Type* chunks_write (const Type*  string,
+								   std::size_t size) noexcept {
+		auto [address, length] = write_remain<Type>(string);
+		size -= length; string += length;
+		respace(); append_string(string, size);
+		return address;
+	};
+	 
 	template <rest::character CharType>
 	constexpr auto hold_space (const CharType* string,
 								std::size_t	   size)
 		noexcept -> CharType*
 	{
-		auto result = enhance_space<CharType> (
-			size * sizeof(CharType)
-		);
-		strutil::strcopy(result, string, size);
-		return result;
+		if (write_segment(size)) {
+			return chunks_write(string, size);
+		}
+		check_block(size * sizeof(CharType));
+		return append_string(string, size);
 	}
 
 	template <class AllocType, class... ArgsType>
@@ -174,7 +234,6 @@ private:
 							   std::size_t	  size)
 		noexcept
 	{
-		check_block(size);
 		return hold_space<CharType>(string, size);
 	}
 
@@ -317,10 +376,15 @@ public:
 		return current->area.template address<DataType>(off);
 	}
 
-	template <class AccType>
+	template <class AccType = char>
 	constexpr auto section(memory_block& block) noexcept {
 		block_holder& holder = block.area;
 		return holder.template address<AccType>(block.acur);
+	}
+
+	template <class AccType = char>
+	constexpr auto section() noexcept {
+		return section<AccType>(*current);
 	}
 
 	template <class AccType>
@@ -357,6 +421,11 @@ public:
 
 	constexpr size_t spacing() const noexcept {
 		return static_cast<size_t>(last - current);
+	}
+
+	constexpr size_t remain() const noexcept {
+		block_holder& holder = current->area;
+		return holder.size() - current->acur;
 	}
 
 	constexpr std::size_t used() const noexcept {

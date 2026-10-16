@@ -34,9 +34,9 @@ export template <std::integral Type, Type... Sequence>
 struct unordered_source
 {
 public:
-	using value_t =		 Type;
-	using array_t = std::array<value_t, length>;
+	using value_t = Type;
 	static constexpr std::size_t length { sizeof...(Sequence) };
+	using array_t = std::array<value_t, length>;
 
 protected:
 
@@ -63,14 +63,14 @@ private:
 protected:
 
 	template <value_t... Is>
-	static constexpr auto make_source(sequence<value_t, Is...>)
+	static constexpr auto make_source(sequence<Is...>)
 		noexcept -> std::array<value_t, length>
 	{
 		return { (Is + Begin)... };
 	}
 
 	static constexpr std::array<value_t, length> sequence = {
-		make_source(make_sequence<value_t, length>{})
+		make_source(make_sequence<length>{})
 	};
 
 };
