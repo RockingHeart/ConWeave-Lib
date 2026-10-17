@@ -16,7 +16,6 @@ int main() {
 	dast::block_allocator<dast::plmem_holder> alloc(9);
 	alloc.allocate<char>("Hello World", 12ull);
 	alloc.start_over();
-	alloc.resize_curr();
 	std::cout << alloc.section();
 	if (alloc.next_block()) {
 		std::cout << alloc.section() << '\n';

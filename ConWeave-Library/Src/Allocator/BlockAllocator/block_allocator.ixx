@@ -83,12 +83,16 @@ private:
 		return current + 1 < last;
 	}
 
-	constexpr void respace() noexcept {
+	constexpr void respace(size_t size) noexcept {
 		if (!reachable()) {
 			exten_block();
 		}
 		current = current + 1;
-		set_cur_block(4000);
+		set_cur_block(size);
+	}
+
+	constexpr void respace() noexcept {
+		return respace(current->acur * 2);
 	}
 
 	constexpr void enhance_current() noexcept {
@@ -174,18 +178,12 @@ private:
 	}
 
 	template <class CharType>
-	constexpr auto write_remain(const CharType* string) noexcept {
-		struct _
-		{
-			CharType* address;
-			size_t	  length;
-		} result { section(), remain() };
-		if (result.length) result.length -= 1;
-		strutil::strcopy (
-			result.address, string, result.length
-		);
-		result.address[result.length] = '\0';
-		return result;
+	constexpr size_t write_remain(const CharType* string) noexcept {
+		CharType* pointer = section();
+		size_t    length  = remain() - 1;
+		strutil::strcopy(pointer, string, length);
+		pointer[length] = '\0';
+		return length;
 	}
 
 	template <class Type>
@@ -203,10 +201,10 @@ private:
 	template <class Type>
 	constexpr Type* chunks_write (const Type*  string,
 								   std::size_t size) noexcept {
-		auto [address, length] = write_remain<Type>(string);
+		size_t length = write_remain<Type>(string);
 		size -= length; string += length;
-		respace(); append_string(string, size);
-		return address;
+		respace(size * sizeof(Type));
+		return append_string(string, size);
 	};
 	 
 	template <rest::character CharType>
