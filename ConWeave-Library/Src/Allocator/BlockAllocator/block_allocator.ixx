@@ -26,6 +26,7 @@ private:
 
 public:
 	using size_t	=	  std::size_t;
+	using byte_t	=	  std::byte;
 	using pointer_t = typename block_holder::pointer_t;
 
 protected:
@@ -179,7 +180,7 @@ private:
 
 	template <class CharType>
 	constexpr size_t write_remain(const CharType* string) noexcept {
-		CharType* pointer = section();
+		CharType* pointer = section<CharType>();
 		size_t    length  = remain() - 1;
 		strutil::strcopy(pointer, string, length);
 		pointer[length] = '\0';
@@ -338,7 +339,7 @@ public:
 
 	constexpr void reset_state(memory_block& block) noexcept {
 		block_holder& memory = block.area;
-		char* address		 = block.template address(0);
+		char* address		 = block.bytecode();
 		std::size_t& size	 = block.acur;
 		std::memset(address, 0, size);
 		size = 0;
@@ -369,20 +370,24 @@ public:
 
 public:
 
+	constexpr pointer_t bytecode() const noexcept {
+		return current->area.bytecode();
+	}
+
 	template <class DataType>
-	constexpr std::optional<DataType*> data(std::size_t off) const noexcept {
+	constexpr DataType* data(std::size_t off = 0) const noexcept {
 		return current->area.template address<DataType>(off);
 	}
 
-	template <class AccType = char>
+	template <class AccType = byte_t>
 	constexpr auto section(memory_block& block) noexcept {
 		block_holder& holder = block.area;
 		return holder.template address<AccType>(block.acur);
 	}
 
-	template <class AccType = char>
-	constexpr auto section() noexcept {
-		return section<AccType>(*current);
+	template <class AccType = byte_t>
+	constexpr AccType* section() noexcept {
+		return data<AccType>(current->acur);
 	}
 
 	template <class AccType>

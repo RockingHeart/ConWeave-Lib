@@ -13,41 +13,37 @@ concept string_utility_type = requires(Utility util) {
 
 export namespace traits
 {
-	enum class string_value_traits;
+	enum class string_value_traits {
+		no_residue,
+		remain,
+		enhance
+	};
 
 	template <
 		rest::character CharType, string_value_traits StringValueTrait,
-		template <class> class AllocatorType, class SizeType
+		template <class> class AllocatorType, class SizeType, class StrUtil
 	> requires (
 		rest::allocator<AllocatorType<CharType>> &&
-		is_character_v<typename AllocatorType<CharType>::value_type> &&
-		string_utility_type<strutil>
+		string_utility_type<StrUtil>
 	) struct string_traits;
-};
-
-enum class traits::string_value_traits {
-	no_residue,
-	remain,
-	enhance
 };
 
 template <
 	rest::character CharType, traits::string_value_traits StringValueTrait,
-	template <class> class AllocatorType, class SizeType = std::size_t
+	template <class> class AllocatorType, class SizeType = std::size_t,
+	class StrUtil = ::strutil
 > requires (
 	rest::allocator<AllocatorType<CharType>> &&
-	is_character_v<typename AllocatorType<CharType>::value_type> &&
-	string_utility_type<strutil>
+	string_utility_type<StrUtil>
 ) struct traits::string_traits {
 	using char_t          =       CharType;
 	using reference_t     =       CharType&;
 	using pointer_t       =       CharType*;
 	using const_pointer_t = const CharType*;
 
-	using size_t = SizeType;
-
+	using size_t	   =   SizeType;
 	using alloc_t	   =   AllocatorType<CharType>;
-	using strutil	   = ::strutil;
+	using strutil	   =   StrUtil;
 	using value_traits =   string_value_traits;
 	using cache_size_t =   unsigned char;
 

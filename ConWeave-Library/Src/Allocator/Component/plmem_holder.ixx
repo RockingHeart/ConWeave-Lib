@@ -10,7 +10,8 @@ import std;
 class dast::plmem_holder {
 public:
 	using size_t	= std::size_t;
-	using pointer_t = char*;
+	using byte_t	= std::byte;
+	using pointer_t =	   byte_t*;
 
 private:
 
@@ -77,11 +78,13 @@ public:
 
 public:
 
-	template <class AddrType = char>
+	template <class AddrType = byte_t>
 	constexpr AddrType* address(std::size_t offset) noexcept {
-		return reinterpret_cast<AddrType*> (
-			reinterpret_cast<char*>(addr) + offset
-		);
+		return reinterpret_cast<AddrType*>(addr + offset);
+	}
+
+	constexpr pointer_t bytecode() noexcept {
+		return address<byte_t>(0);
 	}
 
 	constexpr std::size_t size() const noexcept {

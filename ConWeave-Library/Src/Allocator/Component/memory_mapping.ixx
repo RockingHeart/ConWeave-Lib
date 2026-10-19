@@ -3,8 +3,8 @@ module;
 
 export module dast.memory_mapping;
 
-import dast.string;
 import std;
+import dast.string;
 
 std::size_t mapping_count = 0;
 
@@ -16,20 +16,21 @@ export namespace dast
 class dast::memory_mapping {
 public:
 	using size_t	= std::size_t;
-	using pointer_t = char*;
+	using byte_t	= std::byte;
+	using pointer_t =	   byte_t*;
 
 private:
 	using handle = HANDLE;
 
 private:
 
-	handle hand;
-	char*  addr;
-	size_t aend;
+	handle	  hand;
+	pointer_t addr;
+	size_t	  aend;
 
 private:
 
-	static constexpr dast::cstring mapping_name() noexcept {
+	/*static constexpr dast::cstring mapping_name() noexcept {
 		static char buffer[16];
 		auto [end, _] = std::to_chars (
 			buffer, buffer + sizeof(buffer),
@@ -42,6 +43,20 @@ private:
 		mapping_identity += buffer;
 		mapping_count	 += 1;
 		return mapping_identity;
+	}*/
+
+	static const char* mapping_name() noexcept {
+		static char buffer[64];
+		static constexpr char prefix[] = "CWL.MemoryMapping: ";
+		std::size_t offset = 0;
+		for (; prefix[offset] != '\0'; ++offset)
+			buffer[offset] = prefix[offset];
+		auto [end, ec] = std::to_chars (
+			buffer + offset, buffer + sizeof(buffer), mapping_count
+		);
+		*end = '\0';
+		mapping_count += 1;
+		return buffer;
 	}
 
 	constexpr void reset(memory_mapping& mapping) noexcept {
@@ -69,9 +84,9 @@ public:
 	constexpr memory_mapping(size_t size) noexcept :
 		hand (
 			CreateFileMappingA (
-				INVALID_HANDLE_VALUE, NULL,
+				INVALID_HANDLE_VALUE, nullptr,
 				PAGE_READWRITE, 0, size,
-				mapping_name().const_string()
+				mapping_name()
 			)
 		),
 		addr (
@@ -98,11 +113,13 @@ public:
 
 public:
 
-	template <class AddrType = char>
+	template <class AddrType = byte_t>
 	constexpr AddrType* address(std::size_t offset) noexcept {
-		return reinterpret_cast<AddrType*> (
-			reinterpret_cast<char*>(addr) + offset
-		);
+		return reinterpret_cast<AddrType*>(addr + offset);
+	}
+
+	constexpr pointer_t bytecode() noexcept {
+		return address<byte_t>(0);
 	}
 
 	constexpr std::size_t size() const noexcept {
@@ -114,7 +131,7 @@ public:
 	}
 
 	constexpr bool failed() const noexcept {
-		return hand == INVALID_HANDLE_VALUE;
+		return hand == nullptr;
 	}
 
 public:

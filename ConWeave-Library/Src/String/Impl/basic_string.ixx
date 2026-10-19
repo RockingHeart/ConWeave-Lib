@@ -29,8 +29,8 @@ export template <string_traits_type StringTraits, template<class, class> class S
 class basic_string :
 	public         StringCore<basic_string<StringTraits, StringCore>, StringTraits> {
 private:
-	friend class   StringCore<basic_string, StringTraits>;
-	using core_t = StringCore<basic_string, StringTraits>;
+	friend class   StringCore<basic_string<StringTraits, StringCore>, StringTraits>;
+	using core_t = StringCore<basic_string<StringTraits, StringCore>, StringTraits>;
 
 private:
 	static_assert(requires{ string_core_type<core_t>; });
