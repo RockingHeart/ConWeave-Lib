@@ -136,9 +136,9 @@ private:
 	}
 
 	constexpr void check_block(size_t size) noexcept {
-		block_holder& block    = current->area;
-		size_t block_size = current->acur;
-		size_t next_size  = block_size + size;
+		block_holder& block = current->area;
+		size_t block_size   = current->acur;
+		size_t next_size    = block_size + size;
 		if (next_size <= block.size()) {
 			return;
 		}
@@ -270,7 +270,7 @@ private:
 		}
 
 		for (auto& block : *this) {
-			block.~memory_block();
+			std::destroy_at(block);
 		}
 		std::free(base);
 		base    = nullptr;
@@ -338,7 +338,7 @@ public:
 
 	constexpr void reset_state(memory_block& block) noexcept {
 		block_holder& memory  = block.area;
-		char*		  address = block.bytecode();
+		char*		  address = memory.address(0);
 		size_t&		  size	  = block.acur;
 		std::memset(address, 0, size);
 		size = 0;

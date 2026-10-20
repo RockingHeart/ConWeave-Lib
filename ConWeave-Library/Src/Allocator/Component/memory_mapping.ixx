@@ -27,22 +27,12 @@ private:
 	pointer_t addr;
 	size_t	  aend;
 
-private:
+public:
 
-	static const char* mapping_name() noexcept {
-		static char buffer[64];
-		static constexpr char prefix[] = "CWL.MemoryMapping: ";
-		size_t offset = 0;
-		for (; prefix[offset] != '\0'; ++offset)
-			buffer[offset] = prefix[offset];
-		auto [end, ec] = std::to_chars (
-			buffer + offset, buffer + sizeof(buffer),
-			mapping_count
-		);
-		*end = '\0';
-		mapping_count += 1;
-		return buffer;
-	}
+	memory_mapping(const memory_mapping&)			 = delete;
+	memory_mapping& operator=(const memory_mapping&) = delete;
+
+private:
 
 	constexpr void reset(memory_mapping& mapping) noexcept {
 		mapping.hand = nullptr;
@@ -56,7 +46,20 @@ private:
 		aend = mapping.aend;
 	}
 
+	void release() noexcept {
+		if (addr != nullptr) {
+			UnmapViewOfFile(addr);
+		}
+		if (hand != nullptr) {
+			CloseHandle(hand);
+		}
+		hand = nullptr;
+		addr = nullptr;
+		aend = 0;
+	}
+
 	constexpr void move_assign(memory_mapping&& mapping) noexcept {
+		release();
 		copy_assign(mapping);
 		reset(mapping);
 	}
@@ -64,30 +67,30 @@ private:
 public:
 
 	constexpr memory_mapping()
-		noexcept = default;
-
-	constexpr memory_mapping(size_t size) noexcept :
-		hand (
-			CreateFileMappingA (
-				INVALID_HANDLE_VALUE, nullptr,
-				PAGE_READWRITE, 0, size,
-				mapping_name()
-			)
-		),
-		addr (
-			static_cast<pointer_t> (
-				MapViewOfFile (
-					hand, FILE_MAP_ALL_ACCESS,
-					0, 0, size
-				)
-			)
-		), aend(size)
+		noexcept : hand(nullptr),
+				   addr(nullptr),
+				   aend(0ull)
 	{}
 
-	constexpr memory_mapping(memory_mapping& mapping)
-		noexcept : hand(mapping.hand), addr(mapping.addr),
-				   aend(mapping.aend)
-	{}
+	constexpr memory_mapping(size_t size) noexcept {
+		hand = CreateFileMappingA (
+			INVALID_HANDLE_VALUE, nullptr,
+			PAGE_READWRITE, 0,
+			static_cast<DWORD>(size), nullptr
+		);
+		if (hand == nullptr) {
+			return;
+		}
+		addr = static_cast<pointer_t>(
+			MapViewOfFile(hand, FILE_MAP_ALL_ACCESS, 0, 0, size)
+		);
+		if (addr == nullptr) {
+			CloseHandle(hand);
+			hand = nullptr;
+			return;
+		}
+		aend = size;
+	}
 
 	constexpr memory_mapping(memory_mapping&& mapping)
 		noexcept : hand(mapping.hand), addr(mapping.addr),
@@ -115,30 +118,25 @@ public:
 		return hand != nullptr;
 	}
 
-	constexpr bool failed() const noexcept {
+	constexpr bool unmapped() const noexcept {
 		return hand == nullptr;
+	}
+
+	constexpr bool failed() const noexcept {
+		return addr == nullptr;
 	}
 
 public:
 
-	constexpr void operator=(memory_mapping& mapping) {
-		copy_assign(mapping);
-	}
-
 	constexpr void operator=(memory_mapping&& mapping) {
+		if (this == &mapping) return;
 		move_assign(std::move(mapping));
 	}
 
 public:
 
 	constexpr ~memory_mapping() noexcept {
-		if (failed()) return;
-		if (addr != nullptr) {
-			UnmapViewOfFile(addr);
-		}
-		CloseHandle(hand);
-		hand = nullptr;
-		addr = nullptr;
+		release();
 	}
 
 };
