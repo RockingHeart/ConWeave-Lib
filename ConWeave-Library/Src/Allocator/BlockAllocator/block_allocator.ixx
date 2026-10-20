@@ -147,13 +147,13 @@ private:
 	}
 
 	template <class Type>
-	constexpr Type* enhance_space (size_t size) noexcept {
-		block_holder& block    = current->area;
-		size_t block_size = current->acur;
+	constexpr Type* enhance_space(size_t size) noexcept {
+		block_holder& block = current->area;
+		size_t block_size   = current->acur;
 		auto result = block.template address<Type> (
 			block_size
 		);
-		block_size += size;
+		current->acur += size;
 		return result;
 	}
 
