@@ -5,8 +5,6 @@ export module dast.memory_mapping;
 
 import std;
 
-std::size_t mapping_count = 0;
-
 export namespace dast
 {
 	class memory_mapping;
@@ -72,7 +70,9 @@ public:
 				   aend(0ull)
 	{}
 
-	constexpr memory_mapping(size_t size) noexcept {
+	constexpr memory_mapping(size_t size)
+		noexcept : memory_mapping()
+	{
 		hand = CreateFileMappingA (
 			INVALID_HANDLE_VALUE, nullptr,
 			PAGE_READWRITE, 0,
