@@ -15,7 +15,7 @@ export namespace dast
 template <class BlockHolder>
 struct memory_block_t {
 	BlockHolder area;
-	size_t acur;
+	size_t		acur;
 };
 
 template <class BlockHolder>
@@ -113,7 +113,7 @@ private:
 		const noexcept
 	{
 		block_holder& block  = current->area;
-		return block.size() - current->acur;
+		return block.size() > current->acur + size;
 	}
 
 	constexpr auto enhance_block(size_t size)
@@ -436,7 +436,7 @@ public:
 	}
 
 	constexpr size_t used() const noexcept {
-		return last - base;
+		return current - base;
 	}
 
 	constexpr size_t size() const noexcept {
