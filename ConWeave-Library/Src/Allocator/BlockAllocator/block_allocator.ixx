@@ -38,6 +38,11 @@ private:
 	memory_block* current;
 	memory_block* last;
 
+public:
+
+	block_allocator(const block_allocator&)			   = delete;
+	block_allocator& operator=(const block_allocator&) = delete;
+
 private:
 
 	constexpr size_t align_to (size_t value,
@@ -65,19 +70,23 @@ private:
 	}
 
 	constexpr void exten_block() noexcept {
-		block_allocator old = *this;
-		size_t used_block   = used();
-		size_t newlen	    = total_number_block() + 2;
-		base = static_cast<memory_block*> (
+		size_t used_block = used();
+		size_t old_size	  = total_number_block();
+		size_t newlen	  = old_size + 2;
+		auto*  new_block  = static_cast<memory_block*> (
 			std::malloc(sizeof(memory_block) * newlen)
 		);
-		memory_block* old_base = old.base;
 		for (size_t i = 0; i <= used_block; i++) {
-			std::construct_at(&base[i], std::move(old_base[i]));
+			std::construct_at (
+				new_block + i, std::move(base[i])
+			);
 		}
+		for (size_t i = 0; i <= used_block; ++i)
+			std::destroy_at(&base[i]);
+		std::free(base);
+		base	= new_block;
 		last	= base + newlen;
 		current = base + used_block;
-		old.release();
 	}
 
 	constexpr bool reachable() const noexcept {
@@ -268,10 +277,8 @@ private:
 		if (base == nullptr) {
 			return;
 		}
-
-		for (auto& block : *this) {
-			std::destroy_at(&block);
-		}
+		for (size_t i = 0; i <= used(); ++i)
+			std::destroy_at(&base[i]);
 		std::free(base);
 		base    = nullptr;
 		current = nullptr;
@@ -286,14 +293,10 @@ public:
 				   last	  (nullptr)
 	{};
 
-	constexpr block_allocator(const block_allocator& allocator)
+	constexpr block_allocator(block_allocator&& allocator)
 		noexcept : base(allocator.base),
 				   current(allocator.current),
 				   last(allocator.last)
-	{}
-
-	constexpr block_allocator(block_allocator&& allocator)
-		noexcept : block_allocator(allocator)
 	{
 		allocator.base = nullptr;
 	}
@@ -446,9 +449,13 @@ public:
 public:
 
 	constexpr void operator=(block_allocator&& allocator) noexcept {
+		if (this == &allocator) return;
 		release();
 		assign(allocator);
-		allocator.base = nullptr;
+		allocator.base	  = nullptr;
+		allocator.current = nullptr;
+		allocator.last	  = nullptr;
+		return *this;
 	}
 
 	constexpr memory_block& operator[](size_t position) const {
