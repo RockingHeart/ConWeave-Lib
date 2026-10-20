@@ -18,7 +18,18 @@ private:
 	pointer_t addr;
 	size_t	  aend;
 
+public:
+
+	plmem_holder(const plmem_holder&)            = delete;
+    plmem_holder& operator=(const plmem_holder&) = delete;
+
 private:
+
+	constexpr void release() noexcept {
+		std::free(addr);
+		addr = nullptr;
+		aend = 0;
+	}
 
 	constexpr void reset(plmem_holder& memory) noexcept {
 		memory.addr = nullptr;
@@ -38,21 +49,17 @@ private:
 	}
 
 	constexpr void move_assign(plmem_holder&& memory) noexcept {
+		release();
 		copy_assign(memory);
 		reset(memory);
-	}
-
-private:
-
-	constexpr void release() noexcept {
-		std::free(addr);
-		addr = nullptr;
 	}
 
 public:
 
 	constexpr plmem_holder()
-		noexcept = default;
+		noexcept : addr(nullptr),
+				   aend(0)
+	{}
 
 	constexpr plmem_holder(size_t size)
 		noexcept : addr (
@@ -64,10 +71,6 @@ public:
 		noexcept : addr (
 			static_cast<pointer_t>(std::malloc(alloc_size))
 		), aend(init_size)
-	{}
-
-	constexpr plmem_holder(plmem_holder& memory)
-		noexcept : addr(memory.addr), aend(memory.aend)
 	{}
 
 	constexpr plmem_holder(plmem_holder&& memory)
@@ -102,12 +105,9 @@ public:
 
 public:
 
-	constexpr void operator=(plmem_holder& memory) {
-		copy_assign(memory);
-	}
-
-	constexpr void operator=(plmem_holder&& memory) {
+	constexpr plmem_holder& operator=(plmem_holder&& memory) {
 		move_assign(std::move(memory));
+		return *this;
 	}
 
 public:

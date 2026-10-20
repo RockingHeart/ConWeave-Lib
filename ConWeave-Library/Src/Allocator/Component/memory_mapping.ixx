@@ -128,9 +128,10 @@ public:
 
 public:
 
-	constexpr void operator=(memory_mapping&& mapping) {
-		if (this == &mapping) return;
+	constexpr memory_mapping& operator=(memory_mapping&& mapping) {
+		if (this == &mapping) return *this;
 		move_assign(std::move(mapping));
+		return *this;
 	}
 
 public:
