@@ -147,7 +147,7 @@ private:
 		if (next_size <= block.size()) {
 			return;
 		}
-		respace((current->acur + 1) * 2);
+		respace(next_size + 1 * 2);
 	}
 
 	template <class Type>
