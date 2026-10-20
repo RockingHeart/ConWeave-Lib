@@ -113,8 +113,7 @@ private:
 		const noexcept
 	{
 		block_holder& block  = current->area;
-		size_t		  length = current->acur;
-		return size > block.size() - length;
+		return block.size() - current->acur;
 	}
 
 	constexpr auto enhance_block(size_t size)
