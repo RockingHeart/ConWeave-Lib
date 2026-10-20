@@ -38,6 +38,11 @@ private:
 	memory_block* current;
 	memory_block* last;
 
+public:
+
+	constexpr block_allocator(const block_allocator&)            = delete;
+	constexpr block_allocator& operator=(const block_allocator&) = delete;
+
 private:
 
 	constexpr size_t align_to (size_t value,
@@ -272,6 +277,9 @@ private:
 			block.~memory_block();
 		}
 		std::free(base);
+		base    = nullptr;
+		current = nullptr;
+		last    = nullptr;
 	}
 
 public:
