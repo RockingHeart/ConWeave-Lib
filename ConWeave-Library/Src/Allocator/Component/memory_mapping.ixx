@@ -112,7 +112,7 @@ public:
 	}
 
 	constexpr bool mapped() const noexcept {
-		return hand != nullptr && !failed();
+		return hand != nullptr;
 	}
 
 	constexpr bool failed() const noexcept {
@@ -132,7 +132,7 @@ public:
 public:
 
 	constexpr ~memory_mapping() noexcept {
-		if (!mapped()) {
+		if (failed()) {
 			return;
 		}
 		UnmapViewOfFile(addr);
