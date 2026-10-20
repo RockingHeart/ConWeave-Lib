@@ -4,7 +4,6 @@ module;
 export module dast.memory_mapping;
 
 import std;
-import dast.string;
 
 std::size_t mapping_count = 0;
 
@@ -30,29 +29,15 @@ private:
 
 private:
 
-	/*static constexpr dast::cstring mapping_name() noexcept {
-		static char buffer[16];
-		auto [end, _] = std::to_chars (
-			buffer, buffer + sizeof(buffer),
-			mapping_count
-		);
-		*end = '\0';
-		dast::cstring mapping_identity (
-			"CWL.MemoryMapping: "
-		);
-		mapping_identity += buffer;
-		mapping_count	 += 1;
-		return mapping_identity;
-	}*/
-
 	static const char* mapping_name() noexcept {
 		static char buffer[64];
 		static constexpr char prefix[] = "CWL.MemoryMapping: ";
-		std::size_t offset = 0;
+		size_t offset = 0;
 		for (; prefix[offset] != '\0'; ++offset)
 			buffer[offset] = prefix[offset];
 		auto [end, ec] = std::to_chars (
-			buffer + offset, buffer + sizeof(buffer), mapping_count
+			buffer + offset, buffer + sizeof(buffer),
+			mapping_count
 		);
 		*end = '\0';
 		mapping_count += 1;
@@ -114,7 +99,7 @@ public:
 public:
 
 	template <class AddrType = byte_t>
-	constexpr AddrType* address(std::size_t offset) noexcept {
+	constexpr AddrType* address(size_t offset) noexcept {
 		return reinterpret_cast<AddrType*>(addr + offset);
 	}
 
@@ -122,7 +107,7 @@ public:
 		return address<byte_t>(0);
 	}
 
-	constexpr std::size_t size() const noexcept {
+	constexpr size_t size() const noexcept {
 		return aend;
 	}
 

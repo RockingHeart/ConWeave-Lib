@@ -15,7 +15,7 @@ export namespace dast
 template <class BlockHolder>
 struct memory_block_t {
 	BlockHolder area;
-	std::size_t acur;
+	size_t acur;
 };
 
 template <class BlockHolder>
@@ -25,8 +25,8 @@ private:
 	using block_holder = BlockHolder;
 
 public:
-	using size_t	=	  std::size_t;
-	using byte_t	=	  std::byte;
+	using size_t	= typename block_holder::size_t;
+	using byte_t	= typename block_holder::byte_t;
 	using pointer_t = typename block_holder::pointer_t;
 
 protected:
@@ -101,23 +101,23 @@ private:
 		current->acur = 0;
 	}
 
-	constexpr bool cross(std::size_t size)
+	constexpr bool cross(size_t size)
 		const noexcept
 	{
 		block_holder& block = current->area;
-		std::size_t length  = current->acur;
+		size_t length = current->acur;
 		return length + size > block.size();
 	}
 
-	constexpr bool leftover(std::size_t size)
+	constexpr bool leftover(size_t size)
 		const noexcept
 	{
-		block_holder& block = current->area;
-		std::size_t length  = current->acur;
+		block_holder& block  = current->area;
+		size_t		  length = current->acur;
 		return size > block.size() - length;
 	}
 
-	constexpr auto enhance_block(std::size_t size)
+	constexpr auto enhance_block(size_t size)
 		noexcept -> memory_block*
 	{
 		if (base == nullptr) {
@@ -136,10 +136,10 @@ private:
 		return current;
 	}
 
-	constexpr void check_block(std::size_t size) noexcept {
+	constexpr void check_block(size_t size) noexcept {
 		block_holder& block    = current->area;
-		std::size_t block_size = current->acur;
-		std::size_t next_size  = block_size + size;
+		size_t block_size = current->acur;
+		size_t next_size  = block_size + size;
 		if (next_size <= block.size()) {
 			return;
 		}
@@ -147,11 +147,9 @@ private:
 	}
 
 	template <class Type>
-	constexpr Type* enhance_space (std::size_t size)
-		noexcept
-	{
+	constexpr Type* enhance_space (size_t size) noexcept {
 		block_holder& block    = current->area;
-		std::size_t block_size = current->acur;
+		size_t block_size = current->acur;
 		auto result = block.template address<Type> (
 			block_size
 		);
@@ -172,9 +170,7 @@ private:
 		return result;
 	}
 
-	constexpr bool write_segment(std::size_t size)
-		noexcept
-	{
+	constexpr bool write_segment(size_t size) noexcept {
 		return cross(size) && leftover(size);
 	}
 
@@ -189,7 +185,7 @@ private:
 
 	template <class Type>
 	constexpr Type* append_string (const Type*  string,
-									std::size_t size)
+										 size_t size)
 		noexcept
 	{
 		auto result = enhance_space<Type> (
@@ -201,7 +197,7 @@ private:
 
 	template <class Type>
 	constexpr Type* chunks_write (const Type*  string,
-								   std::size_t size) noexcept {
+										size_t size) noexcept {
 		size_t length = write_remain<Type>(string);
 		size -= length; string += length;
 		respace(size * sizeof(Type));
@@ -210,7 +206,7 @@ private:
 	 
 	template <rest::character CharType>
 	constexpr auto hold_space (const CharType* string,
-								std::size_t	   size)
+									 size_t	   size)
 		noexcept -> CharType*
 	{
 		if (write_segment(size)) {
@@ -230,13 +226,13 @@ private:
 
 	template <rest::character CharType>
 	CharType* allocate_impl (const CharType* string,
-							   std::size_t	  size)
+								   size_t	 size)
 		noexcept
 	{
 		return hold_space<CharType>(string, size);
 	}
 
-	constexpr void construct(std::size_t size) noexcept {
+	constexpr void construct(size_t size) noexcept {
 		base = static_cast<memory_block*> (
 			std::malloc(sizeof(memory_block) * 2)
 		);
@@ -245,11 +241,11 @@ private:
 		set_cur_block(size);
 	}
 
-	constexpr void initialize() noexcept {
+	constexpr void initialize(size_t size) noexcept {
 		if (!is_empty()) {
 			return;
 		}
-		construct(1);
+		construct(size);
 	}
 
 private:
@@ -260,9 +256,9 @@ private:
 		last	= allocator.last;
 	}
 
-	constexpr bool should_allocate(std::size_t size) noexcept {
+	constexpr bool should_allocate(size_t size) noexcept {
 		block_holder& block = current->area;
-		std::size_t length  = current->acur;
+		size_t length  = current->acur;
 		return is_empty() || length + size > block.size();
 	}
 
@@ -315,15 +311,15 @@ public:
 
 	template <class AllocType, class... ArgsType>
 	AllocType* allocate(ArgsType&&... args) noexcept {
-		initialize();
+		initialize((sizeof(args) + ...));
 		return allocate_impl<AllocType> (
 			std::forward<ArgsType>(args)...
 		);
 	}
 
 	template <class AllocType, class... ArgsType>
-	constexpr std::optional<AllocType*> try_alloc(std::size_t		 size,
-													   ArgsType&&... args)
+	constexpr std::optional<AllocType*> try_alloc(size_t		size,
+												  ArgsType&&... args)
 		noexcept
 	{
 		if (should_allocate(size)) {
@@ -338,9 +334,9 @@ public:
 public:
 
 	constexpr void reset_state(memory_block& block) noexcept {
-		block_holder& memory = block.area;
-		char* address		 = block.bytecode();
-		std::size_t& size	 = block.acur;
+		block_holder& memory  = block.area;
+		char*		  address = block.bytecode();
+		size_t&		  size	  = block.acur;
 		std::memset(address, 0, size);
 		size = 0;
 	}
@@ -375,7 +371,7 @@ public:
 	}
 
 	template <class DataType>
-	constexpr DataType* data(std::size_t off = 0) const noexcept {
+	constexpr DataType* data(size_t off = 0) const noexcept {
 		return current->area.template address<DataType>(off);
 	}
 
@@ -391,7 +387,7 @@ public:
 	}
 
 	template <class AccType>
-	constexpr auto retreat(std::size_t size = sizeof(AccType))
+	constexpr auto retreat(size_t size = sizeof(AccType))
 		noexcept -> AccType*
 	{
 		memory_block* result = enhance_block(size);
@@ -431,11 +427,11 @@ public:
 		return holder.size() - current->acur;
 	}
 
-	constexpr std::size_t used() const noexcept {
+	constexpr size_t used() const noexcept {
 		return last - base;
 	}
 
-	constexpr std::size_t size() const noexcept {
+	constexpr size_t size() const noexcept {
 		return current->acur;
 	}
 
@@ -447,7 +443,7 @@ public:
 		allocator.base = nullptr;
 	}
 
-	constexpr memory_block& operator[](std::size_t position) const {
+	constexpr memory_block& operator[](size_t position) const {
 		if (position >= used()) {
 			throw "No such base";
 		}
