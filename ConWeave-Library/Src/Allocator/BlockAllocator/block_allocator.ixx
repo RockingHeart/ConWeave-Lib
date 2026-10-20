@@ -412,8 +412,14 @@ public:
 		return cur_block();
 	}
 
+public:
+
 	constexpr bool is_empty() const noexcept {
 		return base == nullptr;
+	}
+
+	constexpr bool based() const noexcept {
+		return current == base;
 	}
 
 public:
