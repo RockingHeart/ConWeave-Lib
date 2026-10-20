@@ -455,7 +455,6 @@ public:
 		allocator.base	  = nullptr;
 		allocator.current = nullptr;
 		allocator.last	  = nullptr;
-		return *this;
 	}
 
 	constexpr memory_block& operator[](size_t position) const {
