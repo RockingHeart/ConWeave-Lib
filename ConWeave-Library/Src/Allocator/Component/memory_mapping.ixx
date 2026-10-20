@@ -132,11 +132,13 @@ public:
 public:
 
 	constexpr ~memory_mapping() noexcept {
-		if (failed()) {
-			return;
+		if (failed()) return;
+		if (addr != nullptr) {
+			UnmapViewOfFile(addr);
 		}
-		UnmapViewOfFile(addr);
 		CloseHandle(hand);
+		hand = nullptr;
+		addr = nullptr;
 	}
 
 };

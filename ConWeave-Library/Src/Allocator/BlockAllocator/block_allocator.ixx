@@ -72,8 +72,8 @@ private:
 			std::malloc(sizeof(memory_block) * newlen)
 		);
 		memory_block* old_base = old.base;
-		for (size_t i = 0; i < used_block; i++) {
-			base[i] = std::move(old_base[i]);
+		for (size_t i = 0; i <= used_block; i++) {
+			std::construct_at(&base[i], std::move(old_base[i]));
 		}
 		last	= base + newlen;
 		current = base + used_block;
@@ -96,9 +96,9 @@ private:
 		return respace(current->acur * 2);
 	}
 
-	constexpr void enhance_current() noexcept {
+	constexpr void enhance_current(size_t size) noexcept {
 		++current;
-		current->acur = 0;
+		set_cur_block(size);
 	}
 
 	constexpr bool cross(size_t size)
@@ -131,7 +131,7 @@ private:
 			return nullptr;
 		}
 
-		enhance_current();
+		enhance_current(size);
 		return current;
 	}
 
@@ -256,9 +256,10 @@ private:
 	}
 
 	constexpr bool should_allocate(size_t size) noexcept {
-		block_holder& block = current->area;
-		size_t length  = current->acur;
-		return is_empty() || length + size > block.size();
+		if (is_empty()) return true;
+		block_holder& block  = current->area;
+		size_t		  length = current->acur;
+		return length + size > block.size();
 	}
 
 private:
@@ -354,11 +355,10 @@ public:
 	}
 
 	constexpr bool next_block() noexcept {
-		if (!reachable()) {
-			return false;
-		}
-
-		current += 1;
+		if (!reachable()) return false;
+		size_t next_size = current->acur * 2;
+		++current;
+		set_cur_block(next_size);
 		return true;
 	}
 
@@ -411,7 +411,7 @@ public:
 	}
 
 	constexpr memory_block* end() const noexcept {
-		return cur_block();
+		return cur_block() + 1;
 	}
 
 public:
