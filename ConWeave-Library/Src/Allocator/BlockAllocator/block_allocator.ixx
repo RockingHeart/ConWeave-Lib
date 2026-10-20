@@ -98,11 +98,7 @@ private:
 			exten_block();
 		}
 		current = current + 1;
-		set_cur_block(std::max<size_t>(size, 1));
-	}
-
-	constexpr void respace() noexcept {
-		return respace(current->acur * 2);
+		set_cur_block(size);
 	}
 
 	constexpr void enhance_current(size_t size) noexcept {
@@ -151,7 +147,7 @@ private:
 		if (next_size <= block.size()) {
 			return;
 		}
-		respace((std::max)(current->acur * 2, size));
+		respace((current->acur + 1) * 2);
 	}
 
 	template <class Type>
