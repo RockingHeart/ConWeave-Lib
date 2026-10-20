@@ -270,7 +270,7 @@ private:
 		}
 
 		for (auto& block : *this) {
-			std::destroy_at(block);
+			block.~memory_block();
 		}
 		std::free(base);
 		base    = nullptr;
