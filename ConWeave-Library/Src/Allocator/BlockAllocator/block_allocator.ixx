@@ -22,7 +22,8 @@ template <class BlockHolder>
 class dast::block_allocator
 {
 private:
-	using block_holder = BlockHolder;
+	using block_holder  = BlockHolder;
+	using system_info_t = SYSTEM_INFO;
 
 public:
 	using size_t	= typename block_holder::size_t;
@@ -56,37 +57,59 @@ private:
 		std::construct_at(current, block_size, 0);
 	}
 
+	constexpr system_info_t sys_info() noexcept {
+		SYSTEM_INFO info {};
+		GetSystemInfo(&info);
+		return info;
+	}
+
 	constexpr size_t block_size(size_t base) noexcept {
-		SYSTEM_INFO system_info{};
-		GetSystemInfo(&system_info);
-		size_t block_size = align_to (
-			base, system_info.dwPageSize
-		);
-		return block_size;
+		return align_to(base, sys_info().dwPageSize);
 	}
 
 	constexpr size_t total_number_block() const noexcept {
 		return static_cast<size_t>(last - base);
 	}
 
-	constexpr void exten_block() noexcept {
+	constexpr void exten_move_to(memory_block* new_block) noexcept {
 		size_t used_block = used();
-		size_t old_size	  = total_number_block();
+		for (size_t i = 0; i <= used_block; i++)
+			std::construct_at(new_block + i, std::move(base[i]));
+	}
+
+	constexpr void exten_init(memory_block* new_block) noexcept {
+		size_t used_block = used();
+		size_t old_size   = total_number_block();
 		size_t newlen	  = old_size + 2;
-		auto*  new_block  = static_cast<memory_block*> (
-			std::malloc(sizeof(memory_block) * newlen)
+		for (size_t i = used_block; i <= newlen; i++)
+			std::construct_at(new_block + i, memory_block{});
+	}
+
+	constexpr void exten_update(memory_block* new_block) noexcept {
+		size_t used_block = used();
+		size_t old_size   = total_number_block();
+		size_t newlen	  = old_size + 2;
+		base			  = new_block;
+		last			  = base + newlen;
+		current			  = base + used_block;
+	}
+
+	constexpr memory_block* alloc_block(size_t size) noexcept {
+		return static_cast<memory_block*>(
+			std::malloc(sizeof(memory_block) * size)
 		);
-		for (size_t i = 0; i <= used_block; i++) {
-			std::construct_at (
-				new_block + i, std::move(base[i])
-			);
-		}
-		for (size_t i = 0; i <= used_block; ++i)
-			std::destroy_at(&base[i]);
-		std::free(base);
-		base	= new_block;
-		last	= base + newlen;
-		current = base + used_block;
+	}
+
+	constexpr memory_block* alloc_new_block() noexcept {
+		return alloc_block(total_number_block() + 2);
+	}
+
+	constexpr void exten_block() noexcept {
+		auto* new_block = alloc_new_block();
+		exten_move_to(new_block);
+		exten_init(new_block);
+		release_used();
+		exten_update(new_block);
 	}
 
 	constexpr bool reachable() const noexcept {
@@ -98,20 +121,6 @@ private:
 			exten_block();
 		}
 		current = current + 1;
-		set_cur_block(size);
-	}
-
-	constexpr void enhance_current(size_t size) noexcept {
-		++current;
-		set_cur_block(size);
-	}
-
-	constexpr bool cross(size_t size)
-		const noexcept
-	{
-		block_holder& block = current->area;
-		size_t length = current->acur;
-		return length + size > block.size();
 	}
 
 	constexpr bool leftover(size_t size)
@@ -121,23 +130,17 @@ private:
 		return block.size() > current->acur + size;
 	}
 
+	constexpr void enhance_current() noexcept {
+		++current; current->acur = 0;
+	}
+
 	constexpr auto enhance_block(size_t size)
 		noexcept -> memory_block*
 	{
-		if (base == nullptr) {
-			return nullptr;
-		}
-
-		if (!cross(size)) {
-			return current;
-		}
-
-		if (!reachable()) {
-			return nullptr;
-		}
-
-		enhance_current(size);
-		return current;
+		if (base == nullptr) return nullptr;
+		if (!cross(size))	 return current;
+		if (!reachable())	 return nullptr;
+		return enhance_current();
 	}
 
 	constexpr void check_block(size_t size) noexcept {
@@ -179,7 +182,7 @@ private:
 	}
 
 	template <class CharType>
-	constexpr size_t write_remain(const CharType* string) noexcept {
+	constexpr size_t write_remain(CharType* string) noexcept {
 		CharType* pointer = section<CharType>();
 		size_t    length  = remain() - 1;
 		strutil::strcopy(pointer, string, length);
@@ -188,8 +191,8 @@ private:
 	}
 
 	template <class Type>
-	constexpr Type* append_string (const Type*  string,
-										 size_t size)
+	constexpr Type* append_string (Type*  string,
+								   size_t size)
 		noexcept
 	{
 		auto result = enhance_space<Type> (
@@ -200,8 +203,8 @@ private:
 	}
 
 	template <class Type>
-	constexpr Type* chunks_write (const Type*  string,
-										size_t size) noexcept {
+	constexpr Type* chunks_write (Type*  string,
+								  size_t size) noexcept {
 		size_t length = write_remain<Type>(string);
 		size -= length; string += length;
 		respace(size * sizeof(Type));
@@ -209,8 +212,8 @@ private:
 	};
 	 
 	template <rest::character CharType>
-	constexpr auto hold_space (const CharType* string,
-									 size_t	   size)
+	constexpr auto hold_space (CharType* string,
+							   size_t	 size)
 		noexcept -> CharType*
 	{
 		if (write_segment(size)) {
@@ -261,24 +264,33 @@ private:
 	}
 
 	constexpr bool should_allocate(size_t size) noexcept {
-		if (is_empty()) return true;
-		block_holder& block  = current->area;
-		size_t		  length = current->acur;
-		return length + size > block.size();
+		if (is_empty()) {
+			return true;
+		}
+		return cross(size);
 	}
 
 private:
 
-	constexpr void release() noexcept {
-		if (base == nullptr) {
-			return;
-		}
-		for (size_t i = 0; i <= used(); ++i)
-			std::destroy_at(&base[i]);
-		std::free(base);
+	constexpr void reset_member() noexcept {
 		base    = nullptr;
 		current = nullptr;
 		last    = nullptr;
+	}
+
+	constexpr void release_used() noexcept {
+		size_t used_block = used();
+		for (size_t i = 0; i <= used_block; ++i)
+			std::destroy_at(base + i);
+		std::free(base);
+	}
+
+	constexpr void release() noexcept {
+		if (is_empty()) {
+			return;
+		}
+		release_used();
+		reset_member();
 	}
 
 public:
@@ -320,9 +332,9 @@ public:
 	}
 
 	template <class AllocType, class... ArgsType>
-	constexpr std::optional<AllocType*> try_alloc(size_t		size,
-												  ArgsType&&... args)
-		noexcept
+	constexpr auto try_alloc(size_t		   size,
+							 ArgsType&&... args)
+		noexcept -> std::optional<AllocType*>
 	{
 		if (should_allocate(size)) {
 			return std::nullopt;
@@ -336,11 +348,9 @@ public:
 public:
 
 	constexpr void reset_state(memory_block& block) noexcept {
-		block_holder& memory  = block.area;
-		char*		  address = memory.address(0);
-		size_t&		  size	  = block.acur;
-		std::memset(address, 0, size);
-		size = 0;
+		size_t size	= block.acur;
+		block.acur = 0;
+		std::memset(block.area.address(0), 0, size);
 	}
 
 	constexpr void reset_status() noexcept {
@@ -349,8 +359,8 @@ public:
 		}
 	}
 
-	constexpr void start_over() noexcept {
-		current = base;
+	constexpr void rewind() noexcept {
+		current = base; current->acur = 0;
 	}
 
 	constexpr bool next_block() noexcept {
@@ -415,6 +425,14 @@ public:
 
 public:
 
+	constexpr bool cross(size_t size)
+		const noexcept
+	{
+		block_holder& block = current->area;
+		size_t length = current->acur;
+		return length + size > block.size();
+	}
+
 	constexpr bool is_empty() const noexcept {
 		return base == nullptr;
 	}
@@ -448,9 +466,7 @@ public:
 		if (this == &allocator) return;
 		release();
 		assign(allocator);
-		allocator.base	  = nullptr;
-		allocator.current = nullptr;
-		allocator.last	  = nullptr;
+		allocator.reset_member();
 	}
 
 	constexpr memory_block& operator[](size_t position) const {
