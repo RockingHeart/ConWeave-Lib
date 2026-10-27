@@ -98,7 +98,7 @@ public:
 		return addr == nullptr;
 	}
 
-	constexpr void reallocate(size_t size) noexcept {
+	constexpr void resize(size_t size) noexcept {
 		release();
 		set(std::malloc(size), size);
 	}

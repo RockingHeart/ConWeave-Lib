@@ -18,6 +18,11 @@ struct memory_block_t {
 	size_t		acur;
 };
 
+template <class Object>
+concept resizeable = requires(Object& obj) {
+	obj.resize(0ull);
+};
+
 template <class BlockHolder>
 class dast::block_allocator
 {
@@ -53,8 +58,16 @@ private:
 		return (value + align - 1) & ~(align - 1);
 	}
 
+	constexpr size_t to_byte(size_t megabyte) const noexcept {
+		return megabyte * 1048576;
+	}
+
 	constexpr void set_cur_block(size_t block_size) noexcept {
 		std::construct_at(current, block_size, 0);
+	}
+
+	constexpr void set_cur_area(size_t size) noexcept {
+		std::construct_at(&current->area, block_holder{ size });
 	}
 
 	constexpr system_info_t sys_info() noexcept {
@@ -65,6 +78,10 @@ private:
 
 	constexpr size_t block_size(size_t base) noexcept {
 		return align_to(base, sys_info().dwPageSize);
+	}
+
+	constexpr size_t next_size(size_t size) noexcept {
+		return current->acur + size;
 	}
 
 	constexpr size_t total_number_block() const noexcept {
@@ -95,7 +112,7 @@ private:
 	}
 
 	constexpr memory_block* alloc_block(size_t size) noexcept {
-		return static_cast<memory_block*>(
+		return static_cast<memory_block*> (
 			std::malloc(sizeof(memory_block) * size)
 		);
 	}
@@ -116,11 +133,28 @@ private:
 		return current + 1 < last;
 	}
 
-	constexpr void respace(size_t size) noexcept {
+	constexpr void open_up(size_t size) noexcept {
 		if (!reachable()) {
 			exten_block();
 		}
 		current = current + 1;
+		set_cur_area(size);
+	}
+
+	constexpr void alloc_resize(size_t size) noexcept {
+		if constexpr (!resizeable<block_holder>) {
+			return;
+		}
+		size_t next = next_size(size);
+		if (next >= to_byte(250)) {
+			return;
+		}
+		current->area.resize(next);
+	}
+
+	constexpr void respace(size_t size) noexcept {
+		alloc_resize(size);
+		open_up(size);
 	}
 
 	constexpr bool leftover(size_t size)
@@ -145,12 +179,12 @@ private:
 
 	constexpr void check_block(size_t size) noexcept {
 		block_holder& block = current->area;
-		size_t block_size   = current->acur;
-		size_t next_size    = block_size + size;
-		if (next_size <= block.size()) {
+		size_t		  next  = next_size(size);
+		if (next <= block.size()) {
 			return;
 		}
-		respace(next_size + 1 * 2);
+		next = next + 1;
+		respace(next * 2);
 	}
 
 	template <class Type>

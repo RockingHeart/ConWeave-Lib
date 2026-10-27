@@ -29,6 +29,7 @@ public:
 
 	memory_mapping(const memory_mapping&)			 = delete;
 	memory_mapping& operator=(const memory_mapping&) = delete;
+	constexpr void resize(size_t) noexcept			 = delete;
 
 private:
 
