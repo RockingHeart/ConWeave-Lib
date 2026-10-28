@@ -32,20 +32,29 @@ private:
 	}
 
 	constexpr void reset(plmem_holder& memory) noexcept {
-		memory.addr = nullptr;
-		memory.aend = 0;
+		memory.addr = nullptr; memory.aend = 0;
 	}
 
-	constexpr void set(void* pointer, size_t size) noexcept {
-		addr = static_cast<pointer_t> (
-			pointer
-		);
-		aend = size;
+	constexpr void set(pointer_t pointer, size_t size) noexcept {
+		addr = pointer; aend = size;
+	}
+
+	constexpr pointer_t malloc(size_t size) noexcept {
+		return static_cast<pointer_t>(std::malloc(size));
+	}
+
+	constexpr size_t next_size(size_t size) const noexcept {
+		return aend + size;
+	}
+
+	constexpr pointer_t copy(size_t size) noexcept {
+		pointer_t ptr = malloc(next_size(size));
+		std::memcpy(ptr, addr, aend);
+		return ptr;
 	}
 
 	constexpr void copy_assign(plmem_holder& memory) noexcept {
-		addr = memory.addr;
-		aend = memory.aend;
+		addr = memory.addr; aend = memory.aend;
 	}
 
 	constexpr void move_assign(plmem_holder&& memory) noexcept {
@@ -62,19 +71,18 @@ public:
 	{}
 
 	constexpr plmem_holder(size_t size)
-		noexcept : addr (
-			static_cast<pointer_t>(std::malloc(size))
-		), aend(size)
+		noexcept : addr(malloc(size)),
+				   aend(size)
 	{}
 
 	constexpr plmem_holder(size_t alloc_size, size_t init_size)
-		noexcept : addr (
-			static_cast<pointer_t>(std::malloc(alloc_size))
-		), aend(init_size)
+		noexcept : addr(malloc(alloc_size)),
+				   aend(init_size)
 	{}
 
 	constexpr plmem_holder(plmem_holder&& memory)
-		noexcept : addr(memory.addr), aend(memory.aend)
+		noexcept : addr(memory.addr),
+				   aend(memory.aend)
 	{
 		reset(memory);
 	}
@@ -98,9 +106,15 @@ public:
 		return addr == nullptr;
 	}
 
-	constexpr void resize(size_t size) noexcept {
+	constexpr void reallocate(size_t size) noexcept {
 		release();
-		set(std::malloc(size), size);
+		set(malloc(size), size);
+	}
+
+	constexpr void resize(size_t size) noexcept {
+		pointer_t ptr = copy(size);
+		std::free(addr);
+		set(ptr, next_size(size));
 	}
 
 public:

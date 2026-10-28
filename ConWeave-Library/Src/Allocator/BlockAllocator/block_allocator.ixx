@@ -28,15 +28,12 @@ class dast::block_allocator
 {
 private:
 	using block_holder  = BlockHolder;
-	using system_info_t = SYSTEM_INFO;
+	using memory_block  = memory_block_t<block_holder>;
 
 public:
 	using size_t	= typename block_holder::size_t;
 	using byte_t	= typename block_holder::byte_t;
 	using pointer_t = typename block_holder::pointer_t;
-
-protected:
-	using memory_block = memory_block_t<block_holder>;
 
 private:
 
@@ -51,13 +48,6 @@ public:
 
 private:
 
-	constexpr size_t align_to (size_t value,
-							   size_t align)
-		const noexcept
-	{
-		return (value + align - 1) & ~(align - 1);
-	}
-
 	constexpr size_t to_byte(size_t megabyte) const noexcept {
 		return megabyte * 1048576;
 	}
@@ -68,16 +58,6 @@ private:
 
 	constexpr void set_cur_area(size_t size) noexcept {
 		std::construct_at(&current->area, block_holder{ size });
-	}
-
-	constexpr system_info_t sys_info() noexcept {
-		SYSTEM_INFO info {};
-		GetSystemInfo(&info);
-		return info;
-	}
-
-	constexpr size_t block_size(size_t base) noexcept {
-		return align_to(base, sys_info().dwPageSize);
 	}
 
 	constexpr size_t next_size(size_t size) noexcept {
@@ -141,20 +121,22 @@ private:
 		set_cur_area(size);
 	}
 
-	constexpr void alloc_resize(size_t size) noexcept {
+	constexpr bool alloc_resize(size_t size) noexcept {
 		if constexpr (!resizeable<block_holder>) {
-			return;
+			return false;
 		}
-		size_t next = next_size(size);
-		if (next >= to_byte(250)) {
-			return;
+		if (next_size(size) >= to_byte(250)) {
+			return false;
 		}
-		current->area.resize(next);
+		current->area.resize(size);
+		return true;
 	}
 
 	constexpr void respace(size_t size) noexcept {
-		alloc_resize(size);
-		open_up(size);
+		if (alloc_resize(size)) {
+			return;
+		}
+		return open_up(size);
 	}
 
 	constexpr bool leftover(size_t size)
