@@ -198,7 +198,7 @@ private:
 	}
 
 	template <class CharType>
-	constexpr size_t write_remain(CharType* string) noexcept {
+	constexpr size_t write_remain(const CharType* string) noexcept {
 		CharType* pointer = section<CharType>();
 		size_t    length  = remain() - 1;
 		strutil::strcopy(pointer, string, length);
@@ -207,8 +207,8 @@ private:
 	}
 
 	template <class Type>
-	constexpr Type* append_string (Type*  string,
-								   size_t size)
+	constexpr Type* append_string (const Type*  string,
+										 size_t size)
 		noexcept
 	{
 		auto result = enhance_space<Type> (
@@ -219,8 +219,8 @@ private:
 	}
 
 	template <class Type>
-	constexpr Type* chunks_write (Type*  string,
-								  size_t size) noexcept {
+	constexpr Type* chunks_write (const Type*  string,
+										size_t size) noexcept {
 		size_t length = write_remain<Type>(string);
 		size -= length; string += length;
 		respace(size * sizeof(Type));
@@ -228,8 +228,8 @@ private:
 	};
 	 
 	template <rest::character CharType>
-	constexpr auto hold_space (CharType* string,
-							   size_t	 size)
+	constexpr auto hold_space (const CharType* string,
+									 size_t	   size)
 		noexcept -> CharType*
 	{
 		if (write_segment(size)) {
