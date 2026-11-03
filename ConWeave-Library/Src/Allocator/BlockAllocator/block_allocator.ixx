@@ -431,7 +431,7 @@ public:
 	template <class AccType>
 	constexpr void advance(size_t size = sizeof(AccType)) noexcept {
 		memory_block* result = enhance_block(size);
-		if (result == nullptr) return nullptr;
+		if (result == nullptr) return;
 		result->acur += sizeof(AccType);
 	}
 
