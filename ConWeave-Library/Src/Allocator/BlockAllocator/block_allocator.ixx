@@ -428,6 +428,13 @@ public:
 		return current_element;
 	};
 
+	template <class AccType>
+	constexpr void advance() noexcept {
+		memory_block* result = enhance_block(size);
+		if (result == nullptr) return nullptr;
+		result->acur += sizeof(AccType);
+	}
+
 public:
 
 	constexpr memory_block* begin() const noexcept {
