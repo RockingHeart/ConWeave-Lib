@@ -146,7 +146,9 @@ private:
 		return block.size() > current->acur + size;
 	}
 
-	constexpr void enhance_current() noexcept {
+	constexpr auto enhance_current()
+		noexcept -> memory_block*
+	{
 		++current; current->acur = 0;
 		return current;
 	}
