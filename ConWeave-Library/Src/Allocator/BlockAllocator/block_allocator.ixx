@@ -125,7 +125,7 @@ private:
 		if constexpr (!resizeable<block_holder>) {
 			return false;
 		}
-		if (next_size(size) >= to_byte(250)) {
+		if (next_size(size) >= to_byte(50)) {
 			return false;
 		}
 		current->area.resize(size);
@@ -148,6 +148,7 @@ private:
 
 	constexpr void enhance_current() noexcept {
 		++current; current->acur = 0;
+		return current;
 	}
 
 	constexpr auto enhance_block(size_t size)
