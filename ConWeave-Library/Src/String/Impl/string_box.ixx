@@ -21,7 +21,8 @@ template<> struct bandwidth_calculator<2> { static constexpr size_t value = 4; }
 template<> struct bandwidth_calculator<4> { static constexpr size_t value = 3; };
 
 export template <class StringTraits>
-class string_box {
+class string_box
+{
 protected:
 	using string_traits = StringTraits;
 

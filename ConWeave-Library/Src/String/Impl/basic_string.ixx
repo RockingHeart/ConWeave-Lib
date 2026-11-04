@@ -441,9 +441,9 @@ private:
 			noexcept(allocator().deallocate(nullptr, 0ull))
 		)
 	{
-		alloc_t&     alloc       = allocator();
-		box_cache_t& self_cache  = core_t::cache;
-		box_specs_t& self_sepcs  = self_cache.specs;
+		alloc_t&     alloc        = allocator();
+		box_cache_t& self_cache   = core_t::cache;
+		box_specs_t& self_sepcs   = self_cache.specs;
 		box_specs_t& object_specs = object_cache.specs;
 
 		size_t cache_size		  = self_sepcs.size;
@@ -453,7 +453,7 @@ private:
 		strutil::strcopy(cache, self_cache.pointer, cache_size);
 		cache[cache_size] = char_t();
 
-		strutil::strcopy(
+		strutil::strcopy (
 			self_cache.pointer,
 			object_cache.pointer,
 			object_specs.size
@@ -471,7 +471,7 @@ private:
 	}
 
 	constexpr void swap_value(box_value_t& self_value,
-		                       box_value_t& object_value)
+		                      box_value_t& object_value)
 		noexcept
 	{
 		pointer_t cache      = self_value.pointer;
@@ -485,7 +485,7 @@ private:
 	}
 
 	constexpr void cache_swap_value(box_cache_t& object_cache,
-		                             box_value_t& object_value)
+		                            box_value_t& object_value)
 		noexcept
 	{
 		box_cache_t& self_cache  = core_t::cache;
@@ -497,7 +497,7 @@ private:
 		box_specs_t& self_sepcs   = self_cache.specs;
 		box_specs_t& object_specs = object_cache.specs;
 
-		strutil::strcopy(
+		strutil::strcopy (
 			object_cache.pointer,
 			self_cache.pointer,
 			self_sepcs.size
@@ -514,9 +514,9 @@ private:
 
 private:
 
-	constexpr void assign_init(basic_string&    object,
-		                        const_pointer_t pointer,
-		                        size_t          size)
+	constexpr void assign_init(basic_string&   object,
+		                       const_pointer_t pointer,
+		                       size_t          size)
 		noexcept (
 			noexcept(allocator().allocate(0ull))
 		)
@@ -858,7 +858,7 @@ private:
 	}
 
 	constexpr void value_swap_cache(box_cache_t& object_cache,
-									 box_value_t& object_value)
+									box_value_t& object_value)
 		noexcept
 	{
 		box_value_t& self_value = core_t::value;
@@ -1019,9 +1019,10 @@ private:
 
 private:
 
-	constexpr size_t count_string(
-		char_t char_value, size_t point, size_t end
-	) noexcept
+	constexpr size_t count_string (char_t char_value,
+								   size_t point,
+								   size_t end)
+		noexcept
 	{
 		if (!within_range(point, end)) {
 			return 0;
@@ -1050,9 +1051,9 @@ private:
 private:
 
 	constexpr void align_left(pointer_t data,
-							 pointer_t old,
-							 size_t    fill_size,
-							 size_t    str_len)
+							  pointer_t old,
+							  size_t    fill_size,
+							  size_t    str_len)
 		noexcept
 	{
 		if (old == nullptr) {
@@ -1065,9 +1066,9 @@ private:
 	}
 
 	constexpr void align_center(pointer_t data,
-							   pointer_t old,
-							   size_t    fill_size,
-							   size_t    str_len)
+							    pointer_t old,
+							    size_t    fill_size,
+							    size_t    str_len)
 		noexcept
 	{
 		if (old == nullptr) {
@@ -1080,8 +1081,8 @@ private:
 	}
 
 	constexpr void align_right(pointer_t data,
-							  pointer_t old,
-							  size_t    str_len)
+							   pointer_t old,
+							   size_t    str_len)
 		noexcept
 	{
 		if (old == nullptr) {
@@ -1098,10 +1099,10 @@ private:
 
 	template <>
 	constexpr void single_fill<fill_action::left>(pointer_t data,
-												   pointer_t old,
-												   char_t    fill,
-												   size_t    fill_size,
-												   size_t    str_len)
+												  pointer_t old,
+												  char_t    fill,
+												  size_t    fill_size,
+												  size_t    str_len)
 		noexcept
 	{
 		align_left(data, old, fill_size, str_len);
@@ -1110,10 +1111,10 @@ private:
 
 	template <>
 	constexpr void single_fill<fill_action::center>(pointer_t data,
-													 pointer_t old,
-													 char_t    fill,
-													 size_t    fill_size,
-													 size_t    str_len)
+													pointer_t old,
+													char_t    fill,
+													size_t    fill_size,
+													size_t    str_len)
 		noexcept
 	{
 		align_center(data, old, fill_size, str_len);
@@ -1123,10 +1124,10 @@ private:
 
 	template <>
 	constexpr void single_fill<fill_action::right>(pointer_t data,
-													pointer_t old,
-													char_t    fill,
-													size_t    fill_size,
-													size_t    str_len)
+												   pointer_t old,
+												   char_t    fill,
+												   size_t    fill_size,
+												   size_t    str_len)
 		noexcept
 	{
 		align_right(data, old, fill_size, str_len);
@@ -1141,10 +1142,10 @@ private:
 
 	template <>
 	constexpr void multiple_fill<fill_action::left>(pointer_t		 data,
-													 pointer_t		 old,
-													 const_pointer_t fill,
-													 size_t			 fill_size,
-													 size_t			 str_len)
+													pointer_t		 old,
+													const_pointer_t fill,
+													size_t			 fill_size,
+													size_t			 str_len)
 		noexcept
 	{
 		align_left(data, old, fill_size, str_len);
@@ -1153,10 +1154,10 @@ private:
 
 	template <>
 	constexpr void multiple_fill<fill_action::center>(pointer_t	   data,
-													   pointer_t	   old,
-													   const_pointer_t fill,
-													   size_t		   fill_size,
-													   size_t		   str_len)
+													  pointer_t	   old,
+													  const_pointer_t fill,
+													  size_t		   fill_size,
+													  size_t		   str_len)
 		noexcept
 	{
 		align_center(data, old, fill_size, str_len);
@@ -1166,10 +1167,10 @@ private:
 
 	template <>
 	constexpr void multiple_fill<fill_action::right>(pointer_t		  data,
-													  pointer_t		  old,
-													  const_pointer_t fill,
-													  size_t		  fill_size,
-													  size_t		  str_len)
+													 pointer_t		  old,
+													 const_pointer_t fill,
+													 size_t		  fill_size,
+													 size_t		  str_len)
 		noexcept
 	{
 		align_right(data, old, fill_size, str_len);
@@ -1177,8 +1178,8 @@ private:
 	}
 
 	constexpr pointer_t align_switch_data(pointer_t& data,
-		                                   size_t&    strlen,
-		                                   size_t&    sumlen)
+		                                  size_t&    strlen,
+		                                  size_t&    sumlen)
 		noexcept
 	{
 		alloc_t&     alloc = allocator();
@@ -1192,7 +1193,7 @@ private:
 			value.count = sumlen;
 		}
 
-		sumlen			 += strlen;
+		sumlen += strlen;
 
 		size_t max_size   = large_mode ? alloc_size(value)
 			: core_t::buffer_size;
@@ -1395,8 +1396,8 @@ private:
 private:
 
 	constexpr bool replace_string(const_pointer_t str,
-		                           size_t          point,
-		                           size_t          end)
+		                          size_t          point,
+		                          size_t          end)
 		noexcept
 	{
 		if (strutil::strlenof(str) > end - point) {
@@ -1416,8 +1417,8 @@ private:
 	}
 
 	constexpr bool replace_string(reference_t char_value,
-		                           size_t      point,
-		                           size_t      end)
+		                          size_t      point,
+		                          size_t      end)
 		noexcept
 	{
 		if (!within_range(point, end)) {
@@ -1434,8 +1435,8 @@ private:
 private:
 
 	constexpr bool insert_cache(const_pointer_t str,
-		                         size_t          strlen,
-		                         size_t          position)
+		                        size_t          strlen,
+		                        size_t          position)
 		noexcept (
 			noexcept(respace<true>(0ull))
 		)
@@ -1475,8 +1476,8 @@ private:
 	}
 
 	constexpr bool insert_heap(const_pointer_t str,
-		                        size_t          strlen,
-		                        size_t          position)
+		                       size_t          strlen,
+		                       size_t          position)
 		noexcept (
 			noexcept(respace<false>(0ull))
 		)
@@ -1525,7 +1526,7 @@ private:
 	}
 
 	constexpr bool insert_string(const_pointer_t str,
-		                          size_t          position)
+		                         size_t          position)
 	    noexcept (
 			noexcept(respace(0ull))
 		)
@@ -1540,7 +1541,7 @@ private:
 private:
 
 	constexpr basic_string& xor_impl(basic_string& string,
-									  char_t        key)
+									 char_t        key)
 		noexcept
 	{
 		size_t size = string.string_length();
@@ -1734,8 +1735,8 @@ private:
 	}
 
 	template <class OptionType>
-	constexpr bool resize_small(size_t        size,
-								 OptionType&& option)
+	constexpr bool resize_small(size_t       size,
+								OptionType&& option)
 		noexcept
 	{
 		box_cache_t& cache = core_t::cache;
@@ -1761,8 +1762,8 @@ private:
 	}
 
 	template <class OptionType>
-	constexpr bool resize_large(size_t        size,
-								 OptionType&& option)
+	constexpr bool resize_large(size_t       size,
+								OptionType&& option)
 		noexcept
 	{
 		box_value_t& value = core_t::value;
@@ -1807,9 +1808,9 @@ private:
 
 private:
 
-	constexpr std::optional<size_t> front_index(char_t  target,
-												 size_t point,
-												 size_t end)
+	constexpr std::optional<size_t> front_index(char_t target,
+												size_t point,
+												size_t end)
 		noexcept
 	{
 		const_pointer_t data = pointer();
@@ -1821,9 +1822,9 @@ private:
 		return std::nullopt;
 	}
 
-	constexpr std::optional<size_t> last_index(char_t  target,
-												size_t point,
-												size_t end)
+	constexpr std::optional<size_t> last_index(char_t target,
+											   size_t point,
+											   size_t end)
 		noexcept
 	{
 		const_pointer_t data = pointer();
@@ -1839,9 +1840,9 @@ private:
 		return position < string_length();
 	}
 
-	constexpr std::optional<size_t> index_string(char_t  target,
-												  size_t point,
-												  size_t end)
+	constexpr std::optional<size_t> index_string(char_t target,
+												 size_t point,
+												 size_t end)
 		noexcept
 	{
 		if (point > end) {
@@ -1963,8 +1964,8 @@ private:
 	}
 
 	constexpr void append_value(const_pointer_t pointer,
-								 size_t         offset,
-								 size_t         size)
+								size_t          offset,
+								size_t          size)
 		noexcept
 	{
 		box_value_t& value = core_t::value;

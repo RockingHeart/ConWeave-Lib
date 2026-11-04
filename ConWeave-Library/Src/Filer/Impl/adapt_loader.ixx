@@ -14,7 +14,8 @@ export namespace sys
 };
 
 template <rest::character CharType>
-class sys::adapt_loader {
+class sys::adapt_loader
+{
 public:
 	using char_t   =	   CharType;
 	using path_t   = const CharType*;

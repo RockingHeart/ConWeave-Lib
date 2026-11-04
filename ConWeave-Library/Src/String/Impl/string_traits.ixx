@@ -35,17 +35,21 @@ template <
 > requires (
 	rest::allocator<AllocatorType<CharType>> &&
 	string_utility_type<StrUtil>
-) struct traits::string_traits {
+) struct traits::string_traits
+{
+public:
 	using char_t          =       CharType;
 	using reference_t     =       CharType&;
 	using pointer_t       =       CharType*;
 	using const_pointer_t = const CharType*;
 
+public:
 	using size_t	   =   SizeType;
 	using alloc_t	   =   AllocatorType<CharType>;
 	using strutil	   =   StrUtil;
 	using value_traits =   string_value_traits;
 	using cache_size_t =   unsigned char;
 
+public:
 	constexpr static value_traits value_trait = StringValueTrait;
 };

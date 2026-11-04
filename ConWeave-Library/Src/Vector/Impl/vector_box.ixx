@@ -11,16 +11,18 @@ export using ::vector_mode;
 export template <
     class    VectorTraits,
     typename VectorTraits::size_t BuferSize
-> class vector_box {
+> class vector_box
+{
 public:
-
     using vector_traits = VectorTraits;
 
+public:
     using value_t         = typename vector_traits::value_t;
     using reference_t     = typename vector_traits::reference_t;
     using pointer_t       = typename vector_traits::pointer_t;
     using const_pointer_t = typename vector_traits::const_pointer_t;
 
+public:
     using alloc_t    = typename vector_traits::alloc_t;
     using size_t     = typename vector_traits::size_t;
     using sequence_t = typename vector_traits::sequence_t;

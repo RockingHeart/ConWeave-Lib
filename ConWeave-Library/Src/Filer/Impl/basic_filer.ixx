@@ -32,7 +32,8 @@ export template <
 	template <rest::character> class Writer
 > requires (reader_constr<CharType, Reader> &&
 		    writer_constr<CharType, Writer>)
-class basic_filer {
+class basic_filer
+{
 public:
 	using char_t =		 CharType;
 	using path_t = const CharType*;

@@ -9,7 +9,8 @@ export using ::vector_mode;
 export template <class VectorTraits, std::size_t BufSize>
 class vector_core :
     private       VectorTraits::alloc_t,
-    protected     vector_box<VectorTraits, BufSize> {
+    protected     vector_box<VectorTraits, BufSize>
+{
 protected:
     using box_t = vector_box<VectorTraits, BufSize>;
     using box_t::box_t;

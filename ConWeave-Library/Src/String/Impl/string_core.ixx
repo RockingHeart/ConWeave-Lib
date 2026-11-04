@@ -14,7 +14,8 @@ export template <class BasicString, class StringTraits>
         }
 	)
 class string_core :
-	protected     string_box<StringTraits> {
+	protected     string_box<StringTraits>
+{
 public:
 	using string_traits = StringTraits;
 

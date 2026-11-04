@@ -10,7 +10,8 @@ export namespace dast
 	class memory_mapping;
 };
 
-class dast::memory_mapping {
+class dast::memory_mapping
+{
 public:
 	using size_t	= std::size_t;
 	using byte_t	= std::byte;

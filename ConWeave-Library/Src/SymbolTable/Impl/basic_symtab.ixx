@@ -6,7 +6,8 @@ import symbol_table.impl.core;
 
 export template <class SymtaCore>
 class basic_symtab
-				 : SymtaCore {
+				 : SymtaCore
+{
 protected:
 	using core = SymtaCore;
 	using core::cache_index;

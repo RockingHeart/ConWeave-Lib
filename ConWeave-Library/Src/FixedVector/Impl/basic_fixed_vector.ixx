@@ -6,7 +6,8 @@ import std;
 
 export template <class Traits, std::size_t Size>
 class basic_fixed_vec :
-    private           fixed_vec_core<Traits, Size> {
+    private           fixed_vec_core<Traits, Size>
+{
 private:
 	using core_t = fixed_vec_core<Traits, Size>;
 

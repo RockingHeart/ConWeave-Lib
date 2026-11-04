@@ -13,7 +13,8 @@ export namespace dast
 }
 
 template <class BlockHolder>
-struct memory_block_t {
+struct memory_block_t
+{
 	BlockHolder area;
 	size_t		acur;
 };
@@ -489,7 +490,9 @@ public:
 public:
 
 	constexpr void operator=(block_allocator&& allocator) noexcept {
-		if (this == &allocator) return;
+		if (this == &allocator) {
+			return;
+		}
 		release();
 		assign(allocator);
 		allocator.reset_member();
