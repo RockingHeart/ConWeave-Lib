@@ -15,7 +15,8 @@ export namespace sys
 }
 
 template <rest::character CharType>
-class sys::reader {
+class sys::reader
+{
 public:
 	using char_t = CharType;
 	using text_t = dast::string<char_t>;

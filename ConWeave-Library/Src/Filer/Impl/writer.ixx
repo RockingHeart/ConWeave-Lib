@@ -15,7 +15,8 @@ export namespace sys
 }
 
 template <rest::character CharType>
-class sys::writer {
+class sys::writer
+{
 public:
 	using char_t = CharType;
 	using text_t = const CharType*;

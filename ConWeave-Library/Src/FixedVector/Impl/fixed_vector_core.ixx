@@ -6,7 +6,8 @@ import std;
 
 export template <class Traits, std::size_t Size>
 class fixed_vec_core :
-	protected        fixed_vec_box<Traits, Size> {
+	protected        fixed_vec_box<Traits, Size>
+{
 protected:
 	using box_t = fixed_vec_box<Traits, Size>;
 	using box_t::box_t;

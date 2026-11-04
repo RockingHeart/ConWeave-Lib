@@ -39,7 +39,8 @@ export namespace sys
 }
 
 template <rest::character CharType>
-class sys::filoader {
+class sys::filoader
+{
 public:
 	using char_t   =	   CharType;
 	using path_t   = const CharType*;

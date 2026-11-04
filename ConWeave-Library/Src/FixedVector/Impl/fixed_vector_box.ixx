@@ -3,7 +3,8 @@ export module fixed_vector.impl.box;
 import std;
 
 export template <class Traits, std::size_t Size>
-struct fixed_vec_box {
+struct fixed_vec_box
+{
 public:
 
 	using traits = Traits;

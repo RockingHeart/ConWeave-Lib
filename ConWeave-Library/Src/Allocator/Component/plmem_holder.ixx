@@ -7,7 +7,8 @@ export namespace dast
 
 import std;
 
-class dast::plmem_holder {
+class dast::plmem_holder
+{
 public:
 	using size_t	= std::size_t;
 	using byte_t	= std::byte;

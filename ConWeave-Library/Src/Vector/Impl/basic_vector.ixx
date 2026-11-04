@@ -8,7 +8,8 @@ export using ::vector_mode;
 
 export template <class VectorTraits, std::size_t BufSize>
 class basic_vector :
-    protected      vector_core<VectorTraits, BufSize> {
+    protected      vector_core<VectorTraits, BufSize>
+{
 private:
     using core_t = vector_core<VectorTraits, BufSize>;
     using core_t::core_t;

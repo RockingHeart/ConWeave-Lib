@@ -13,8 +13,8 @@ export namespace traits
 template <
 	class ValueType,
 	class SizeType = std::size_t
->
-struct traits::fixed_vec_traits {
+> struct traits::fixed_vec_traits
+{
 	using value_t         =       ValueType;
 	using reference_t     =       ValueType&;
 	using pointer_t       =       ValueType*;

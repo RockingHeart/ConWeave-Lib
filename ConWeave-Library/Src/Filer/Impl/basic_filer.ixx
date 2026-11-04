@@ -92,7 +92,8 @@ export enum class read_order : std::size_t {
 };
 
 export template <rest::character CharType, read_order Order>
-class basic_adapt_filer {
+class basic_adapt_filer
+{
 public:
 	using char_t =		 CharType;
 	using text_t =		 CharType*;
