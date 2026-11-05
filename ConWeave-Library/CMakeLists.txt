@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.31)
 
-project(ConWeaveLib LANGUAGES CXX)
+project(CoaWeaveLib LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
-set(ConWeaveLib_Path ${CMAKE_CURRENT_SOURCE_DIR})
+set(CoaWeaveLib_Path ${CMAKE_CURRENT_SOURCE_DIR})
 
 if (MSVC)
     add_compile_options(/std:c++latest /std:clatest /experimental:module /permissive-)
@@ -26,14 +26,14 @@ file(GLOB AllocatorPath "Src/Allocator/*.ixx")
 file(GLOB BlockAllocatorPath "Src/Allocator/BlockAllocator/*.ixx")
 file(GLOB AllocatorComponentgPath "Src/Allocator/Component/*.ixx")
 
-add_library(ConWeaveLib)
+add_library(CoaWeaveLib)
 
-target_sources(ConWeaveLib
+target_sources(CoaWeaveLib
     PUBLIC
     FILE_SET mods TYPE CXX_MODULES
-    BASE_DIRS ${ConWeaveLib_Path}/Export
+    BASE_DIRS ${CoaWeaveLib_Path}/Export
     FILES ${ExportPath}
-    BASE_DIRS ${ConWeaveLib_Path}/Src
+    BASE_DIRS ${CoaWeaveLib_Path}/Src
     FILES
         ${UtilityPath}
         ${WrapPath}
@@ -47,9 +47,9 @@ target_sources(ConWeaveLib
         ${AllocatorComponentgPath}
 )
 
-target_include_directories(ConWeaveLib
+target_include_directories(CoaWeaveLib
     PUBLIC
-    ${ConWeaveLib_Path}/Export
+    ${CoaWeaveLib_Path}/Export
 )
 
 source_group("Export" FILES ${ExportPath})
@@ -73,9 +73,9 @@ option(TEST "Build tests" OFF)
 
 if(TEST)
     file(GLOB DebugSources "Debugs/*.cpp")
-    add_executable(ConWeaveLib_test
+    add_executable(CoaWeaveLib_test
         ${DebugSources}
     )
-    target_link_libraries(ConWeaveLib_test PRIVATE ConWeaveLib)
+    target_link_libraries(CoaWeaveLib_test PRIVATE CoaWeaveLib)
     source_group("Debugs" FILES ${DebugSources})
 endif()
