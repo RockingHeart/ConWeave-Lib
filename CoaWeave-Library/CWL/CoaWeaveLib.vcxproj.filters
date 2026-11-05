@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Export\cwlib.ixx">
+      <Filter>Export</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Export\dast.ixx">
+      <Filter>Export</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Export\sys.ixx">
+      <Filter>Export</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Utility\adder.ixx">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Utility\bitinfo.ixx">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Utility\export.ixx">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Utility\sequence_list.ixx">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Utility\strutil.ixx">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Utility\type_restion.ixx">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Wrap\char_wrap.ixx">
+      <Filter>Wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\String\string.ixx">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\String\Impl\basic_string.ixx">
+      <Filter>String\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\String\Impl\impl.ixx">
+      <Filter>String\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\String\Impl\string_box.ixx">
+      <Filter>String\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\String\Impl\string_core.ixx">
+      <Filter>String\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\String\Impl\string_flags.ixx">
+      <Filter>String\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\String\Impl\string_traits.ixx">
+      <Filter>String\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\FixedVector\fixed_vector.ixx">
+      <Filter>FixedVector</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\FixedVector\Impl\basic_fixed_vector.ixx">
+      <Filter>FixedVector\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\FixedVector\Impl\fixed_vector_box.ixx">
+      <Filter>FixedVector\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\FixedVector\Impl\fixed_vector_core.ixx">
+      <Filter>FixedVector\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\FixedVector\Impl\fixed_vector_traits.ixx">
+      <Filter>FixedVector\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\FixedVector\Impl\impl.ixx">
+      <Filter>FixedVector\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Vector\vector.ixx">
+      <Filter>Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Vector\Impl\basic_vector.ixx">
+      <Filter>Vector\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Vector\Impl\impl.ixx">
+      <Filter>Vector\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Vector\Impl\vector_box.ixx">
+      <Filter>Vector\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Vector\Impl\vector_core.ixx">
+      <Filter>Vector\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Vector\Impl\vector_traits.ixx">
+      <Filter>Vector\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Filer\filer.ixx">
+      <Filter>Filer</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Filer\Impl\access.ixx">
+      <Filter>Filer\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Filer\Impl\adapt_loader.ixx">
+      <Filter>Filer\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Filer\Impl\basic_filer.ixx">
+      <Filter>Filer\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Filer\Impl\filoader.ixx">
+      <Filter>Filer\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Filer\Impl\reader.ixx">
+      <Filter>Filer\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Filer\Impl\writer.ixx">
+      <Filter>Filer\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\SymbolTable\symbol_table.ixx">
+      <Filter>SymbolTable</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\SymbolTable\Impl\basic_symtab.ixx">
+      <Filter>SymbolTable\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\SymbolTable\Impl\impl.ixx">
+      <Filter>SymbolTable\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\SymbolTable\Impl\symtab_core.ixx">
+      <Filter>SymbolTable\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Allocator\allocator.ixx">
+      <Filter>Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Allocator\BlockAllocator\block_allocator.ixx">
+      <Filter>Allocator\BlockAllocator</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Allocator\Component\memory_mapping.ixx">
+      <Filter>Allocator\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\Src\Allocator\Component\plmem_holder.ixx">
+      <Filter>Allocator\Component</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="A:\Important\CoaWeave-Lib\CoaWeave-Library\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Allocator">
+      <UniqueIdentifier>{BF3EC856-1E57-35FD-9887-E821CF91755E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Allocator\BlockAllocator">
+      <UniqueIdentifier>{F16019F7-BA5D-3019-8CA5-B9FEF46BEC87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Allocator\Component">
+      <UniqueIdentifier>{E8A07CC9-011F-3FBB-9ECD-70F986D9714E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Export">
+      <UniqueIdentifier>{0318A603-5710-37A9-97C8-B6C329CFF4A5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Filer">
+      <UniqueIdentifier>{0459BF41-9AFF-387A-82A0-6FC199B23203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Filer\Impl">
+      <UniqueIdentifier>{1C240410-4784-336E-87D7-B6F794F36EC2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FixedVector">
+      <UniqueIdentifier>{8713C363-29F5-3744-AD4C-B5423B536B5A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FixedVector\Impl">
+      <UniqueIdentifier>{AA8F41CE-81E5-3F51-9469-157E82E635BA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="String">
+      <UniqueIdentifier>{89C94C4E-7917-3C63-AB7A-0992320C4185}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="String\Impl">
+      <UniqueIdentifier>{4C9F118D-8712-3DBB-9369-EE602677C5AE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SymbolTable">
+      <UniqueIdentifier>{28B1FBE5-7384-3CD1-918B-3F22E1217C65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SymbolTable\Impl">
+      <UniqueIdentifier>{40946068-17F1-362D-8C11-4C239AE944A9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{83A5F231-2AE8-30DA-BE8C-D88691C6ADAB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vector">
+      <UniqueIdentifier>{FCFA233C-660C-3EFA-A729-9ABCE1FC9EC5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vector\Impl">
+      <UniqueIdentifier>{5EF9F447-24D2-3CBB-817E-554BCDFDC71E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Wrap">
+      <UniqueIdentifier>{0DDE0FCB-BD25-3DB0-B612-1A684FD07DBC}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,1043 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineSystem.cmake:212 (message)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      The system is: Windows - 10.0.26340 - AMD64
+  -
+    kind: "find-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:462 (find_file)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:500 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "file"
+    variable: "src_in"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "CMakeCXXCompilerId.cpp.in"
+    candidate_directories:
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/"
+    found: "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeCXXCompilerId.cpp.in"
+    search_context:
+      ENV{PATH}:
+        - "C:\\Program Files\\Common Files\\Oracle\\Java\\javapath"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "C:\\Program Files\\dotnet\\"
+        - "C:\\WINDOWS\\System32\\ninja.exe"
+        - "A:\\Program Files (x86)\\IncrediBuild"
+        - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Program Files\\GitHub CLI\\"
+        - "C:\\Program Files\\xmake"
+        - "C:\\Program Files\\nodejs\\"
+        - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
+        - "C:\\Users\\Rocking Chords\\.moon\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Program Files (x86)\\Microsoft VS Code\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\PowerToys\\DSCModules\\"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\JetBrains\\Toolbox\\scripts"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Python\\bin"
+        - "D:\\System\\zig"
+        - "A:\\flutter\\bin"
+        - "C:\\Program Files\\OpenSSL-Win64\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WinGet\\Links"
+        - "C:\\Users\\Rocking Chords\\AppData\\Roaming\\npm"
+        - "C:\\Program Files (x86)\\Codex"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler:  
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      适用于 .NET Framework MSBuild 版本 18.11.1-1.26513.3+940033be3
+      生成启动时间为 2026/11/5 19:25:21。
+      
+      节点 1 上的项目“A:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\4.2.0\\CompilerIdCXX\\CompilerIdCXX.vcxproj”(默认目标)。
+      PrepareForBuild:
+        正在创建目录“Debug\\”。
+        已启用结构化输出。编译器诊断的格式设置将反映错误层次结构。有关详细信息，请参阅 https://aka.ms/cpp/structured-output。
+        正在创建目录“Debug\\CompilerIdCXX.tlog\\”。
+      InitializeBuildStatus:
+        正在创建“Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+        正在对“Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild”执行 Touch 任务。
+      VcpkgTripletSelection:
+        Using triplet "x64-windows" from "C:\\vcpkg\\installed\\x64-windows\\"
+        Using normalized configuration "Release"
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\CL.exe /c /I"C:\\vcpkg\\installed\\x64-windows\\include" /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc145.pdb" /external:W0 /Gd /TP /FC /errorReport:queue CMakeCXXCompilerId.cpp
+        CMakeCXXCompilerId.cpp
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdCXX.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\\vcpkg\\installed\\x64-windows\\lib" /LIBPATH:"C:\\vcpkg\\installed\\x64-windows\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib "C:\\vcpkg\\installed\\x64-windows\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdCXX.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdCXX.lib" /MACHINE:X64 Debug\\CMakeCXXCompilerId.obj
+        CompilerIdCXX.vcxproj -> A:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\4.2.0\\CompilerIdCXX\\CompilerIdCXX.exe
+      AppLocalFromInstalled:
+        pwsh.exe -ExecutionPolicy Bypass -noprofile -File "C:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "A:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\4.2.0\\CompilerIdCXX\\CompilerIdCXX.exe" "C:\\vcpkg\\installed\\x64-windows\\bin" "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.write.1u.tlog" "Debug\\vcpkg.applocal.log"
+        'pwsh.exe' 不是内部或外部命令，也不是可运行的程序
+        或批处理文件。
+        命令“pwsh.exe -ExecutionPolicy Bypass -noprofile -File "C:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "A:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\4.2.0\\CompilerIdCXX\\CompilerIdCXX.exe" "C:\\vcpkg\\installed\\x64-windows\\bin" "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.write.1u.tlog" "Debug\\vcpkg.applocal.log"”已退出，代码为 9009。
+        "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -ExecutionPolicy Bypass -noprofile -File "C:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "A:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\4.2.0\\CompilerIdCXX\\CompilerIdCXX.exe" "C:\\vcpkg\\installed\\x64-windows\\bin" "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.write.1u.tlog" "Debug\\vcpkg.applocal.log"
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_CXX_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_CXX_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        正在删除文件“Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild”。
+        正在对“Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.lastbuildstate”执行 Touch 任务。
+      已完成生成项目“A:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\4.2.0\\CompilerIdCXX\\CompilerIdCXX.vcxproj”(默认目标)的操作。
+      
+      已成功生成。
+          0 个警告
+          0 个错误
+      
+      已用时间 00:00:00.84
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcxproj"
+      
+      The CXX compiler identification is MSVC, found in:
+        A:/Important/CoaWeave-Lib/CoaWeave-Library/CWL/CMakeFiles/4.2.0/CompilerIdCXX/CompilerIdCXX.exe
+      
+  -
+    kind: "find-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:37 (find_program)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:65 (__resolve_tool_path)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:103 (__resolve_linker_path)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "_CMAKE_TOOL_WITH_PATH"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "link"
+    candidate_directories:
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/"
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/"
+      - "C:/Windows/System32/"
+      - "C:/Windows/"
+      - "C:/Windows/System32/wbem/"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/"
+      - "C:/Windows/System32/OpenSSH/"
+      - "C:/Program Files/dotnet/"
+      - "C:/Windows/System32/ninja.exe/"
+      - "A:/Program Files (x86)/IncrediBuild/"
+      - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
+      - "C:/Program Files/GitHub CLI/"
+      - "C:/Program Files/xmake/"
+      - "C:/Program Files/nodejs/"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
+      - "C:/Users/Rocking Chords/.moon/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/"
+      - "C:/Users/Rocking Chords/.dotnet/tools/"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/"
+      - "D:/System/zig/"
+      - "A:/flutter/bin/"
+      - "C:/Program Files/OpenSSL-Win64/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/"
+      - "C:/Program Files (x86)/Codex/"
+    searched_directories:
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/link.com"
+    found: "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/link.exe"
+    search_context:
+      ENV{PATH}:
+        - "C:\\Program Files\\Common Files\\Oracle\\Java\\javapath"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "C:\\Program Files\\dotnet\\"
+        - "C:\\WINDOWS\\System32\\ninja.exe"
+        - "A:\\Program Files (x86)\\IncrediBuild"
+        - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Program Files\\GitHub CLI\\"
+        - "C:\\Program Files\\xmake"
+        - "C:\\Program Files\\nodejs\\"
+        - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
+        - "C:\\Users\\Rocking Chords\\.moon\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Program Files (x86)\\Microsoft VS Code\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\PowerToys\\DSCModules\\"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\JetBrains\\Toolbox\\scripts"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Python\\bin"
+        - "D:\\System\\zig"
+        - "A:\\flutter\\bin"
+        - "C:\\Program Files\\OpenSSL-Win64\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WinGet\\Links"
+        - "C:\\Users\\Rocking Chords\\AppData\\Roaming\\npm"
+        - "C:\\Program Files (x86)\\Codex"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:37 (find_program)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:65 (__resolve_tool_path)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:104 (__resolve_linker_path)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "_CMAKE_TOOL_WITH_PATH"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "lld-link"
+    candidate_directories:
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/"
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/"
+      - "C:/Windows/System32/"
+      - "C:/Windows/"
+      - "C:/Windows/System32/wbem/"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/"
+      - "C:/Windows/System32/OpenSSH/"
+      - "C:/Program Files/dotnet/"
+      - "C:/Windows/System32/ninja.exe/"
+      - "A:/Program Files (x86)/IncrediBuild/"
+      - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
+      - "C:/Program Files/GitHub CLI/"
+      - "C:/Program Files/xmake/"
+      - "C:/Program Files/nodejs/"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
+      - "C:/Users/Rocking Chords/.moon/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/"
+      - "C:/Users/Rocking Chords/.dotnet/tools/"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/"
+      - "D:/System/zig/"
+      - "A:/flutter/bin/"
+      - "C:/Program Files/OpenSSL-Win64/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/"
+      - "C:/Program Files (x86)/Codex/"
+    searched_directories:
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/lld-link.com"
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/lld-link.exe"
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/lld-link"
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/lld-link.com"
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/lld-link.exe"
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/lld-link"
+      - "C:/Windows/System32/lld-link.com"
+      - "C:/Windows/System32/lld-link.exe"
+      - "C:/Windows/System32/lld-link"
+      - "C:/Windows/lld-link.com"
+      - "C:/Windows/lld-link.exe"
+      - "C:/Windows/lld-link"
+      - "C:/Windows/System32/wbem/lld-link.com"
+      - "C:/Windows/System32/wbem/lld-link.exe"
+      - "C:/Windows/System32/wbem/lld-link"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/lld-link.com"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/lld-link.exe"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/lld-link"
+      - "C:/Windows/System32/OpenSSH/lld-link.com"
+      - "C:/Windows/System32/OpenSSH/lld-link.exe"
+      - "C:/Windows/System32/OpenSSH/lld-link"
+      - "C:/Program Files/dotnet/lld-link.com"
+      - "C:/Program Files/dotnet/lld-link.exe"
+      - "C:/Program Files/dotnet/lld-link"
+      - "C:/Windows/System32/ninja.exe/lld-link.com"
+      - "C:/Windows/System32/ninja.exe/lld-link.exe"
+      - "C:/Windows/System32/ninja.exe/lld-link"
+      - "A:/Program Files (x86)/IncrediBuild/lld-link.com"
+      - "A:/Program Files (x86)/IncrediBuild/lld-link.exe"
+      - "A:/Program Files (x86)/IncrediBuild/lld-link"
+      - "C:/Program Files/CMake/bin/lld-link.com"
+      - "C:/Program Files/CMake/bin/lld-link.exe"
+      - "C:/Program Files/CMake/bin/lld-link"
+      - "C:/Program Files/Git/cmd/lld-link.com"
+      - "C:/Program Files/Git/cmd/lld-link.exe"
+      - "C:/Program Files/Git/cmd/lld-link"
+      - "C:/Program Files/GitHub CLI/lld-link.com"
+      - "C:/Program Files/GitHub CLI/lld-link.exe"
+      - "C:/Program Files/GitHub CLI/lld-link"
+      - "C:/Program Files/xmake/lld-link.com"
+      - "C:/Program Files/xmake/lld-link.exe"
+      - "C:/Program Files/xmake/lld-link"
+      - "C:/Program Files/nodejs/lld-link.com"
+      - "C:/Program Files/nodejs/lld-link.exe"
+      - "C:/Program Files/nodejs/lld-link"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/lld-link.com"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/lld-link.exe"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/lld-link"
+      - "C:/Users/Rocking Chords/.moon/bin/lld-link.com"
+      - "C:/Users/Rocking Chords/.moon/bin/lld-link.exe"
+      - "C:/Users/Rocking Chords/.moon/bin/lld-link"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/lld-link.com"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/lld-link.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/lld-link"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/lld-link.com"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/lld-link.exe"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/lld-link"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/lld-link.com"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/lld-link.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/lld-link"
+      - "C:/Users/Rocking Chords/.dotnet/tools/lld-link.com"
+      - "C:/Users/Rocking Chords/.dotnet/tools/lld-link.exe"
+      - "C:/Users/Rocking Chords/.dotnet/tools/lld-link"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/lld-link.com"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/lld-link.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/lld-link"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/lld-link.com"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/lld-link.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/lld-link"
+      - "D:/System/zig/lld-link.com"
+      - "D:/System/zig/lld-link.exe"
+      - "D:/System/zig/lld-link"
+      - "A:/flutter/bin/lld-link.com"
+      - "A:/flutter/bin/lld-link.exe"
+      - "A:/flutter/bin/lld-link"
+      - "C:/Program Files/OpenSSL-Win64/bin/lld-link.com"
+      - "C:/Program Files/OpenSSL-Win64/bin/lld-link.exe"
+      - "C:/Program Files/OpenSSL-Win64/bin/lld-link"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/lld-link.com"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/lld-link.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/lld-link"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/lld-link.com"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/lld-link.exe"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/lld-link"
+      - "C:/Program Files (x86)/Codex/lld-link.com"
+      - "C:/Program Files (x86)/Codex/lld-link.exe"
+      - "C:/Program Files (x86)/Codex/lld-link"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "C:\\Program Files\\Common Files\\Oracle\\Java\\javapath"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "C:\\Program Files\\dotnet\\"
+        - "C:\\WINDOWS\\System32\\ninja.exe"
+        - "A:\\Program Files (x86)\\IncrediBuild"
+        - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Program Files\\GitHub CLI\\"
+        - "C:\\Program Files\\xmake"
+        - "C:\\Program Files\\nodejs\\"
+        - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
+        - "C:\\Users\\Rocking Chords\\.moon\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Program Files (x86)\\Microsoft VS Code\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\PowerToys\\DSCModules\\"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\JetBrains\\Toolbox\\scripts"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Python\\bin"
+        - "D:\\System\\zig"
+        - "A:\\flutter\\bin"
+        - "C:\\Program Files\\OpenSSL-Win64\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WinGet\\Links"
+        - "C:\\Users\\Rocking Chords\\AppData\\Roaming\\npm"
+        - "C:\\Program Files (x86)\\Codex"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_LINKER"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "link"
+    candidate_directories:
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/"
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/"
+      - "C:/Windows/System32/"
+      - "C:/Windows/"
+      - "C:/Windows/System32/wbem/"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/"
+      - "C:/Windows/System32/OpenSSH/"
+      - "C:/Program Files/dotnet/"
+      - "C:/Windows/System32/ninja.exe/"
+      - "A:/Program Files (x86)/IncrediBuild/"
+      - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
+      - "C:/Program Files/GitHub CLI/"
+      - "C:/Program Files/xmake/"
+      - "C:/Program Files/nodejs/"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
+      - "C:/Users/Rocking Chords/.moon/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/"
+      - "C:/Users/Rocking Chords/.dotnet/tools/"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/"
+      - "D:/System/zig/"
+      - "A:/flutter/bin/"
+      - "C:/Program Files/OpenSSL-Win64/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/"
+      - "C:/Program Files (x86)/Codex/"
+    searched_directories:
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/link.com"
+    found: "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/link.exe"
+    search_context:
+      ENV{PATH}:
+        - "C:\\Program Files\\Common Files\\Oracle\\Java\\javapath"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "C:\\Program Files\\dotnet\\"
+        - "C:\\WINDOWS\\System32\\ninja.exe"
+        - "A:\\Program Files (x86)\\IncrediBuild"
+        - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Program Files\\GitHub CLI\\"
+        - "C:\\Program Files\\xmake"
+        - "C:\\Program Files\\nodejs\\"
+        - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
+        - "C:\\Users\\Rocking Chords\\.moon\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Program Files (x86)\\Microsoft VS Code\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\PowerToys\\DSCModules\\"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\JetBrains\\Toolbox\\scripts"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Python\\bin"
+        - "D:\\System\\zig"
+        - "A:\\flutter\\bin"
+        - "C:\\Program Files\\OpenSSL-Win64\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WinGet\\Links"
+        - "C:\\Users\\Rocking Chords\\AppData\\Roaming\\npm"
+        - "C:\\Program Files (x86)\\Codex"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_MT"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "mt"
+    candidate_directories:
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/"
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/"
+      - "C:/Windows/System32/"
+      - "C:/Windows/"
+      - "C:/Windows/System32/wbem/"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/"
+      - "C:/Windows/System32/OpenSSH/"
+      - "C:/Program Files/dotnet/"
+      - "C:/Windows/System32/ninja.exe/"
+      - "A:/Program Files (x86)/IncrediBuild/"
+      - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
+      - "C:/Program Files/GitHub CLI/"
+      - "C:/Program Files/xmake/"
+      - "C:/Program Files/nodejs/"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
+      - "C:/Users/Rocking Chords/.moon/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/"
+      - "C:/Users/Rocking Chords/.dotnet/tools/"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/"
+      - "D:/System/zig/"
+      - "A:/flutter/bin/"
+      - "C:/Program Files/OpenSSL-Win64/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/"
+      - "C:/Program Files (x86)/Codex/"
+    searched_directories:
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/mt.com"
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/mt.exe"
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/mt"
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/mt.com"
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/mt.exe"
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/mt"
+      - "C:/Windows/System32/mt.com"
+      - "C:/Windows/System32/mt.exe"
+      - "C:/Windows/System32/mt"
+      - "C:/Windows/mt.com"
+      - "C:/Windows/mt.exe"
+      - "C:/Windows/mt"
+      - "C:/Windows/System32/wbem/mt.com"
+      - "C:/Windows/System32/wbem/mt.exe"
+      - "C:/Windows/System32/wbem/mt"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/mt.com"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/mt.exe"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/mt"
+      - "C:/Windows/System32/OpenSSH/mt.com"
+      - "C:/Windows/System32/OpenSSH/mt.exe"
+      - "C:/Windows/System32/OpenSSH/mt"
+      - "C:/Program Files/dotnet/mt.com"
+      - "C:/Program Files/dotnet/mt.exe"
+      - "C:/Program Files/dotnet/mt"
+      - "C:/Windows/System32/ninja.exe/mt.com"
+      - "C:/Windows/System32/ninja.exe/mt.exe"
+      - "C:/Windows/System32/ninja.exe/mt"
+      - "A:/Program Files (x86)/IncrediBuild/mt.com"
+      - "A:/Program Files (x86)/IncrediBuild/mt.exe"
+      - "A:/Program Files (x86)/IncrediBuild/mt"
+      - "C:/Program Files/CMake/bin/mt.com"
+      - "C:/Program Files/CMake/bin/mt.exe"
+      - "C:/Program Files/CMake/bin/mt"
+      - "C:/Program Files/Git/cmd/mt.com"
+      - "C:/Program Files/Git/cmd/mt.exe"
+      - "C:/Program Files/Git/cmd/mt"
+      - "C:/Program Files/GitHub CLI/mt.com"
+      - "C:/Program Files/GitHub CLI/mt.exe"
+      - "C:/Program Files/GitHub CLI/mt"
+      - "C:/Program Files/xmake/mt.com"
+      - "C:/Program Files/xmake/mt.exe"
+      - "C:/Program Files/xmake/mt"
+      - "C:/Program Files/nodejs/mt.com"
+      - "C:/Program Files/nodejs/mt.exe"
+      - "C:/Program Files/nodejs/mt"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/mt.com"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/mt.exe"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/mt"
+      - "C:/Users/Rocking Chords/.moon/bin/mt.com"
+      - "C:/Users/Rocking Chords/.moon/bin/mt.exe"
+      - "C:/Users/Rocking Chords/.moon/bin/mt"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/mt.com"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/mt.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/mt"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/mt.com"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/mt.exe"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/mt"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/mt.com"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/mt.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/mt"
+      - "C:/Users/Rocking Chords/.dotnet/tools/mt.com"
+      - "C:/Users/Rocking Chords/.dotnet/tools/mt.exe"
+      - "C:/Users/Rocking Chords/.dotnet/tools/mt"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/mt.com"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/mt.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/mt"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/mt.com"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/mt.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/mt"
+      - "D:/System/zig/mt.com"
+      - "D:/System/zig/mt.exe"
+      - "D:/System/zig/mt"
+      - "A:/flutter/bin/mt.com"
+      - "A:/flutter/bin/mt.exe"
+      - "A:/flutter/bin/mt"
+      - "C:/Program Files/OpenSSL-Win64/bin/mt.com"
+      - "C:/Program Files/OpenSSL-Win64/bin/mt.exe"
+      - "C:/Program Files/OpenSSL-Win64/bin/mt"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/mt.com"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/mt.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/mt"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/mt.com"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/mt.exe"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/mt"
+      - "C:/Program Files (x86)/Codex/mt.com"
+      - "C:/Program Files (x86)/Codex/mt.exe"
+      - "C:/Program Files (x86)/Codex/mt"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "C:\\Program Files\\Common Files\\Oracle\\Java\\javapath"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "C:\\Program Files\\dotnet\\"
+        - "C:\\WINDOWS\\System32\\ninja.exe"
+        - "A:\\Program Files (x86)\\IncrediBuild"
+        - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Program Files\\GitHub CLI\\"
+        - "C:\\Program Files\\xmake"
+        - "C:\\Program Files\\nodejs\\"
+        - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
+        - "C:\\Users\\Rocking Chords\\.moon\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Program Files (x86)\\Microsoft VS Code\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\PowerToys\\DSCModules\\"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\JetBrains\\Toolbox\\scripts"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Python\\bin"
+        - "D:\\System\\zig"
+        - "A:\\flutter\\bin"
+        - "C:\\Program Files\\OpenSSL-Win64\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WinGet\\Links"
+        - "C:\\Users\\Rocking Chords\\AppData\\Roaming\\npm"
+        - "C:\\Program Files (x86)\\Codex"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_AR"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "lib"
+    candidate_directories:
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/"
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/"
+      - "C:/Windows/System32/"
+      - "C:/Windows/"
+      - "C:/Windows/System32/wbem/"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/"
+      - "C:/Windows/System32/OpenSSH/"
+      - "C:/Program Files/dotnet/"
+      - "C:/Windows/System32/ninja.exe/"
+      - "A:/Program Files (x86)/IncrediBuild/"
+      - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
+      - "C:/Program Files/GitHub CLI/"
+      - "C:/Program Files/xmake/"
+      - "C:/Program Files/nodejs/"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
+      - "C:/Users/Rocking Chords/.moon/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/"
+      - "C:/Users/Rocking Chords/.dotnet/tools/"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/"
+      - "D:/System/zig/"
+      - "A:/flutter/bin/"
+      - "C:/Program Files/OpenSSL-Win64/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/"
+      - "C:/Program Files (x86)/Codex/"
+    searched_directories:
+      - "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/lib.com"
+    found: "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/lib.exe"
+    search_context:
+      ENV{PATH}:
+        - "C:\\Program Files\\Common Files\\Oracle\\Java\\javapath"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "C:\\Program Files\\dotnet\\"
+        - "C:\\WINDOWS\\System32\\ninja.exe"
+        - "A:\\Program Files (x86)\\IncrediBuild"
+        - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Program Files\\GitHub CLI\\"
+        - "C:\\Program Files\\xmake"
+        - "C:\\Program Files\\nodejs\\"
+        - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
+        - "C:\\Users\\Rocking Chords\\.moon\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Program Files (x86)\\Microsoft VS Code\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\PowerToys\\DSCModules\\"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\JetBrains\\Toolbox\\scripts"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Python\\bin"
+        - "D:\\System\\zig"
+        - "A:\\flutter\\bin"
+        - "C:\\Program Files\\OpenSSL-Win64\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WinGet\\Links"
+        - "C:\\Users\\Rocking Chords\\AppData\\Roaming\\npm"
+        - "C:\\Program Files (x86)\\Codex"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineRCCompiler.cmake:40 (find_program)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/Platform/Windows-MSVC.cmake:580 (enable_language)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/Platform/Windows-MSVC.cmake:553 (__windows_compiler_msvc_enable_rc)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/Platform/Windows-MSVC-CXX.cmake:6 (__windows_compiler_msvc)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeCXXInformation.cmake:48 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_RC_COMPILER"
+    description: "RC compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "rc"
+    candidate_directories:
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/"
+      - "C:/Windows/System32/"
+      - "C:/Windows/"
+      - "C:/Windows/System32/wbem/"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/"
+      - "C:/Windows/System32/OpenSSH/"
+      - "C:/Program Files/dotnet/"
+      - "C:/Windows/System32/ninja.exe/"
+      - "A:/Program Files (x86)/IncrediBuild/"
+      - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
+      - "C:/Program Files/GitHub CLI/"
+      - "C:/Program Files/xmake/"
+      - "C:/Program Files/nodejs/"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
+      - "C:/Users/Rocking Chords/.moon/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/"
+      - "C:/Users/Rocking Chords/.dotnet/tools/"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/"
+      - "D:/System/zig/"
+      - "A:/flutter/bin/"
+      - "C:/Program Files/OpenSSL-Win64/bin/"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/"
+      - "C:/Program Files (x86)/Codex/"
+      - "C:/Program Files/bin/"
+      - "C:/Program Files/sbin/"
+      - "C:/Program Files/"
+      - "C:/Program Files (x86)/bin/"
+      - "C:/Program Files (x86)/sbin/"
+      - "C:/Program Files (x86)/"
+      - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/CMake/sbin/"
+      - "C:/Program Files/CMake/"
+      - "C:/Program Files (x86)/CoaWeaveLib/bin/"
+      - "C:/Program Files (x86)/CoaWeaveLib/sbin/"
+      - "C:/Program Files (x86)/CoaWeaveLib/"
+    searched_directories:
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/rc.com"
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/rc.exe"
+      - "C:/Program Files/Common Files/Oracle/Java/javapath/rc"
+      - "C:/Windows/System32/rc.com"
+      - "C:/Windows/System32/rc.exe"
+      - "C:/Windows/System32/rc"
+      - "C:/Windows/rc.com"
+      - "C:/Windows/rc.exe"
+      - "C:/Windows/rc"
+      - "C:/Windows/System32/wbem/rc.com"
+      - "C:/Windows/System32/wbem/rc.exe"
+      - "C:/Windows/System32/wbem/rc"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/rc.com"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/rc.exe"
+      - "C:/Windows/System32/WindowsPowerShell/v1.0/rc"
+      - "C:/Windows/System32/OpenSSH/rc.com"
+      - "C:/Windows/System32/OpenSSH/rc.exe"
+      - "C:/Windows/System32/OpenSSH/rc"
+      - "C:/Program Files/dotnet/rc.com"
+      - "C:/Program Files/dotnet/rc.exe"
+      - "C:/Program Files/dotnet/rc"
+      - "C:/Windows/System32/ninja.exe/rc.com"
+      - "C:/Windows/System32/ninja.exe/rc.exe"
+      - "C:/Windows/System32/ninja.exe/rc"
+      - "A:/Program Files (x86)/IncrediBuild/rc.com"
+      - "A:/Program Files (x86)/IncrediBuild/rc.exe"
+      - "A:/Program Files (x86)/IncrediBuild/rc"
+      - "C:/Program Files/CMake/bin/rc.com"
+      - "C:/Program Files/CMake/bin/rc.exe"
+      - "C:/Program Files/CMake/bin/rc"
+      - "C:/Program Files/Git/cmd/rc.com"
+      - "C:/Program Files/Git/cmd/rc.exe"
+      - "C:/Program Files/Git/cmd/rc"
+      - "C:/Program Files/GitHub CLI/rc.com"
+      - "C:/Program Files/GitHub CLI/rc.exe"
+      - "C:/Program Files/GitHub CLI/rc"
+      - "C:/Program Files/xmake/rc.com"
+      - "C:/Program Files/xmake/rc.exe"
+      - "C:/Program Files/xmake/rc"
+      - "C:/Program Files/nodejs/rc.com"
+      - "C:/Program Files/nodejs/rc.exe"
+      - "C:/Program Files/nodejs/rc"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/rc.com"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/rc.exe"
+      - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/rc"
+      - "C:/Users/Rocking Chords/.moon/bin/rc.com"
+      - "C:/Users/Rocking Chords/.moon/bin/rc.exe"
+      - "C:/Users/Rocking Chords/.moon/bin/rc"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/rc.com"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/rc.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WindowsApps/rc"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/rc.com"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/rc.exe"
+      - "C:/Program Files (x86)/Microsoft VS Code/bin/rc"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/rc.com"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/rc.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/PowerToys/DSCModules/rc"
+      - "C:/Users/Rocking Chords/.dotnet/tools/rc.com"
+      - "C:/Users/Rocking Chords/.dotnet/tools/rc.exe"
+      - "C:/Users/Rocking Chords/.dotnet/tools/rc"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/rc.com"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/rc.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/JetBrains/Toolbox/scripts/rc"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/rc.com"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/rc.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/Python/bin/rc"
+      - "D:/System/zig/rc.com"
+      - "D:/System/zig/rc.exe"
+      - "D:/System/zig/rc"
+      - "A:/flutter/bin/rc.com"
+      - "A:/flutter/bin/rc.exe"
+      - "A:/flutter/bin/rc"
+      - "C:/Program Files/OpenSSL-Win64/bin/rc.com"
+      - "C:/Program Files/OpenSSL-Win64/bin/rc.exe"
+      - "C:/Program Files/OpenSSL-Win64/bin/rc"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/rc.com"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/rc.exe"
+      - "C:/Users/Rocking Chords/AppData/Local/Microsoft/WinGet/Links/rc"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/rc.com"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/rc.exe"
+      - "C:/Users/Rocking Chords/AppData/Roaming/npm/rc"
+      - "C:/Program Files (x86)/Codex/rc.com"
+      - "C:/Program Files (x86)/Codex/rc.exe"
+      - "C:/Program Files (x86)/Codex/rc"
+      - "C:/Program Files/bin/rc.com"
+      - "C:/Program Files/bin/rc.exe"
+      - "C:/Program Files/bin/rc"
+      - "C:/Program Files/sbin/rc.com"
+      - "C:/Program Files/sbin/rc.exe"
+      - "C:/Program Files/sbin/rc"
+      - "C:/Program Files/rc.com"
+      - "C:/Program Files/rc.exe"
+      - "C:/Program Files/rc"
+      - "C:/Program Files (x86)/bin/rc.com"
+      - "C:/Program Files (x86)/bin/rc.exe"
+      - "C:/Program Files (x86)/bin/rc"
+      - "C:/Program Files (x86)/sbin/rc.com"
+      - "C:/Program Files (x86)/sbin/rc.exe"
+      - "C:/Program Files (x86)/sbin/rc"
+      - "C:/Program Files (x86)/rc.com"
+      - "C:/Program Files (x86)/rc.exe"
+      - "C:/Program Files (x86)/rc"
+      - "C:/Program Files/CMake/bin/rc.com"
+      - "C:/Program Files/CMake/bin/rc.exe"
+      - "C:/Program Files/CMake/bin/rc"
+      - "C:/Program Files/CMake/sbin/rc.com"
+      - "C:/Program Files/CMake/sbin/rc.exe"
+      - "C:/Program Files/CMake/sbin/rc"
+      - "C:/Program Files/CMake/rc.com"
+      - "C:/Program Files/CMake/rc.exe"
+      - "C:/Program Files/CMake/rc"
+      - "C:/Program Files (x86)/CoaWeaveLib/bin/rc.com"
+      - "C:/Program Files (x86)/CoaWeaveLib/bin/rc.exe"
+      - "C:/Program Files (x86)/CoaWeaveLib/bin/rc"
+      - "C:/Program Files (x86)/CoaWeaveLib/sbin/rc.com"
+      - "C:/Program Files (x86)/CoaWeaveLib/sbin/rc.exe"
+      - "C:/Program Files (x86)/CoaWeaveLib/sbin/rc"
+      - "C:/Program Files (x86)/CoaWeaveLib/rc.com"
+      - "C:/Program Files (x86)/CoaWeaveLib/rc.exe"
+      - "C:/Program Files (x86)/CoaWeaveLib/rc"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "C:\\Program Files\\Common Files\\Oracle\\Java\\javapath"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "C:\\Program Files\\dotnet\\"
+        - "C:\\WINDOWS\\System32\\ninja.exe"
+        - "A:\\Program Files (x86)\\IncrediBuild"
+        - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Program Files\\GitHub CLI\\"
+        - "C:\\Program Files\\xmake"
+        - "C:\\Program Files\\nodejs\\"
+        - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
+        - "C:\\Users\\Rocking Chords\\.moon\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Program Files (x86)\\Microsoft VS Code\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\PowerToys\\DSCModules\\"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\JetBrains\\Toolbox\\scripts"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Python\\bin"
+        - "D:\\System\\zig"
+        - "A:\\flutter\\bin"
+        - "C:\\Program Files\\OpenSSL-Win64\\bin"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WinGet\\Links"
+        - "C:\\Users\\Rocking Chords\\AppData\\Roaming\\npm"
+        - "C:\\Program Files (x86)\\Codex"
+        - "C:\\Users\\Rocking Chords\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Users\\Rocking Chords\\.dotnet\\tools"
+      CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/CoaWeaveLib"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "C:/Program Files"
+        - "C:/Program Files (x86)"
+        - "C:/Program Files/CMake"
+        - "C:/Program Files (x86)/CoaWeaveLib"
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "A:/Important/CoaWeave-Lib/CoaWeave-Library/CWL/CMakeFiles/CMakeScratch/TryCompile-wt1ojc"
+      binary: "A:/Important/CoaWeave-Lib/CoaWeave-Library/CWL/CMakeFiles/CMakeScratch/TryCompile-wt1ojc"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'A:/Important/CoaWeave-Lib/CoaWeave-Library/CWL/CMakeFiles/CMakeScratch/TryCompile-wt1ojc'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_bda65.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=18.0 /v:n
+        閫傜敤浜?.NET Framework MSBuild 鐗堟湰 18.11.1-1.26513.3+940033be3
+        鐢熸垚鍚姩鏃堕棿涓?2026/11/5 19:25:22銆?
+        
+        鑺傜偣 1 涓婄殑椤圭洰鈥淎:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\CMakeScratch\\TryCompile-wt1ojc\\cmTC_bda65.vcxproj鈥?榛樿鐩爣)銆?
+        PrepareForBuild:
+          宸插惎鐢ㄧ粨鏋勫寲杈撳嚭銆傜紪璇戝櫒璇婃柇鐨勬牸寮忚缃皢鍙嶆槧閿欒灞傛缁撴瀯銆傛湁鍏宠缁嗕俊鎭紝璇峰弬闃?https://aka.ms/cpp/structured-output銆?
+          姝ｅ湪鍒涘缓鐩綍鈥淎:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\CMakeScratch\\TryCompile-wt1ojc\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_bda65.dir\\Debug\\cmTC_bda65.tlog\\鈥濄€?
+        InitializeBuildStatus:
+          姝ｅ湪鍒涘缓鈥渃mTC_bda65.dir\\Debug\\cmTC_bda65.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_bda65.dir\\Debug\\cmTC_bda65.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+        VcpkgTripletSelection:
+          Using triplet "x64-windows" from "C:\\vcpkg\\installed\\x64-windows\\"
+          Using normalized configuration "Debug"
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\CL.exe /c /I"C:\\vcpkg\\installed\\x64-windows\\include" /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /Fo"cmTC_bda65.dir\\Debug\\\\" /Fd"cmTC_bda65.dir\\Debug\\vc145.pdb" /external:W1 /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.51.36260 for x64
+          鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
+          cl /c /I"C:\\vcpkg\\installed\\x64-windows\\include" /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /Fo"cmTC_bda65.dir\\Debug\\\\" /Fd"cmTC_bda65.dir\\Debug\\vc145.pdb" /external:W1 /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
+          CMakeCXXCompilerABI.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\link.exe /OUT:"A:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\CMakeScratch\\TryCompile-wt1ojc\\Debug\\cmTC_bda65.exe" /INCREMENTAL /ILK:"cmTC_bda65.dir\\Debug\\cmTC_bda65.ilk" /NOLOGO /LIBPATH:"C:\\vcpkg\\installed\\x64-windows\\debug\\lib" /LIBPATH:"C:\\vcpkg\\installed\\x64-windows\\debug\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "C:\\vcpkg\\installed\\x64-windows\\debug\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"A:/Important/CoaWeave-Lib/CoaWeave-Library/CWL/CMakeFiles/CMakeScratch/TryCompile-wt1ojc/Debug/cmTC_bda65.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"A:/Important/CoaWeave-Lib/CoaWeave-Library/CWL/CMakeFiles/CMakeScratch/TryCompile-wt1ojc/Debug/cmTC_bda65.lib" /MACHINE:X64  /machine:x64 cmTC_bda65.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_bda65.vcxproj -> A:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\CMakeScratch\\TryCompile-wt1ojc\\Debug\\cmTC_bda65.exe
+        AppLocalFromInstalled:
+          pwsh.exe -ExecutionPolicy Bypass -noprofile -File "C:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "A:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\CMakeScratch\\TryCompile-wt1ojc\\Debug\\cmTC_bda65.exe" "C:\\vcpkg\\installed\\x64-windows\\debug\\bin" "cmTC_bda65.dir\\Debug\\cmTC_bda65.tlog\\cmTC_bda65.write.1u.tlog" "cmTC_bda65.dir\\Debug\\vcpkg.applocal.log"
+          'pwsh.exe' 涓嶆槸鍐呴儴鎴栧閮ㄥ懡浠わ紝涔熶笉鏄彲杩愯鐨勭▼搴?
+          鎴栨壒澶勭悊鏂囦欢銆?
+          鍛戒护鈥減wsh.exe -ExecutionPolicy Bypass -noprofile -File "C:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "A:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\CMakeScratch\\TryCompile-wt1ojc\\Debug\\cmTC_bda65.exe" "C:\\vcpkg\\installed\\x64-windows\\debug\\bin" "cmTC_bda65.dir\\Debug\\cmTC_bda65.tlog\\cmTC_bda65.write.1u.tlog" "cmTC_bda65.dir\\Debug\\vcpkg.applocal.log"鈥濆凡閫€鍑猴紝浠ｇ爜涓?9009銆?
+          "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -ExecutionPolicy Bypass -noprofile -File "C:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "A:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\CMakeScratch\\TryCompile-wt1ojc\\Debug\\cmTC_bda65.exe" "C:\\vcpkg\\installed\\x64-windows\\debug\\bin" "cmTC_bda65.dir\\Debug\\cmTC_bda65.tlog\\cmTC_bda65.write.1u.tlog" "cmTC_bda65.dir\\Debug\\vcpkg.applocal.log"
+        FinalizeBuildStatus:
+          姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_bda65.dir\\Debug\\cmTC_bda65.tlog\\unsuccessfulbuild鈥濄€?
+          姝ｅ湪瀵光€渃mTC_bda65.dir\\Debug\\cmTC_bda65.tlog\\cmTC_bda65.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?
+        宸插畬鎴愮敓鎴愰」鐩€淎:\\Important\\CoaWeave-Lib\\CoaWeave-Library\\CWL\\CMakeFiles\\CMakeScratch\\TryCompile-wt1ojc\\cmTC_bda65.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?
+        
+        宸叉垚鍔熺敓鎴愩€?
+            0 涓鍛?
+            0 涓敊璇?
+        
+        宸茬敤鏃堕棿 00:00:00.81
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'CXX': C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/Internal/CMakeDetermineLinkerId.cmake:38 (message)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineCompilerABI.cmake:299 (cmake_determine_linker_id)"
+      - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Running the CXX compiler's linker: "C:/Program Files/Microsoft Visual Studio/VC/Tools/MSVC/14.51.36231/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.51.36260.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+...

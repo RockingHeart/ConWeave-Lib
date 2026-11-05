@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"A:/Important/CoaWeave-Lib/CoaWeave-Library/CWL/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
